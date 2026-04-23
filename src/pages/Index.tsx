@@ -1,16 +1,31 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import { useEffect } from "react";
 
-// IMPORTANT: Fully REPLACE this with your own code
-const PlaceholderIndex = () => {
-  // PLACEHOLDER: Replace this entire return statement with the user's app.
-  // The inline background color is intentionally not part of the design system.
+const Index = () => {
+  useEffect(() => {
+    document.title =
+      "Professional Agentic AI Engineering — Nexperts Academy Malaysia";
+    const meta =
+      document.querySelector('meta[name="description"]') ||
+      Object.assign(document.createElement("meta"), { name: "description" });
+    meta.setAttribute(
+      "content",
+      "Live, instructor-led Agentic AI Engineering programme in Malaysia. 20 sessions, 80 hours, founding cohort RM 1,899."
+    );
+    if (!meta.parentNode) document.head.appendChild(meta);
+  }, []);
+
   return (
-    <div className="flex min-h-screen items-center justify-center" style={{ backgroundColor: '#fcfbf8' }}>
-      <img data-lovable-blank-page-placeholder="REMOVE_THIS" src="/placeholder.svg" alt="Your app will live here!" />
-    </div>
+    <main className="h-screen w-screen">
+      <h1 className="sr-only">
+        Professional Agentic AI Engineering — Nexperts Academy Malaysia
+      </h1>
+      <iframe
+        src="/landing.html"
+        title="Professional Agentic AI Engineering Course"
+        className="h-full w-full border-0"
+      />
+    </main>
   );
 };
-
-const Index = PlaceholderIndex;
 
 export default Index;
