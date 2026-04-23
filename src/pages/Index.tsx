@@ -1,30 +1,54 @@
 import { useEffect } from "react";
+import Nav from "@/components/landing/Nav";
+import Hero from "@/components/landing/Hero";
+import Stats from "@/components/landing/Stats";
+import WhoCanJoin from "@/components/landing/WhoCanJoin";
+import Objectives from "@/components/landing/Objectives";
+import Curriculum from "@/components/landing/Curriculum";
+import Outcomes from "@/components/landing/Outcomes";
+import About from "@/components/landing/About";
+import FAQ from "@/components/landing/FAQ";
+import Enquire from "@/components/landing/Enquire";
+import Footer from "@/components/landing/Footer";
+import { useReveal } from "@/hooks/useReveal";
 
 const Index = () => {
+  useReveal();
+
   useEffect(() => {
-    document.title =
-      "Professional Agentic AI Engineering — Nexperts Academy Malaysia";
-    const meta =
-      document.querySelector('meta[name="description"]') ||
-      Object.assign(document.createElement("meta"), { name: "description" });
-    meta.setAttribute(
-      "content",
-      "Live, instructor-led Agentic AI Engineering programme in Malaysia. 20 sessions, 80 hours, founding cohort RM 1,899."
+    document.title = "Professional Agentic AI Engineering — Nexperts Academy Malaysia";
+    const ensureMeta = (name: string, content: string) => {
+      let m = document.querySelector(`meta[name="${name}"]`) as HTMLMetaElement | null;
+      if (!m) {
+        m = document.createElement("meta");
+        m.name = name;
+        document.head.appendChild(m);
+      }
+      m.content = content;
+    };
+    ensureMeta(
+      "description",
+      "Live, instructor-led Agentic AI Engineering programme in Malaysia. 20 sessions, 80 hours. Founding cohort RM 1,899 — save 97% off market rate."
     );
-    if (!meta.parentNode) document.head.appendChild(meta);
+    ensureMeta("viewport", "width=device-width, initial-scale=1");
   }, []);
 
   return (
-    <main className="h-screen w-screen">
-      <h1 className="sr-only">
-        Professional Agentic AI Engineering — Nexperts Academy Malaysia
-      </h1>
-      <iframe
-        src="/landing.html"
-        title="Professional Agentic AI Engineering Course"
-        className="h-full w-full border-0"
-      />
-    </main>
+    <>
+      <Nav />
+      <main>
+        <Hero />
+        <Stats />
+        <WhoCanJoin />
+        <Objectives />
+        <Curriculum />
+        <Outcomes />
+        <About />
+        <FAQ />
+        <Enquire />
+      </main>
+      <Footer />
+    </>
   );
 };
 
