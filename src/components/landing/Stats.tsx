@@ -3,7 +3,7 @@ const stats = [
   { n: "80h", l: "Total hands-on training" },
   { n: "4h", l: "Per session · 6pm–10pm" },
   { n: "5+", l: "Frameworks mastered" },
-  { n: "RM 1,899", l: "Founding cohort · Save RM 11,601", success: true },
+  { n: "RM 399", l: "Limited offer · Save RM 11,601", success: true },
 ];
 
 const Stats = () => (

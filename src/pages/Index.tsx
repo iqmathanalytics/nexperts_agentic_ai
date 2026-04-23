@@ -28,7 +28,7 @@ const Index = () => {
     };
     ensureMeta(
       "description",
-      "Live, instructor-led Agentic AI Engineering programme in Malaysia. 20 sessions, 80 hours. Founding cohort RM 1,899 — save 97% off market rate."
+      "Live, instructor-led Agentic AI Engineering programme in Malaysia. 20 sessions, 80 hours. Limited offer RM 399 (excluding 8% SST) — save RM 11,601."
     );
     ensureMeta("viewport", "width=device-width, initial-scale=1");
   }, []);

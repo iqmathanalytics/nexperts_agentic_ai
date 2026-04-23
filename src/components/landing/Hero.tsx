@@ -53,8 +53,8 @@ const Hero = () => {
           <div className="flex flex-wrap gap-2 mb-10 animate-fade-up" style={{ animationDelay: ".3s", opacity: 0 }}>
             <span className="pill-hl">20 Live Sessions</span>
             <span className="pill-hl">80 Hours</span>
-            <span className="pill-hl">Mon–Fri · 6pm–10pm</span>
-            <span className="pill">Live Online · Zoom</span>
+            <span className="pill-hl">6pm–10pm</span>
+            <span className="pill">Live Online · Microsoft Teams</span>
             <span className="pill">Python Basics Included</span>
             <span className="pill">Certificate of Completion</span>
           </div>
@@ -73,9 +73,9 @@ const Hero = () => {
             </span>
             <div className="font-mono text-xs text-white/25 line-through mb-1">International market value: RM 12,000+</div>
             <div className="flex items-baseline gap-3 mb-2">
-              <span className="font-display text-5xl md:text-6xl font-semibold text-success leading-none">RM 1,899</span>
+              <span className="font-display text-5xl md:text-6xl font-semibold text-success leading-none">RM 399</span>
               <div className="flex flex-col gap-0.5">
-                <span className="font-mono text-[0.6rem] text-white/30">nominal fee</span>
+                <span className="font-mono text-[0.6rem] text-white/30">excluding 8% SST</span>
                 <span className="font-mono text-[0.6rem] text-white/30">next cohort: RM 4,000</span>
               </div>
             </div>
@@ -84,7 +84,7 @@ const Hero = () => {
               style={{ background: "hsl(var(--success) / 0.12)", border: "1px solid hsl(var(--success) / 0.25)" }}
             >
               <span className="font-mono text-[0.58rem] font-semibold tracking-widest uppercase text-success">
-                ✦ Save RM 11,601 — 97% off
+                ✦ Limited offer — Save RM 11,601
               </span>
             </div>
             <p className="text-xs font-light text-white/35 leading-relaxed border-t border-white/[0.08] pt-2.5 mt-1">

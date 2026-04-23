@@ -89,7 +89,7 @@ const Enquire = () => {
             {[
               "Full curriculum PDF emailed within minutes",
               "Personal call with our programme advisor",
-              "Founding cohort price locked in: RM 1,899",
+              "Limited offer price locked in: RM 399 (excluding 8% SST)",
               "No payment required to enquire",
             ].map((t) => (
               <li key={t} className="flex items-start gap-2.5">
