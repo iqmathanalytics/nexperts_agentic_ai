@@ -50,7 +50,7 @@ const Curriculum = () => (
           }`}
         >
           <div className={`flex items-center justify-center font-display text-2xl font-light leading-none border-r border-border py-5 transition-colors ${
-            s.capstone ? "text-primary" : "text-border group-hover:text-primary"
+            s.capstone ? "text-primary bg-primary/[0.07]" : "text-ink-muted bg-foreground/[0.03] group-hover:text-primary"
           }`}>
             {s.n}
           </div>

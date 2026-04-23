@@ -1,4 +1,5 @@
 import { MessageCircle } from "lucide-react";
+import { WHATSAPP_HREF } from "@/lib/whatsapp";
 
 const Nav = () => (
   <nav className="fixed inset-x-0 top-0 z-50 h-14 flex items-center px-[5vw] bg-obsidian/90 backdrop-blur-xl border-b border-white/[0.06]">
@@ -22,7 +23,7 @@ const Nav = () => (
         FAQ
       </a>
       <a
-        href="https://wa.me/601133375331"
+        href={WHATSAPP_HREF}
         target="_blank"
         rel="noopener"
         className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-sm bg-whatsapp text-white text-[0.7rem] font-semibold tracking-wider uppercase hover:scale-[1.03] transition-transform"

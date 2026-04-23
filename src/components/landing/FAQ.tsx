@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { ChevronDown } from "lucide-react";
+import { WHATSAPP_HREF } from "@/lib/whatsapp";
 
 const faqs = [
   { q: "I have zero Python experience. Can I still join?", a: "Yes — sessions 1–3 cover Python from scratch, focused specifically on what you need for AI engineering. You don't need prior Python, but you do need basic programming knowledge in any language." },
@@ -24,7 +25,7 @@ const FAQ = () => {
             Questions you<br /><em>probably have.</em>
           </h2>
           <p className="body-prose mt-4">
-            Still unsure? <a href="https://wa.me/601133375331" target="_blank" rel="noopener" className="text-primary underline underline-offset-4 hover:text-primary-glow">Message us on WhatsApp</a> — we usually reply within an hour.
+            Still unsure? <a href={WHATSAPP_HREF} target="_blank" rel="noopener" className="text-primary underline underline-offset-4 hover:text-primary-glow">Message us on WhatsApp</a> — we usually reply within an hour.
           </p>
         </div>
 

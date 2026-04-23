@@ -1,3 +1,5 @@
+import { WHATSAPP_HREF } from "@/lib/whatsapp";
+
 const team = [
   { i: "N", n: "Nazreen", r: "Director", b: "Leads Nexperts Academy's strategic direction. Driving Malaysia's AI training ecosystem.", linkedin: "nazreen" },
   { i: "V", n: "Vaheed", r: "CEO · +60 111-221-6870", b: "10+ years in IT training and technology. Leads operations and business development.", linkedin: "vaheed", whatsapp: "601112216870" },
@@ -67,7 +69,7 @@ const About = () => (
         </div>
       </div>
 
-      <div className="reveal">
+      <div id="instructor" className="reveal scroll-mt-24">
         <div className="font-mono text-[0.58rem] font-semibold tracking-widest uppercase text-white/40 mb-4">
           Meet The Team
         </div>
@@ -89,7 +91,7 @@ const About = () => (
                     LinkedIn ↗
                   </a>
                   {m.whatsapp && (
-                    <a href={`https://wa.me/${m.whatsapp}`} target="_blank" rel="noopener"
+                    <a href={WHATSAPP_HREF} target="_blank" rel="noopener"
                        className="font-mono text-[0.58rem] text-success border border-success/25 bg-success/[0.06] px-2 py-0.5 rounded-sm hover:bg-success/15 transition-colors">
                       WhatsApp
                     </a>

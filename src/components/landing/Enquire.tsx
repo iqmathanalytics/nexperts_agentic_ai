@@ -1,28 +1,65 @@
 import { useState } from "react";
-import { ArrowRight, Check } from "lucide-react";
+import { ArrowRight, Check, Loader2 } from "lucide-react";
 import { toast } from "sonner";
+
+const GSHEET_WEBHOOK_URL = import.meta.env.VITE_GSHEET_WEBHOOK_URL;
+const MIN_LOADING_MS = 1100;
 
 const Enquire = () => {
   const [submitting, setSubmitting] = useState(false);
   const [done, setDone] = useState(false);
 
-  const submit = (e: React.FormEvent<HTMLFormElement>) => {
+  const submit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const fd = new FormData(e.currentTarget);
     const name = String(fd.get("name") || "").trim();
     const phone = String(fd.get("phone") || "").trim();
     const email = String(fd.get("email") || "").trim();
+    const message = String(fd.get("message") || "").trim();
 
     if (!name || !phone || !email.includes("@")) {
       toast.error("Please fill in your name, phone and a valid email.");
       return;
     }
+
+    if (!GSHEET_WEBHOOK_URL) {
+      toast.error("Form endpoint is not configured yet.");
+      return;
+    }
+
     setSubmitting(true);
-    setTimeout(() => {
+
+    const payload = new URLSearchParams({
+      name,
+      phone,
+      email,
+      message,
+      submittedAt: new Date().toISOString(),
+      source: window.location.href,
+    });
+
+    try {
+      const start = Date.now();
+
+      // Google Apps Script endpoints commonly work best with urlencoded form data.
+      await fetch(GSHEET_WEBHOOK_URL, {
+        method: "POST",
+        mode: "no-cors",
+        body: payload,
+      });
+
+      const elapsed = Date.now() - start;
+      if (elapsed < MIN_LOADING_MS) {
+        await new Promise((resolve) => setTimeout(resolve, MIN_LOADING_MS - elapsed));
+      }
+
       setSubmitting(false);
       setDone(true);
       toast.success("Enquiry received — we'll be in touch within 24 hours.");
-    }, 700);
+    } catch {
+      setSubmitting(false);
+      toast.error("Couldn't submit your enquiry. Please try again.");
+    }
   };
 
   return (
@@ -76,6 +113,37 @@ const Enquire = () => {
               <p className="text-sm text-white/50 leading-relaxed">
                 We've received your enquiry. Expect a message from our team within 24 hours.
               </p>
+            </div>
+          ) : submitting ? (
+            <div className="py-10" role="status" aria-live="polite">
+              <div className="w-12 h-12 rounded-full bg-primary-glow/15 border border-primary-glow/30 flex items-center justify-center mx-auto mb-4">
+                <Loader2 className="w-5 h-5 text-primary-glow animate-spin" />
+              </div>
+              <div className="text-center mb-7">
+                <div className="font-display text-2xl text-white mb-1.5">Submitting your enquiry</div>
+                <p className="text-sm text-white/50 leading-relaxed">
+                  Please hold on while we securely send your details.
+                </p>
+              </div>
+              <div className="flex flex-col gap-2.5">
+                {[
+                  "Validating your details",
+                  "Sending to admissions desk",
+                  "Reserving your seat request",
+                ].map((step, i) => (
+                  <div
+                    key={step}
+                    className="relative overflow-hidden rounded-sm border border-white/10 bg-white/[0.03] px-3.5 py-2.5"
+                    style={{ animationDelay: `${i * 0.15}s` }}
+                  >
+                    <div className="absolute inset-y-0 -left-1/2 w-1/2 bg-gradient-to-r from-transparent via-primary-glow/20 to-transparent animate-[shimmer_1.6s_linear_infinite]" />
+                    <div className="relative flex items-center gap-2.5">
+                      <span className="w-1.5 h-1.5 rounded-full bg-primary-glow animate-pulse-dot" />
+                      <span className="text-xs text-white/70">{step}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           ) : (
             <>

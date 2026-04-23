@@ -1,4 +1,5 @@
 import { ArrowRight, MessageCircle } from "lucide-react";
+import { WHATSAPP_HREF } from "@/lib/whatsapp";
 
 const Hero = () => (
   <section id="top" className="relative min-h-screen flex items-center px-[5vw] pt-28 pb-24 bg-obsidian overflow-hidden">
@@ -83,7 +84,7 @@ const Hero = () => (
           Enquire Now — Fill the Form
           <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
         </a>
-        <a href="https://wa.me/601133375331" target="_blank" rel="noopener"
+        <a href={WHATSAPP_HREF} target="_blank" rel="noopener"
            className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-sm border border-whatsapp/30 text-whatsapp font-medium text-xs tracking-wider uppercase hover:bg-whatsapp/10 transition-colors">
           <MessageCircle className="w-3.5 h-3.5" /> WhatsApp Us
         </a>

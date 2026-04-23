@@ -1,3 +1,5 @@
+import { WHATSAPP_HREF } from "@/lib/whatsapp";
+
 const Footer = () => (
   <footer className="bg-obsidian border-t border-white/[0.06] px-[5vw] py-10">
     <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
@@ -9,7 +11,7 @@ const Footer = () => (
         <a href="https://www.nexpertsacademy.com" target="_blank" rel="noopener" className="hover:text-white/80 transition-colors">
           nexpertsacademy.com
         </a>
-        <a href="https://wa.me/601133375331" target="_blank" rel="noopener" className="hover:text-success transition-colors">
+        <a href={WHATSAPP_HREF} target="_blank" rel="noopener" className="hover:text-success transition-colors">
           WhatsApp
         </a>
         <a href="mailto:hello@nexpertsacademy.com" className="hover:text-white/80 transition-colors">
