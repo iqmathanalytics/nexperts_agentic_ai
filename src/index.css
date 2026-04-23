@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=JetBrains+Mono:wght@300;400;500;600&family=Poppins:wght@300;400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -101,11 +101,12 @@
 }
 
 @layer components {
-  .font-display { font-family: 'Cormorant Garamond', serif; }
+  .font-display { font-family: 'GT Super', 'Recoleta', 'Cormorant Garamond', 'Times New Roman', serif; }
   .font-mono-ui { font-family: 'JetBrains Mono', monospace; }
 
   .eyebrow {
-    @apply font-mono-ui text-[0.65rem] font-semibold tracking-[0.2em] uppercase text-primary inline-flex items-center gap-2.5;
+    font-family: 'Poppins', 'Helvetica Neue', 'Inter', system-ui, sans-serif;
+    @apply text-[0.66rem] font-semibold tracking-[0.16em] uppercase text-primary inline-flex items-center gap-2.5;
   }
   .eyebrow::before {
     content: '';
@@ -113,13 +114,13 @@
   }
 
   .display {
-    @apply font-display font-light leading-[1.05] tracking-[-0.01em];
+    @apply font-display font-normal leading-[1.05] tracking-[-0.012em];
     font-size: clamp(2rem, 4.2vw, 3.4rem);
   }
   .display em { @apply not-italic italic text-primary; }
 
   .display-xl {
-    @apply font-display font-light leading-[1.02] tracking-[-0.015em];
+    @apply font-display font-medium leading-[1.02] tracking-[-0.018em];
     font-size: clamp(2.6rem, 6.4vw, 5.6rem);
   }
 
@@ -128,10 +129,12 @@
   }
 
   .pill {
-    @apply font-mono-ui text-[0.66rem] font-medium tracking-wide px-3 py-1.5 rounded-full border border-white/10 bg-white/5 text-white/55 whitespace-nowrap;
+    font-family: 'Poppins', 'Helvetica Neue', 'Inter', system-ui, sans-serif;
+    @apply text-[0.69rem] font-medium tracking-[0.01em] px-3 py-1.5 rounded-full border border-white/10 bg-white/5 text-white/60 whitespace-nowrap;
   }
   .pill-hl {
-    @apply font-mono-ui text-[0.66rem] font-medium tracking-wide px-3 py-1.5 rounded-full whitespace-nowrap;
+    font-family: 'Poppins', 'Helvetica Neue', 'Inter', system-ui, sans-serif;
+    @apply text-[0.69rem] font-semibold tracking-[0.01em] px-3 py-1.5 rounded-full whitespace-nowrap;
     background: hsl(var(--primary) / 0.1);
     border: 1px solid hsl(var(--primary) / 0.3);
     color: hsl(var(--primary-glow));

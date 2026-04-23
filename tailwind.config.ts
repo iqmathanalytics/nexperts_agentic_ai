@@ -12,8 +12,8 @@ export default {
     },
     extend: {
       fontFamily: {
-        sans: ['Outfit', 'system-ui', 'sans-serif'],
-        display: ['"Cormorant Garamond"', 'Georgia', 'serif'],
+        sans: ['Poppins', '"Helvetica Neue"', 'Inter', 'system-ui', 'sans-serif'],
+        display: ['"GT Super"', 'Recoleta', '"Cormorant Garamond"', 'Georgia', 'serif'],
         mono: ['"JetBrains Mono"', 'monospace'],
       },
       colors: {
