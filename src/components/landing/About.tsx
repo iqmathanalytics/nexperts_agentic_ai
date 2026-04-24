@@ -1,10 +1,45 @@
 import { WHATSAPP_HREF } from "@/lib/whatsapp";
 
-const team = [
-  { i: "N", n: "Nazreen", r: "Director", b: "Leads Nexperts Academy's strategic direction. Driving Malaysia's AI training ecosystem.", linkedin: "nazreen" },
-  { i: "V", n: "Vaheed", r: "CEO · +60 111-221-6870", b: "10+ years in IT training and technology. Leads operations and business development.", linkedin: "vaheed", whatsapp: "601112216870" },
-  { i: "A", n: "Ajith Kumar", r: "AI Trainer · LangChain · LangGraph", b: "AI practitioner with hands-on production AI experience. Leads the Agentic AI Engineering programme.", linkedin: "ajithkumar" },
-  { i: "Y", n: "Yash Sharma", r: "AI Trainer · Python · RAG · Multi-Agent", b: "Specialises in Python, RAG and multi-agent systems. Co-leads the technical sessions.", linkedin: "yashsharma" },
+type TeamMember = {
+  i: string;
+  n: string;
+  r: string;
+  b: string;
+  linkedin?: string;
+  linkedinUrl?: string;
+  whatsapp?: string;
+};
+
+const team: TeamMember[] = [
+  {
+    i: "N",
+    n: "Nazreen",
+    r: "Director",
+    b: "Leads Nexperts Academy's strategic direction. Driving Malaysia's AI training ecosystem.",
+    linkedinUrl: "https://www.linkedin.com/in/nazreen-abdul-ghani-8b36145a/",
+  },
+  {
+    i: "V",
+    n: "Vaheed",
+    r: "CEO · +60 111-221-6870",
+    b: "10+ years in IT training and technology. Leads operations and business development.",
+    linkedinUrl: "https://www.linkedin.com/in/abdul-vaheed-2b5a5720/",
+    whatsapp: "601112216870",
+  },
+  {
+    i: "A",
+    n: "Ajith Kumar",
+    r: "AI Trainer · LangChain · LangGraph",
+    b: "AI practitioner with hands-on production AI experience. Leads the Agentic AI Engineering programme.",
+    linkedinUrl: "https://www.linkedin.com/in/ajithkumar54",
+  },
+  {
+    i: "Y",
+    n: "Yash Sharma",
+    r: "AI Trainer · Python · RAG · Multi-Agent",
+    b: "Specialises in Python, RAG and multi-agent systems. Co-leads the technical sessions.",
+    linkedinUrl: "https://www.linkedin.com/in/yash-sharma2426",
+  },
 ];
 
 const About = () => (
@@ -86,7 +121,10 @@ const About = () => (
                 <div className="font-mono text-[0.6rem] text-primary-glow mb-2">{m.r}</div>
                 <div className="text-xs text-white/40 leading-[1.6] mb-2.5">{m.b}</div>
                 <div className="flex gap-1.5 flex-wrap">
-                  <a href={`https://www.linkedin.com/in/${m.linkedin}`} target="_blank" rel="noopener"
+                  <a
+                    href={m.linkedinUrl ?? (m.linkedin ? `https://www.linkedin.com/in/${m.linkedin}` : "#")}
+                    target="_blank"
+                    rel="noopener"
                      className="font-mono text-[0.58rem] text-primary-glow border border-primary-glow/25 bg-primary-glow/[0.06] px-2 py-0.5 rounded-sm hover:bg-primary-glow/15 transition-colors">
                     LinkedIn ↗
                   </a>

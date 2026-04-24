@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import Nav from "@/components/landing/Nav";
 import Hero from "@/components/landing/Hero";
 import Stats from "@/components/landing/Stats";
+import LiveDemoSection from "@/components/landing/LiveDemoSection";
 import WhoCanJoin from "@/components/landing/WhoCanJoin";
 import Objectives from "@/components/landing/Objectives";
 import Curriculum from "@/components/landing/Curriculum";
@@ -39,6 +40,7 @@ const Index = () => {
       <main>
         <Hero />
         <Stats />
+        <LiveDemoSection />
         <WhoCanJoin />
         <Objectives />
         <Curriculum />

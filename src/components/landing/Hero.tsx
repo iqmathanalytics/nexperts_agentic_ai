@@ -1,6 +1,7 @@
 import { useState, type CSSProperties, type MouseEvent } from "react";
 import { ArrowRight, Bot, MessageCircle, Orbit, Radar } from "lucide-react";
 import { WHATSAPP_HREF } from "@/lib/whatsapp";
+import CourseCheckout from "@/components/landing/CourseCheckout";
 
 const Hero = () => {
   const [tilt, setTilt] = useState({ x: 0, y: 0 });
@@ -94,7 +95,11 @@ const Hero = () => {
             </p>
           </div>
 
-          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 animate-fade-up" style={{ animationDelay: ".5s", opacity: 0 }}>
+          <div
+            className="flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center gap-3 animate-fade-up"
+            style={{ animationDelay: ".5s", opacity: 0 }}
+          >
+            <CourseCheckout />
             <a
               href="#enquire"
               className="group inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-sm bg-success text-obsidian font-semibold text-xs tracking-wider uppercase hover:bg-success/90 hover:-translate-y-0.5 hover:shadow-[0_8px_28px_-4px_hsl(var(--success)/0.5)] transition-all"

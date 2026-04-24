@@ -1,0 +1,10 @@
+# Cloudflare Pages — bind secrets in the dashboard (not in this file):
+#   STRIPE_SECRET_KEY   — Restricted or standard secret key (never expose to the browser)
+#   STRIPE_PRICE_ID     — e.g. price_xxx for the founding cohort SKU
+# Optional:
+#   SITE_URL            — https://yourdomain.com (redirect URLs if Origin header is missing)
+#   ALLOWED_ORIGINS     — Comma-separated origins allowed to call this API (CORS)
+#   PAYMENTS_GSHEET_WEBHOOK_URL — Apps Script Web App URL used to append rows to the "Payments" sheet
+name = "agentic-ai-launchpad"
+compatibility_date = "2024-11-01"
+pages_build_output_dir = "dist"

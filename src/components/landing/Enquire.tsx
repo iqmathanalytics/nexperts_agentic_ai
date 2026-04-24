@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useState, type FormEvent } from "react";
 import { ArrowRight, Check, Loader2 } from "lucide-react";
 import { toast } from "sonner";
+import { normalizeMalaysiaPhone } from "@/lib/phone";
 
 const GSHEET_WEBHOOK_URL = import.meta.env.VITE_GSHEET_WEBHOOK_URL;
 const MIN_LOADING_MS = 1100;
@@ -9,16 +10,17 @@ const Enquire = () => {
   const [submitting, setSubmitting] = useState(false);
   const [done, setDone] = useState(false);
 
-  const submit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const submit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const fd = new FormData(e.currentTarget);
     const name = String(fd.get("name") || "").trim();
-    const phone = String(fd.get("phone") || "").trim();
+    const phoneLocal = String(fd.get("phone_local") || "").trim();
+    const phone = normalizeMalaysiaPhone(phoneLocal);
     const email = String(fd.get("email") || "").trim();
     const message = String(fd.get("message") || "").trim();
 
     if (!name || !phone || !email.includes("@")) {
-      toast.error("Please fill in your name, phone and a valid email.");
+      toast.error("Please fill in your name, Malaysian mobile number, and a valid email.");
       return;
     }
 
@@ -29,9 +31,12 @@ const Enquire = () => {
 
     setSubmitting(true);
 
+    // Leading apostrophe helps Google Sheets treat the cell as plain text when Apps Script appends a row.
+    const phoneForSheet = `'${phone}`;
+
     const payload = new URLSearchParams({
       name,
-      phone,
+      phone: phoneForSheet,
       email,
       message,
       submittedAt: new Date().toISOString(),
@@ -153,7 +158,6 @@ const Enquire = () => {
               <div className="flex flex-col gap-4">
                 {[
                   { name: "name", label: "Full Name", placeholder: "Your name", type: "text" },
-                  { name: "phone", label: "Mobile (WhatsApp)", placeholder: "+60 12-345 6789", type: "tel" },
                   { name: "email", label: "Email", placeholder: "you@email.com", type: "email" },
                 ].map((f) => (
                   <label key={f.name} className="flex flex-col gap-1.5">
@@ -169,6 +173,26 @@ const Enquire = () => {
                     />
                   </label>
                 ))}
+                <label className="flex flex-col gap-1.5">
+                  <span className="font-mono text-[0.6rem] tracking-widest uppercase text-white/40">
+                    Mobile (WhatsApp)
+                  </span>
+                  <div className="flex rounded-sm border border-white/10 bg-white/[0.04] focus-within:border-primary-glow/50 focus-within:bg-white/[0.06] transition-colors overflow-hidden">
+                    <span className="shrink-0 px-3 py-3 text-sm text-white/55 border-r border-white/10 bg-white/[0.03] select-none">
+                      +60
+                    </span>
+                    <input
+                      type="tel"
+                      name="phone_local"
+                      inputMode="numeric"
+                      autoComplete="tel-national"
+                      placeholder="11-1221-6870"
+                      required
+                      className="min-w-0 flex-1 bg-transparent px-3 py-3 text-sm text-white placeholder:text-white/25 focus:outline-none"
+                    />
+                  </div>
+                  <span className="text-[0.65rem] text-white/30">Country code +60 is fixed — enter your Malaysian number only.</span>
+                </label>
                 <label className="flex flex-col gap-1.5">
                   <span className="font-mono text-[0.6rem] tracking-widest uppercase text-white/40">
                     Anything we should know? <span className="text-white/25">(optional)</span>
