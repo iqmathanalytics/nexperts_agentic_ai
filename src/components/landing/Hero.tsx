@@ -1,5 +1,5 @@
 import { useState, type CSSProperties, type MouseEvent } from "react";
-import { ArrowRight, Bot, MessageCircle, Orbit, Radar } from "lucide-react";
+import { ArrowRight, Bot, Orbit, Radar } from "lucide-react";
 import { WHATSAPP_HREF } from "@/lib/whatsapp";
 import CourseCheckout from "@/components/landing/CourseCheckout";
 
@@ -102,18 +102,21 @@ const Hero = () => {
             <CourseCheckout />
             <a
               href="#enquire"
-              className="group inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-sm bg-success text-obsidian font-semibold text-xs tracking-wider uppercase hover:bg-success/90 hover:-translate-y-0.5 hover:shadow-[0_8px_28px_-4px_hsl(var(--success)/0.5)] transition-all"
+              className="cta-medium group inline-flex items-center justify-center gap-2 rounded-sm bg-success px-7 py-3.5 text-xs font-semibold uppercase tracking-wider text-obsidian transition-all hover:bg-success/90 hover:-translate-y-0.5 hover:shadow-[0_8px_28px_-4px_hsl(var(--success)/0.5)]"
             >
-              Enquire Now — Fill the Form
+              Enquire Now
               <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
             </a>
             <a
               href={WHATSAPP_HREF}
               target="_blank"
               rel="noopener"
-              className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-sm border border-whatsapp/30 text-whatsapp font-medium text-xs tracking-wider uppercase hover:bg-whatsapp/10 transition-colors"
+              className="cta-medium inline-flex items-center justify-center gap-2 rounded-sm border border-whatsapp/30 px-7 py-3.5 text-xs font-medium uppercase tracking-wider text-whatsapp transition-colors hover:bg-whatsapp/10"
             >
-              <MessageCircle className="w-3.5 h-3.5" /> WhatsApp Us
+              <svg viewBox="0 0 32 32" className="h-3.5 w-3.5 fill-current" aria-hidden>
+                <path d="M16 3.2c-7 0-12.8 5.6-12.8 12.6 0 2.2.6 4.3 1.7 6.1L3 28.8l7.1-1.9c1.8 1 3.8 1.5 5.9 1.5 7 0 12.8-5.6 12.8-12.6S23 3.2 16 3.2zm0 22.9c-1.9 0-3.8-.5-5.4-1.5l-.4-.2-4.2 1.1 1.1-4.1-.3-.4c-1.1-1.6-1.6-3.4-1.6-5.3 0-5.9 4.9-10.8 10.9-10.8S26.9 9.8 26.9 15.7 22 26.1 16 26.1zm5.9-7.9c-.3-.2-1.9-.9-2.2-1s-.5-.2-.7.2-.8 1-1 1.2-.4.3-.7.1c-.3-.2-1.4-.5-2.6-1.7-1-1-1.7-2.1-1.9-2.4-.2-.3 0-.5.2-.7.2-.2.3-.4.5-.6.2-.2.2-.4.3-.6.1-.2 0-.5 0-.6s-.7-1.7-1-2.3c-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.6.1-.9.4-.3.3-1.1 1-1.1 2.4s1.1 2.8 1.3 3c.2.2 2.2 3.4 5.2 4.7.7.3 1.3.5 1.8.6.8.2 1.5.2 2.1.1.6-.1 1.9-.8 2.2-1.6.3-.8.3-1.5.2-1.6 0-.1-.2-.2-.5-.4z" />
+              </svg>
+              WhatsApp Us
             </a>
           </div>
         </div>

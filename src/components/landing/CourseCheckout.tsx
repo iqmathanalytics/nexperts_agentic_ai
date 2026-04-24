@@ -76,11 +76,11 @@ const CourseCheckout = () => {
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-sm border border-primary-glow/40 bg-primary-glow/10 text-primary-glow font-semibold text-xs tracking-wider uppercase hover:bg-primary-glow/15 hover:-translate-y-0.5 transition-all"
+        className="cta-pay-high inline-flex items-center justify-center gap-2 rounded-sm border border-primary-glow/40 bg-primary-glow/10 px-7 py-3.5 text-xs font-semibold uppercase tracking-wider text-primary-glow transition-all hover:bg-primary-glow/15 hover:-translate-y-0.5"
         id="buy-course"
       >
         <CreditCard className="w-3.5 h-3.5" />
-        Secure seat — Pay (Stripe)
+        Reserve Your Seat
       </button>
 
       <Dialog open={open} onOpenChange={(v) => !submitting && setOpen(v)}>
