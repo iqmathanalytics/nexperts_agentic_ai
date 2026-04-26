@@ -1,5 +1,5 @@
 import { useState, type CSSProperties, type MouseEvent } from "react";
-import { ArrowRight, Bot, Orbit, Radar } from "lucide-react";
+import { ArrowRight, Bot, Calendar, Orbit, Radar } from "lucide-react";
 import { WHATSAPP_HREF } from "@/lib/whatsapp";
 import CourseCheckout from "@/components/landing/CourseCheckout";
 
@@ -61,7 +61,7 @@ const Hero = () => {
           </div>
 
           <div
-            className="inline-flex flex-col rounded-md p-6 md:p-7 mb-10 max-w-md animate-fade-up"
+            className="relative inline-flex w-full max-w-md flex-col rounded-md p-6 pb-6 pt-7 md:p-7 md:pt-8 mb-10 animate-fade-up"
             style={{
               animationDelay: ".4s",
               opacity: 0,
@@ -69,7 +69,35 @@ const Hero = () => {
               border: "1px solid hsl(var(--primary-glow) / 0.22)",
             }}
           >
-            <span className="font-mono text-[0.6rem] font-semibold tracking-[0.16em] uppercase text-primary-glow/80 mb-2">
+            <aside
+              className="pointer-events-none absolute right-0 top-0 z-[2] w-[11.25rem] max-w-[min(100%,calc(100%-0.5rem))] translate-x-[calc(50%+0.3rem)] translate-y-[calc(-50%+0.7rem)] sm:w-[12rem] sm:translate-x-[calc(50%+0.4rem)] sm:translate-y-[calc(-50%+0.8rem)]"
+              aria-label="Expected start date 9 June 2026; scheduled 9 June through 16 July 2026, seven weeks"
+            >
+              <div className="relative">
+                <div className="hero-intake-badge__ornament" aria-hidden>
+                  <span className="hero-intake-badge__gem" />
+                  <span className="hero-intake-badge__gem" />
+                  <span className="hero-intake-badge__gem" />
+                </div>
+                <div className="hero-intake-badge__panel rounded-lg border border-amber-400/55 bg-gradient-to-br from-[#1c1508] via-[#2a1f0c] to-[#3d2a0a] px-3 py-2.5 shadow-[0_12px_36px_-8px_rgba(0,0,0,0.55),inset_0_1px_0_rgba(255,255,255,0.12)]">
+                <div className="flex items-center gap-1.5 text-[0.58rem] font-semibold uppercase tracking-[0.18em] text-amber-200/95">
+                  <Calendar className="h-3 w-3 shrink-0 text-amber-300" strokeWidth={2.25} />
+                  <span>Expected date</span>
+                </div>
+                <p className="mt-1 font-display text-lg font-semibold leading-none tracking-tight text-[#fde68a] drop-shadow-sm">
+                  9 June 2026
+                </p>
+                <p className="mt-1 font-mono text-[0.62rem] leading-snug text-amber-100/80">
+                  9 Jun – 16 Jul 2026
+                </p>
+                <p className="mt-0.5 font-mono text-[0.58rem] font-medium uppercase tracking-wider text-amber-200/75">
+                  7 weeks · Teams live
+                </p>
+                </div>
+              </div>
+            </aside>
+
+            <span className="font-mono text-[0.6rem] font-semibold tracking-[0.16em] uppercase text-primary-glow/80 mb-2 pr-[9rem] sm:pr-[11rem]">
               Founding Cohort — Limited Seats
             </span>
             <div className="font-mono text-xs text-white/25 line-through mb-1">International market value: RM 12,000+</div>
