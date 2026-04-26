@@ -76,7 +76,7 @@ const CourseCheckout = () => {
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="cta-pay-high inline-flex items-center justify-center gap-2 rounded-sm border border-primary-glow/40 bg-primary-glow/10 px-7 py-3.5 text-xs font-semibold uppercase tracking-wider text-primary-glow transition-all hover:bg-primary-glow/15 hover:-translate-y-0.5"
+        className="cta-pay-high inline-flex min-h-[44px] w-full items-center justify-center gap-2 rounded-sm border border-primary-glow/40 bg-primary-glow/10 px-6 py-3.5 text-xs font-semibold uppercase tracking-wider text-primary-glow transition-all hover:bg-primary-glow/15 hover:-translate-y-0.5 sm:min-h-0 sm:w-auto sm:px-7"
         id="buy-course"
       >
         <CreditCard className="w-3.5 h-3.5" />

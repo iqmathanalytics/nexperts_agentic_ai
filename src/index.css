@@ -568,6 +568,24 @@
   }
 }
 
+@media (max-width: 639px) {
+  .hero-intake-badge__ornament {
+    left: -0.05rem;
+    top: -0.32rem;
+    width: 2rem;
+    height: 1.85rem;
+  }
+
+  .hero-intake-badge__gem:nth-child(2) {
+    left: 0.82rem;
+  }
+
+  .hero-intake-badge__gem:nth-child(3) {
+    left: 0.48rem;
+    top: 0.82rem;
+  }
+}
+
 .hero-intake-badge__panel {
   position: relative;
   z-index: 2;
