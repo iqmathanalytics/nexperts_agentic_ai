@@ -2,6 +2,7 @@ import { useState, type FormEvent } from "react";
 import { ArrowRight, CreditCard, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { normalizeMalaysiaPhone } from "@/lib/phone";
+import { trackConversion, trackEvent } from "@/lib/analytics";
 import {
   Dialog,
   DialogContent,
@@ -39,6 +40,15 @@ const CourseCheckout = () => {
     }
 
     setSubmitting(true);
+    trackEvent("form_submit", {
+      form_name: "checkout_form",
+      source: "landing",
+    });
+    trackConversion("begin_checkout", {
+      source: "landing",
+      value: 399,
+      currency: "MYR",
+    });
     try {
       const res = await fetch(checkoutApiUrl(), {
         method: "POST",
@@ -56,6 +66,9 @@ const CourseCheckout = () => {
       }
 
       toast.success("Redirecting to secure Stripe checkout…");
+      trackEvent("checkout_redirect", {
+        source: "landing",
+      });
       window.location.assign(data.url);
     } catch {
       setFormError("Network error — check your connection or try again shortly.");

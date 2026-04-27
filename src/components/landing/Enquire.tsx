@@ -2,6 +2,7 @@ import { useState, type FormEvent } from "react";
 import { ArrowRight, Check, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { normalizeMalaysiaPhone } from "@/lib/phone";
+import { trackConversion, trackEvent } from "@/lib/analytics";
 
 const GSHEET_WEBHOOK_URL = import.meta.env.VITE_GSHEET_WEBHOOK_URL;
 const MIN_LOADING_MS = 1100;
@@ -30,6 +31,10 @@ const Enquire = () => {
     }
 
     setSubmitting(true);
+    trackEvent("form_submit", {
+      form_name: "enquiry_form",
+      source: "landing",
+    });
 
     // Leading apostrophe helps Google Sheets treat the cell as plain text when Apps Script appends a row.
     const phoneForSheet = `'${phone}`;
@@ -60,6 +65,10 @@ const Enquire = () => {
 
       setSubmitting(false);
       setDone(true);
+      trackConversion("generate_lead", {
+        source: "landing",
+        form_name: "enquiry_form",
+      });
       toast.success("Enquiry received — we'll be in touch within 24 hours.");
     } catch {
       setSubmitting(false);

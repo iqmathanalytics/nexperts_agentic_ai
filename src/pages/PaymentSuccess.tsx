@@ -3,6 +3,7 @@ import { Link, useSearchParams } from "react-router-dom";
 import { CheckCircle2 } from "lucide-react";
 import Nav from "@/components/landing/Nav";
 import Footer from "@/components/landing/Footer";
+import { trackConversion, trackEvent } from "@/lib/analytics";
 
 const PaymentSuccess = () => {
   const [params] = useSearchParams();
@@ -16,10 +17,18 @@ const PaymentSuccess = () => {
 
   useEffect(() => {
     document.title = "Payment successful — Nexperts Academy";
+    trackEvent("payment_success_view", { page: "payment_success" });
   }, []);
 
   useEffect(() => {
-    if (!sessionId) return;
+    if (!sessionId) {
+      trackConversion("purchase", {
+        source: "landing",
+        value: 399,
+        currency: "MYR",
+      });
+      return;
+    }
     const marker = `payment-log:${sessionId}`;
     if (window.sessionStorage.getItem(marker)) {
       setLoggingState("saved");
@@ -35,6 +44,12 @@ const PaymentSuccess = () => {
         if (!r.ok) throw new Error("Failed");
         window.sessionStorage.setItem(marker, "1");
         setLoggingState("saved");
+        trackConversion("purchase", {
+          source: "landing",
+          value: 399,
+          currency: "MYR",
+          transaction_id: sessionId,
+        });
       })
       .catch(() => setLoggingState("error"));
   }, [sessionId, logUrl]);

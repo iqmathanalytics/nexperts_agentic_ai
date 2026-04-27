@@ -12,9 +12,11 @@ import FAQ from "@/components/landing/FAQ";
 import Enquire from "@/components/landing/Enquire";
 import Footer from "@/components/landing/Footer";
 import { useReveal } from "@/hooks/useReveal";
+import { useLandingAnalytics } from "@/hooks/useLandingAnalytics";
 
 const Index = () => {
   useReveal();
+  useLandingAnalytics();
 
   useEffect(() => {
     document.title = "Professional Agentic AI Engineering — Nexperts Academy Malaysia";
