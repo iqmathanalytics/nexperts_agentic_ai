@@ -7,6 +7,11 @@ import { trackConversion, trackEvent } from "@/lib/analytics";
 const GSHEET_WEBHOOK_URL = import.meta.env.VITE_GSHEET_WEBHOOK_URL;
 const MIN_LOADING_MS = 1100;
 
+const enquiryEmailApiUrl = () => {
+  const base = (import.meta.env.VITE_CHECKOUT_API_URL as string | undefined)?.replace(/\/$/, "") ?? "";
+  return `${base}/api/send-enquiry-emails`;
+};
+
 const Enquire = () => {
   const [submitting, setSubmitting] = useState(false);
   const [done, setDone] = useState(false);
@@ -22,11 +27,6 @@ const Enquire = () => {
 
     if (!name || !phone || !email.includes("@")) {
       toast.error("Please fill in your name, Malaysian mobile number, and a valid email.");
-      return;
-    }
-
-    if (!GSHEET_WEBHOOK_URL) {
-      toast.error("Form endpoint is not configured yet.");
       return;
     }
 
@@ -51,12 +51,34 @@ const Enquire = () => {
     try {
       const start = Date.now();
 
-      // Google Apps Script endpoints commonly work best with urlencoded form data.
-      await fetch(GSHEET_WEBHOOK_URL, {
+      const emailRes = await fetch(enquiryEmailApiUrl(), {
         method: "POST",
-        mode: "no-cors",
-        body: payload,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name,
+          email,
+          phone,
+          message,
+          source: window.location.href,
+        }),
       });
+
+      if (!emailRes.ok) {
+        const errJson = (await emailRes.json().catch(() => null)) as { error?: string } | null;
+        const msg = errJson?.error || "Could not send your enquiry. Please try again or email us directly.";
+        toast.error(msg);
+        setSubmitting(false);
+        return;
+      }
+
+      if (GSHEET_WEBHOOK_URL) {
+        // Google Apps Script endpoints commonly work best with urlencoded form data.
+        await fetch(GSHEET_WEBHOOK_URL, {
+          method: "POST",
+          mode: "no-cors",
+          body: payload,
+        });
+      }
 
       const elapsed = Date.now() - start;
       if (elapsed < MIN_LOADING_MS) {

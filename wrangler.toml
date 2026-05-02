@@ -5,6 +5,11 @@
 #   SITE_URL            — https://yourdomain.com (redirect URLs if Origin header is missing)
 #   ALLOWED_ORIGINS     — Comma-separated origins allowed to call this API (CORS)
 #   PAYMENTS_GSHEET_WEBHOOK_URL — Apps Script Web App URL used to append rows to the "Payments" sheet
+#   BREVO_API_KEY — Brevo transactional email (enquiry acknowledgement + lead to admissions)
+#   BREVO_SENDER_EMAIL — verified sender (e.g. info@nexpertsai.com)
+#   BREVO_SENDER_NAME — optional display name
+#   ENQUIRY_LEAD_EMAIL — optional; default enquiry@nexpertsacademy.com
+#   SITE_PUBLIC_URL — optional canonical site for CTA links in emails
 name = "agentic-ai-launchpad"
 compatibility_date = "2024-11-01"
 pages_build_output_dir = "dist"

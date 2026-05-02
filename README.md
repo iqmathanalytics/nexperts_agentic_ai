@@ -11,9 +11,22 @@ npm run dev
 
 App runs on `http://localhost:8080`.
 
-## Enquiry form -> Google Sheets integration
+## Enquiry form (Brevo email + optional Google Sheets)
 
-The enquiry form in `src/components/landing/Enquire.tsx` posts to a Google Apps Script Web App endpoint.
+The enquiry form in `src/components/landing/Enquire.tsx` sends email through your Cloudflare Pages Function `POST /api/send-enquiry-emails` (Brevo). Optionally it still posts to a Google Apps Script Web App if `VITE_GSHEET_WEBHOOK_URL` is set.
+
+### Brevo (required for enquiries to succeed)
+
+1. In **Cloudflare Pages → Settings → Secrets** (or `wrangler pages secret put BREVO_API_KEY`), add:
+   - `BREVO_API_KEY` — your Brevo API key (server-only; never commit or prefix with `VITE_`)
+   - `BREVO_SENDER_EMAIL` — a **verified sender** in Brevo (e.g. `info@nexpertsai.com`)
+2. Optional secrets: `BREVO_SENDER_NAME`, `ENQUIRY_LEAD_EMAIL` (default `enquiry@nexpertsacademy.com`), `SITE_PUBLIC_URL` (canonical URL for CTA buttons in the user email, e.g. `https://nexpertsacademy.com`).
+
+Two emails are sent on each successful enquiry: a branded acknowledgement to the visitor, and a lead summary to the admissions inbox.
+
+Local testing with Functions: create `.dev.vars` (gitignored) with `BREVO_API_KEY=...` and run `npm run build` then `npx wrangler pages dev dist`. For Vite-only dev, set `VITE_CHECKOUT_API_URL` in `.env` to a preview URL that serves the Functions.
+
+### Google Sheets (optional)
 
 1. Copy `.env.example` to `.env`.
 2. Set your Google Apps Script Web App URL:
