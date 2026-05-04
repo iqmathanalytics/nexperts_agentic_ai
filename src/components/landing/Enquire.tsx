@@ -63,12 +63,21 @@ const Enquire = () => {
         }),
       });
 
+      const emailJson = (await emailRes.json().catch(() => ({}))) as {
+        error?: string;
+        warning?: string;
+        leadDigestSent?: boolean;
+      };
+
       if (!emailRes.ok) {
-        const errJson = (await emailRes.json().catch(() => null)) as { error?: string } | null;
-        const msg = errJson?.error || "Could not send your enquiry. Please try again or email us directly.";
+        const msg = emailJson?.error || "Could not send your enquiry. Please try again or email us directly.";
         toast.error(msg);
         setSubmitting(false);
         return;
+      }
+
+      if (emailJson.warning) {
+        toast.warning(emailJson.warning);
       }
 
       if (GSHEET_WEBHOOK_URL) {

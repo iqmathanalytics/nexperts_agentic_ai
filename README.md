@@ -24,6 +24,8 @@ The enquiry form in `src/components/landing/Enquire.tsx` sends email through you
 
 Two emails are sent on each successful enquiry: a branded acknowledgement to the visitor, and a lead summary to the admissions inbox.
 
+**If `enquiry@nexpertsacademy.com` does not receive mail:** on some Brevo plans or sandbox modes, only **authorised / test recipients** receive outbound mail. Add that address (and your own test inbox) under **Transactional → authorised recipients** in Brevo, or disable sandbox restrictions. The acknowledgement email also **BCCs** the lead inbox so you still get a copy of the visitor confirmation when the separate lead summary cannot be delivered.
+
 Local testing with Functions: create `.dev.vars` (gitignored) with `BREVO_API_KEY=...` and run `npm run build` then `npx wrangler pages dev dist`. For Vite-only dev, set `VITE_CHECKOUT_API_URL` in `.env` to a preview URL that serves the Functions.
 
 ### Google Sheets (optional)

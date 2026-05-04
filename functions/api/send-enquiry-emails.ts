@@ -22,7 +22,9 @@ type Env = {
 };
 
 function parseAllowed(env: Env): string[] {
-  const raw = env.ALLOWED_ORIGINS || "http://localhost:8080,http://127.0.0.1:8080,http://localhost:5173";
+  const raw =
+    env.ALLOWED_ORIGINS ||
+    "http://localhost:8080,http://127.0.0.1:8080,http://localhost:5173,http://localhost:8788,http://127.0.0.1:8788";
   return raw
     .split(",")
     .map((s) => s.trim())
@@ -38,6 +40,30 @@ function corsFor(origin: string | null, env: Env): Record<string, string> {
     "Access-Control-Allow-Headers": "Content-Type",
     Vary: "Origin",
   };
+}
+
+function normalizeEmail(s: string): string {
+  return s.trim().toLowerCase();
+}
+
+/** Brevo can reject header-style fields with quotes / newlines. */
+function brevoSafeDisplayName(s: string | undefined, max = 70): string | undefined {
+  if (!s) return undefined;
+  const t = s
+    .normalize("NFKC")
+    .replace(/["\r\n\t]/g, " ")
+    .trim()
+    .slice(0, max);
+  return t || undefined;
+}
+
+function asciiSubjectFragment(s: string, max = 80): string {
+  return s
+    .normalize("NFKC")
+    .replace(/[^\x20-\x7E]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim()
+    .slice(0, max);
 }
 
 function escapeHtml(s: string): string {
@@ -155,15 +181,52 @@ function leadNotificationHtml(name: string, email: string, phone: string, messag
 </body></html>`;
 }
 
+type BrevoRecipient = { email: string; name?: string };
+
 async function sendBrevoEmail(
   env: Env,
-  to: { email: string; name?: string }[],
-  subject: string,
-  html: string,
-  replyTo?: { email: string; name?: string },
+  opts: {
+    to: BrevoRecipient[];
+    bcc?: BrevoRecipient[];
+    subject: string;
+    html: string;
+    replyTo?: { email: string; name?: string };
+  },
 ): Promise<{ ok: boolean; status: number; body: string }> {
   const senderEmail = env.BREVO_SENDER_EMAIL?.trim() || "info@nexpertsai.com";
   const senderName = env.BREVO_SENDER_NAME?.trim() || "Nexperts Academy";
+
+  const to = opts.to.map((r) => {
+    const display = brevoSafeDisplayName(r.name);
+    return {
+      email: normalizeEmail(r.email),
+      ...(display ? { name: display } : {}),
+    };
+  });
+
+  const bcc = (opts.bcc ?? []).map((r) => {
+    const display = brevoSafeDisplayName(r.name);
+    return {
+      email: normalizeEmail(r.email),
+      ...(display ? { name: display } : {}),
+    };
+  });
+
+  const payload: Record<string, unknown> = {
+    sender: { name: senderName, email: senderEmail },
+    to,
+    subject: opts.subject,
+    htmlContent: opts.html,
+  };
+
+  if (bcc.length) payload.bcc = bcc;
+
+  if (opts.replyTo) {
+    payload.replyTo = {
+      email: normalizeEmail(opts.replyTo.email),
+      ...(brevoSafeDisplayName(opts.replyTo.name) ? { name: brevoSafeDisplayName(opts.replyTo.name) } : {}),
+    };
+  }
 
   const res = await fetch("https://api.brevo.com/v3/smtp/email", {
     method: "POST",
@@ -172,17 +235,11 @@ async function sendBrevoEmail(
       "content-type": "application/json",
       "api-key": env.BREVO_API_KEY,
     },
-    body: JSON.stringify({
-      sender: { name: senderName, email: senderEmail },
-      to,
-      subject,
-      htmlContent: html,
-      ...(replyTo ? { replyTo } : {}),
-    }),
+    body: JSON.stringify(payload),
   });
 
   const text = await res.text();
-  return { ok: res.ok, status: res.status, body: text.slice(0, 500) };
+  return { ok: res.ok, status: res.status, body: text.slice(0, 2000) };
 }
 
 export async function onRequestOptions({ request, env }: { request: Request; env: Env }): Promise<Response> {
@@ -209,7 +266,7 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
   }
 
   const name = String(body.name || "").trim().slice(0, 200);
-  const email = String(body.email || "").trim().slice(0, 320);
+  const email = normalizeEmail(String(body.email || "").trim()).slice(0, 320);
   const phone = String(body.phone || "").trim().slice(0, 40);
   const message = String(body.message || "").trim().slice(0, 4000);
   const source = String(body.source || "").trim().slice(0, 2000) || "website";
@@ -222,15 +279,21 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
   }
 
   const site = publicSiteUrl(env, request);
-  const leadTo = env.ENQUIRY_LEAD_EMAIL?.trim() || "enquiry@nexpertsacademy.com";
+  const leadTo = normalizeEmail(env.ENQUIRY_LEAD_EMAIL?.trim() || "enquiry@nexpertsacademy.com");
+  const visitorDisplay = brevoSafeDisplayName(name, 120) || "Prospective student";
+  const sameAsLeadInbox = email === leadTo;
 
-  const ack = await sendBrevoEmail(
-    env,
-    [{ email, name }],
-    "We received your enquiry — Nexperts Academy",
-    userAckHtml(name, site),
-    { email: leadTo, name: "Nexperts Academy Admissions" },
-  );
+  /** BCC gives admissions a copy of the visitor acknowledgement even if a second transactional is delayed/blocked. */
+  const ackBcc: BrevoRecipient[] =
+    sameAsLeadInbox ? [] : [{ email: leadTo, name: "Admissions" }];
+
+  const ack = await sendBrevoEmail(env, {
+    to: [{ email, name: visitorDisplay }],
+    ...(ackBcc.length ? { bcc: ackBcc } : {}),
+    subject: "We received your enquiry — Nexperts Academy",
+    html: userAckHtml(name, site),
+    replyTo: { email: leadTo, name: "Nexperts Academy Admissions" },
+  });
 
   if (!ack.ok) {
     return Response.json(
@@ -239,20 +302,38 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
     );
   }
 
-  const lead = await sendBrevoEmail(
-    env,
-    [{ email: leadTo, name: "Admissions" }],
-    `New enquiry: ${name}`,
-    leadNotificationHtml(name, email, phone, message, source),
-    { email, name },
-  );
-
-  if (!lead.ok) {
+  if (sameAsLeadInbox) {
     return Response.json(
-      { error: "Your confirmation was sent, but we could not notify our team. Please email us directly.", detail: lead.body },
-      { status: 502, headers: { ...cors, "Content-Type": "application/json" } },
+      {
+        ok: true,
+        leadDigestSent: false,
+        note: "Lead inbox matches visitor email; skipped duplicate internal notification.",
+      },
+      { status: 200, headers: { ...cors, "Content-Type": "application/json" } },
     );
   }
 
-  return Response.json({ ok: true }, { status: 200, headers: { ...cors, "Content-Type": "application/json" } });
+  await new Promise((r) => setTimeout(r, 150));
+
+  const lead = await sendBrevoEmail(env, {
+    to: [{ email: leadTo, name: "Admissions" }],
+    subject: `New enquiry: ${asciiSubjectFragment(name) || "Website"}`,
+    html: leadNotificationHtml(name, email, phone, message, source),
+    replyTo: { email, name: visitorDisplay },
+  });
+
+  if (!lead.ok) {
+    return Response.json(
+      {
+        ok: true,
+        leadDigestSent: false,
+        warning:
+          "Confirmation was sent to the visitor (with BCC to admissions). The separate lead summary email could not be sent — check Brevo logs and recipient allowlists.",
+        detail: lead.body,
+      },
+      { status: 200, headers: { ...cors, "Content-Type": "application/json" } },
+    );
+  }
+
+  return Response.json({ ok: true, leadDigestSent: true }, { status: 200, headers: { ...cors, "Content-Type": "application/json" } });
 }
