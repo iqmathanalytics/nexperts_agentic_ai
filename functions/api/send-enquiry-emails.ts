@@ -91,9 +91,12 @@ function publicSiteUrl(env: Env, request: Request): string {
   return "https://nexpertsacademy.com";
 }
 
+/** Served from site root (`public/Agentic_AI_Engineering_Curriculum.pdf` in the repo). */
+const CURRICULUM_PDF_PATH = "/Agentic_AI_Engineering_Curriculum.pdf";
+
 function userAckHtml(name: string, site: string): string {
   const safeName = escapeHtml(name);
-  const curriculum = `${site}/#curriculum`;
+  const curriculumPdf = `${site}${CURRICULUM_PDF_PATH}`;
   const explore = `${site}/#top`;
   const enquire = `${site}/#enquire`;
 
@@ -122,7 +125,7 @@ function userAckHtml(name: string, site: string): string {
           <tr>
             <td style="padding:24px 28px 8px;">
               <p style="margin:0 0 16px;font-size:14px;line-height:1.65;color:rgba(255,255,255,0.68);">
-                While you wait, explore the curriculum, founding cohort offer, and live lab preview on our site.
+                While you wait, download the full curriculum (PDF), explore the programme on our site, and preview the live lab.
               </p>
               <table role="presentation" cellspacing="0" cellpadding="0" style="margin:0 0 12px;">
                 <tr>
@@ -132,8 +135,8 @@ function userAckHtml(name: string, site: string): string {
                     </a>
                   </td>
                   <td style="padding:0 8px 12px 0;">
-                    <a href="${curriculum}" style="display:inline-block;padding:12px 22px;border-radius:8px;background:rgba(255,255,255,0.06);border:1px solid rgba(94,234,212,0.35);color:#5eead4;font-size:13px;font-weight:600;text-decoration:none;letter-spacing:0.06em;text-transform:uppercase;">
-                      View curriculum
+                    <a href="${curriculumPdf}" download="Agentic_AI_Engineering_Curriculum.pdf" style="display:inline-block;padding:12px 22px;border-radius:8px;background:rgba(255,255,255,0.06);border:1px solid rgba(94,234,212,0.35);color:#5eead4;font-size:13px;font-weight:600;text-decoration:none;letter-spacing:0.06em;text-transform:uppercase;">
+                      View curriculum (PDF)
                     </a>
                   </td>
                 </tr>

@@ -11,6 +11,8 @@ npm run dev
 
 App runs on `http://localhost:8080`.
 
+The enquiry acknowledgement email links to **`/Agentic_AI_Engineering_Curriculum.pdf`**, which must live in **`public/Agentic_AI_Engineering_Curriculum.pdf`** so it is copied to the site root on build.
+
 ## Enquiry form (Brevo email + optional Google Sheets)
 
 The enquiry form in `src/components/landing/Enquire.tsx` sends email through your Cloudflare Pages Function `POST /api/send-enquiry-emails` (Brevo). Optionally it still posts to a Google Apps Script Web App if `VITE_GSHEET_WEBHOOK_URL` is set.
