@@ -11,7 +11,7 @@ const Nav = () => (
     </a>
     <div className="ml-auto flex min-w-0 shrink items-center gap-2 sm:gap-5">
       <a
-        href="https://www.nexpertsacademy.com/"
+        href="https://nexpertsai.com/"
         className="hidden md:inline-flex items-center gap-1.5 text-[0.7rem] tracking-wider text-white/45 hover:text-white/85 transition-colors"
       >
         <ArrowLeft className="h-3.5 w-3.5" />
@@ -45,3 +45,4 @@ const Nav = () => (
 );
 
 export default Nav;
+

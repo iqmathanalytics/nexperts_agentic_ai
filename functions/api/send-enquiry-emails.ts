@@ -7,8 +7,8 @@
  * Optional:
  *   BREVO_SENDER_EMAIL   — verified sender in Brevo (default: info@nexpertsai.com)
  *   BREVO_SENDER_NAME    — display name (default: Nexperts Academy)
- *   ENQUIRY_LEAD_EMAIL   — internal recipient (default: enquiry@nexpertsacademy.com)
- *   SITE_PUBLIC_URL      — canonical site for CTA links (default: https://nexpertsacademy.com)
+ *   ENQUIRY_LEAD_EMAIL   — internal recipient (default: vaheed.2000@gmail.com)
+ *   SITE_PUBLIC_URL      — canonical site for CTA links (default: https://nexpertsai.com)
  *   ALLOWED_ORIGINS      — same pattern as checkout (CORS)
  */
 
@@ -94,7 +94,7 @@ function publicSiteUrl(env: Env, request: Request): string {
       /* ignore */
     }
   }
-  return "https://nexpertsacademy.com";
+  return "https://nexpertsai.com";
 }
 
 /** Served from site root (`public/Agentic_AI_Engineering_Curriculum.pdf` in the repo). */
@@ -371,7 +371,7 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
 
   const site = publicSiteUrl(env, request);
   const isVibe = course === "vibe-coding-bootcamp";
-  const leadTo = normalizeEmail(env.ENQUIRY_LEAD_EMAIL?.trim() || "enquiry@nexpertsacademy.com");
+  const leadTo = normalizeEmail(env.ENQUIRY_LEAD_EMAIL?.trim() || "vaheed.2000@gmail.com");
   const visitorDisplay = brevoSafeDisplayName(name, 120) || "Prospective student";
   const sameAsLeadInbox = email === leadTo;
 
@@ -451,3 +451,4 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
 
   return Response.json({ ok: true, leadDigestSent: true }, { status: 200, headers: { ...cors, "Content-Type": "application/json" } });
 }
+

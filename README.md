@@ -22,11 +22,11 @@ The enquiry form in `src/components/landing/Enquire.tsx` sends email through you
 1. In **Cloudflare Pages → Settings → Secrets** (or `wrangler pages secret put BREVO_API_KEY`), add:
    - `BREVO_API_KEY` — your Brevo API key (server-only; never commit or prefix with `VITE_`)
    - `BREVO_SENDER_EMAIL` — a **verified sender** in Brevo (e.g. `info@nexpertsai.com`)
-2. Optional secrets: `BREVO_SENDER_NAME`, `ENQUIRY_LEAD_EMAIL` (default `enquiry@nexpertsacademy.com`), `SITE_PUBLIC_URL` (canonical URL for CTA buttons in the user email, e.g. `https://nexpertsacademy.com`).
+2. Optional secrets: `BREVO_SENDER_NAME`, `ENQUIRY_LEAD_EMAIL` (default `vaheed.2000@gmail.com`), `SITE_PUBLIC_URL` (canonical URL for CTA buttons in the user email, e.g. `https://nexpertsai.com`).
 
 Two emails are sent on each successful enquiry: a branded acknowledgement to the visitor, and a lead summary to the admissions inbox.
 
-**If `enquiry@nexpertsacademy.com` does not receive mail:** on some Brevo plans or sandbox modes, only **authorised / test recipients** receive outbound mail. Add that address (and your own test inbox) under **Transactional → authorised recipients** in Brevo, or disable sandbox restrictions. The acknowledgement email also **BCCs** the lead inbox so you still get a copy of the visitor confirmation when the separate lead summary cannot be delivered.
+**If `vaheed.2000@gmail.com` does not receive mail:** on some Brevo plans or sandbox modes, only **authorised / test recipients** receive outbound mail. Add that address (and your own test inbox) under **Transactional → authorised recipients** in Brevo, or disable sandbox restrictions. The acknowledgement email also **BCCs** the lead inbox so you still get a copy of the visitor confirmation when the separate lead summary cannot be delivered.
 
 Local testing with Functions: create `.dev.vars` (gitignored) with `BREVO_API_KEY=...` and run `npm run build` then `npx wrangler pages dev dist`. For Vite-only dev, set `VITE_CHECKOUT_API_URL` in `.env` to a preview URL that serves the Functions.
 
@@ -128,3 +128,4 @@ function doPost(e) {
     .setMimeType(ContentService.MimeType.JSON);
 }
 ```
+

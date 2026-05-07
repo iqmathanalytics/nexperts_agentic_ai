@@ -8,8 +8,9 @@
 #   BREVO_API_KEY — Brevo transactional email (enquiry acknowledgement + lead to admissions)
 #   BREVO_SENDER_EMAIL — verified sender (e.g. info@nexpertsai.com)
 #   BREVO_SENDER_NAME — optional display name
-#   ENQUIRY_LEAD_EMAIL — optional; default enquiry@nexpertsacademy.com
+#   ENQUIRY_LEAD_EMAIL — optional; default vaheed.2000@gmail.com
 #   SITE_PUBLIC_URL — optional canonical site for CTA links in emails
 name = "agentic-ai-launchpad"
 compatibility_date = "2024-11-01"
 pages_build_output_dir = "dist"
+
