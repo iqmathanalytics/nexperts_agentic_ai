@@ -407,6 +407,81 @@
   .cta-medium {
     animation: cta-medium-float 2.6s var(--ease-cinema) infinite;
   }
+
+  /* Hero right-side micro-banner for Vibe Coding */
+  .vibe-banner {
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(251, 191, 36, 0.55);
+    background:
+      linear-gradient(130deg, rgba(61, 33, 4, 0.98), rgba(120, 53, 15, 0.95), rgba(180, 83, 9, 0.88));
+    box-shadow:
+      0 0 0 1px rgba(255, 255, 255, 0.14) inset,
+      0 14px 30px -14px rgba(245, 158, 11, 0.95),
+      0 0 30px -6px rgba(251, 191, 36, 0.7);
+    transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+  }
+
+  .vibe-banner::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -54%;
+    width: 44%;
+    height: 100%;
+    background: linear-gradient(105deg, transparent, rgba(255, 251, 235, 0.78), transparent);
+    transform: skewX(-18deg);
+    animation: vibe-sweep 2.6s linear infinite;
+  }
+
+  .vibe-banner:hover {
+    transform: translateY(-1px);
+    border-color: rgba(253, 230, 138, 0.88);
+    box-shadow:
+      0 0 0 1px rgba(255, 255, 255, 0.18) inset,
+      0 16px 32px -12px rgba(217, 119, 6, 0.95),
+      0 0 36px -2px rgba(252, 211, 77, 0.85);
+  }
+
+  .vibe-banner__cta {
+    background: linear-gradient(140deg, #fde68a, #f59e0b, #fbbf24);
+    box-shadow: 0 6px 16px -7px rgba(252, 211, 77, 0.95);
+  }
+
+  /* One-pass visual upgrade across landing sections/cards */
+  section.bg-paper,
+  section.bg-obsidian {
+    position: relative;
+  }
+
+  section.bg-paper::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+      radial-gradient(circle at 16% 8%, rgba(59, 130, 246, 0.06), transparent 42%),
+      radial-gradient(circle at 86% 70%, rgba(16, 185, 129, 0.05), transparent 36%);
+  }
+
+  .bg-card,
+  .bg-paper.p-8,
+  .bg-paper.p-7,
+  .bg-paper.p-9 {
+    transition: transform 220ms var(--ease-cinema), box-shadow 220ms var(--ease-cinema), border-color 220ms ease;
+  }
+
+  .bg-card:hover,
+  .bg-paper.p-8:hover,
+  .bg-paper.p-7:hover,
+  .bg-paper.p-9:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 16px 34px -22px rgba(30, 41, 59, 0.36);
+  }
+
+  .reveal.in {
+    animation: section-fade-lift 720ms var(--ease-cinema) both;
+  }
 }
 
 @layer utilities {
@@ -504,6 +579,26 @@
   18% { opacity: 0.92; }
   58% { opacity: 0.72; }
   100% { left: 132%; opacity: 0; }
+}
+
+@keyframes vibe-sweep {
+  0% { left: -54%; opacity: 0; }
+  14% { opacity: 0.9; }
+  55% { opacity: 0.52; }
+  100% { left: 132%; opacity: 0; }
+}
+
+@keyframes section-fade-lift {
+  from {
+    opacity: 0.7;
+    transform: translateY(12px);
+    filter: saturate(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: saturate(1);
+  }
 }
 
 /* Golden cohort ribbon — jewel cluster (top-left accent) */

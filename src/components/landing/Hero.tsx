@@ -1,5 +1,5 @@
 import { useState, type CSSProperties, type MouseEvent } from "react";
-import { ArrowRight, Bot, Calendar, Orbit, Radar } from "lucide-react";
+import { ArrowRight, Bot, Calendar, Orbit, Radar, Sparkles } from "lucide-react";
 import { WHATSAPP_HREF } from "@/lib/whatsapp";
 import CourseCheckout from "@/components/landing/CourseCheckout";
 
@@ -33,14 +33,31 @@ const Hero = () => {
 
       <div className="relative z-10 grid w-full max-w-6xl grid-cols-1 items-center gap-6 sm:gap-8 lg:grid-cols-[1.18fr_0.82fr] xl:gap-10">
         <div className="min-w-0">
-          <div
-            className="mb-6 inline-flex min-w-0 max-w-full animate-fade-up items-center gap-2 rounded-full border px-3 py-1.5 sm:mb-7 sm:px-3.5 sm:py-1.5"
-            style={{ background: "hsl(var(--primary-glow) / 0.1)", borderColor: "hsl(var(--primary-glow) / 0.25)" }}
-          >
-            <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-primary-glow animate-pulse-dot" />
-            <span className="min-w-0 text-balance font-mono text-[0.58rem] font-semibold uppercase tracking-[0.1em] text-primary-glow sm:text-[0.62rem] sm:tracking-[0.14em]">
-              Founding Cohort · Malaysia · 2026
-            </span>
+          <div className="mb-6 flex flex-wrap items-center gap-2.5 sm:mb-7">
+            <div
+              className="inline-flex min-w-0 max-w-full animate-fade-up items-center gap-2 rounded-full border px-3 py-1.5 sm:px-3.5 sm:py-1.5"
+              style={{ background: "hsl(var(--primary-glow) / 0.1)", borderColor: "hsl(var(--primary-glow) / 0.25)" }}
+            >
+              <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-primary-glow animate-pulse-dot" />
+              <span className="min-w-0 text-balance font-mono text-[0.58rem] font-semibold uppercase tracking-[0.1em] text-primary-glow sm:text-[0.62rem] sm:tracking-[0.14em]">
+                Founding Cohort · Malaysia · 2026
+              </span>
+            </div>
+            <a
+              href="/Vibe%20coding.html"
+              className="vibe-banner group inline-flex min-h-[52px] w-full max-w-[34rem] items-center justify-between gap-2 rounded-xl px-4 py-2.5 animate-fade-up sm:w-auto"
+              style={{ animationDelay: ".06s", opacity: 0 }}
+            >
+              <span className="inline-flex items-center gap-2">
+                <Sparkles className="h-4 w-4 shrink-0 text-[#fde68a]" />
+                <span className="font-mono text-[0.62rem] font-semibold uppercase tracking-[0.12em] text-[#fff7d4] sm:text-[0.66rem]">
+                  New: Explore the Vibe Coding Masterclass Experience
+                </span>
+              </span>
+              <span className="vibe-banner__cta inline-flex items-center rounded-md px-3 py-1 text-[0.56rem] font-semibold uppercase tracking-[0.13em] text-[#1f1300]">
+                Explore
+              </span>
+            </a>
           </div>
 
           <h1

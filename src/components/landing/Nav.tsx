@@ -1,4 +1,5 @@
 import { WHATSAPP_HREF } from "@/lib/whatsapp";
+import { ArrowLeft } from "lucide-react";
 
 const Nav = () => (
   <nav className="fixed inset-x-0 top-0 z-50 flex h-14 items-center border-b border-white/[0.06] bg-obsidian/90 px-4 backdrop-blur-xl sm:px-[5vw]">
@@ -9,6 +10,13 @@ const Nav = () => (
       <img src="/logo.png" alt="Nexperts Academy" className="h-8 w-auto object-contain" />
     </a>
     <div className="ml-auto flex min-w-0 shrink items-center gap-2 sm:gap-5">
+      <a
+        href="https://www.nexpertsacademy.com/"
+        className="hidden md:inline-flex items-center gap-1.5 text-[0.7rem] tracking-wider text-white/45 hover:text-white/85 transition-colors"
+      >
+        <ArrowLeft className="h-3.5 w-3.5" />
+        Nexperts Academy
+      </a>
       <a href="#who" className="hidden md:inline text-[0.7rem] tracking-wider text-white/40 hover:text-white/80 transition-colors">
         Who
       </a>
