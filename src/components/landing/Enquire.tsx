@@ -158,6 +158,9 @@ const Enquire = () => {
               <p className="text-sm text-white/50 leading-relaxed">
                 We've received your enquiry. Expect a message from our team within 24 hours.
               </p>
+              <p className="text-sm text-white/50 leading-relaxed mt-2">
+                Need an instant answer? Email vaheed.2000@gmail.com.
+              </p>
             </div>
           ) : submitting ? (
             <div className="py-10" role="status" aria-live="polite">
