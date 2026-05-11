@@ -135,7 +135,6 @@ const Hero = () => {
               </span>
               <div className="flex min-w-0 flex-col gap-0.5">
                 <span className="font-mono text-[0.58rem] text-white/30 sm:text-[0.6rem]">excluding 8% SST</span>
-                <span className="font-mono text-[0.58rem] text-white/30 sm:text-[0.6rem]">next cohort: RM 4,000</span>
               </div>
             </div>
             <div
