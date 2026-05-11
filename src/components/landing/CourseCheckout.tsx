@@ -46,7 +46,7 @@ const CourseCheckout = () => {
     });
     trackConversion("begin_checkout", {
       source: "landing",
-      value: 399,
+      value: 799,
       currency: "MYR",
     });
     try {
@@ -102,7 +102,7 @@ const CourseCheckout = () => {
             <DialogTitle className="font-display text-xl text-white">Course checkout</DialogTitle>
             <DialogDescription className="text-white/55">
               Enter the same details we use for your cohort record. You will be redirected to Stripe to complete RM
-              399 (+ SST). If you close Stripe without paying, you can try again from here.
+              799 (+ SST). If you close Stripe without paying, you can try again from here.
             </DialogDescription>
           </DialogHeader>
 

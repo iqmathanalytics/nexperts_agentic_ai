@@ -24,7 +24,7 @@ const PaymentSuccess = () => {
     if (!sessionId) {
       trackConversion("purchase", {
         source: "landing",
-        value: 399,
+        value: 799,
         currency: "MYR",
       });
       return;
@@ -46,7 +46,7 @@ const PaymentSuccess = () => {
         setLoggingState("saved");
         trackConversion("purchase", {
           source: "landing",
-          value: 399,
+          value: 799,
           currency: "MYR",
           transaction_id: sessionId,
         });

@@ -31,7 +31,7 @@ const Index = () => {
     };
     ensureMeta(
       "description",
-      "Live, instructor-led Agentic AI Engineering programme in Malaysia. 20 sessions, 80 hours. Limited offer RM 399 (excluding 8% SST) — save RM 11,601."
+      "Live, instructor-led Agentic AI Engineering programme in Malaysia. 20 sessions, 80 hours. Limited offer RM 799 (excluding 8% SST) — save RM 11,201."
     );
     ensureMeta("viewport", "width=device-width, initial-scale=1");
   }, []);

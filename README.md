@@ -55,7 +55,7 @@ If a secret key was ever pasted into a message, ticket, or repo, **roll it immed
 
 ### Stripe Dashboard setup
 
-1. Create a **Product** and a **one-time Price** (e.g. RM 399 + handle SST the way you prefer — often a tax rate or inclusive price).
+1. Create a **Product** and a **one-time Price** (e.g. RM 799 + handle SST the way you prefer — often a tax rate or inclusive price).
 2. Copy the **Price ID** (`price_…`).
 
 ### Cloudflare Pages

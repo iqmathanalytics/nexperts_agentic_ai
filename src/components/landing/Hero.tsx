@@ -131,7 +131,7 @@ const Hero = () => {
             </div>
             <div className="mb-2 flex flex-wrap items-baseline gap-2 max-sm:flex-col max-sm:items-start max-sm:gap-1 sm:gap-3">
               <span className="font-display text-4xl font-semibold leading-none text-success sm:text-5xl md:text-6xl">
-                RM 399
+                RM 799
               </span>
               <div className="flex min-w-0 flex-col gap-0.5">
                 <span className="font-mono text-[0.58rem] text-white/30 sm:text-[0.6rem]">excluding 8% SST</span>
@@ -143,7 +143,7 @@ const Hero = () => {
               style={{ background: "hsl(var(--success) / 0.12)", border: "1px solid hsl(var(--success) / 0.25)" }}
             >
               <span className="text-pretty font-mono text-[0.52rem] font-semibold uppercase tracking-wide text-success sm:text-[0.58rem] sm:tracking-widest">
-                ✦ Limited offer — Save RM 11,601
+                ✦ Limited offer — Save RM 11,201
               </span>
             </div>
             <p className="mt-1 border-t border-white/[0.08] pt-2.5 text-xs font-light leading-relaxed text-white/35 text-pretty">
