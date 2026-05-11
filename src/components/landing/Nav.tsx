@@ -1,14 +1,21 @@
+import { Link } from "react-router-dom";
 import { WHATSAPP_HREF } from "@/lib/whatsapp";
 import { ArrowLeft } from "lucide-react";
 
 const Nav = () => (
   <nav className="fixed inset-x-0 top-0 z-50 flex h-14 items-center border-b border-white/[0.06] bg-obsidian/90 px-4 backdrop-blur-xl sm:px-[5vw]">
-    <a
-      href="#top"
+    <Link
+      to="/#top"
       className="inline-flex items-center transition-opacity hover:opacity-90"
+      aria-label="Nexperts Academy — home"
+      onClick={() => {
+        if (window.location.pathname === "/") {
+          document.getElementById("top")?.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      }}
     >
       <img src="/logo.png" alt="Nexperts Academy" className="h-8 w-auto object-contain" />
-    </a>
+    </Link>
     <div className="ml-auto flex min-w-0 shrink items-center gap-2 sm:gap-5">
       <a
         href="https://www.nexpertsacademy.com/"
