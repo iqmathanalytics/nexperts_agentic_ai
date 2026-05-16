@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "dev:api": "npm run build && npx wrangler pages dev dist --port 8788 --compatibility-date=2024-11-01",
     "build": "vite build",
     "build:dev": "vite build --mode development",
     "lint": "eslint .",

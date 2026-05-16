@@ -94,6 +94,7 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
     source: request.url,
     submittedAt: new Date((stripeJson.created || Math.floor(Date.now() / 1000)) * 1000).toISOString(),
     note: metadata.note || "",
+    course: metadata.course || "",
   });
 
   await fetch(env.PAYMENTS_GSHEET_WEBHOOK_URL, {

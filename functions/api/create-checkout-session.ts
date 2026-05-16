@@ -1,17 +1,22 @@
 /**
  * Cloudflare Pages Function — creates a Stripe Checkout Session (hosted).
- * Set secrets in the dashboard: STRIPE_SECRET_KEY, STRIPE_PRICE_ID.
- * Optional: SITE_URL (canonical origin for redirects), ALLOWED_ORIGINS (comma-separated, for CORS).
+ * Secrets: STRIPE_SECRET_KEY, STRIPE_PRICE_ID (Agentic AI), STRIPE_VIBE_PRICE_ID (Vibe bootcamp).
+ * Optional: SITE_URL, ALLOWED_ORIGINS (CORS).
  */
+import { parseCheckoutCourse, priceIdForCourse, type CheckoutCourse } from "../lib/stripe-courses";
+
 type Env = {
   STRIPE_SECRET_KEY: string;
-  STRIPE_PRICE_ID: string;
+  STRIPE_PRICE_ID?: string;
+  STRIPE_VIBE_PRICE_ID?: string;
   SITE_URL?: string;
   ALLOWED_ORIGINS?: string;
 };
 
 function parseAllowed(env: Env): string[] {
-  const raw = env.ALLOWED_ORIGINS || "http://localhost:8080,http://127.0.0.1:8080,http://localhost:5173";
+  const raw =
+    env.ALLOWED_ORIGINS ||
+    "http://localhost:8080,http://127.0.0.1:8080,http://localhost:5173,http://localhost:8788,http://127.0.0.1:8788";
   return raw
     .split(",")
     .map((s) => s.trim())
@@ -54,18 +59,28 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
   const originHdr = request.headers.get("Origin");
   const cors = corsFor(originHdr, env);
 
-  if (!env.STRIPE_SECRET_KEY || !env.STRIPE_PRICE_ID) {
+  if (!env.STRIPE_SECRET_KEY) {
     return Response.json(
-      { error: "Checkout is not configured (missing Stripe secrets on the server)." },
+      { error: "Checkout is not configured (missing Stripe secret on the server)." },
       { status: 503, headers: { ...cors, "Content-Type": "application/json" } },
     );
   }
 
-  let body: { name?: string; email?: string; phone?: string; message?: string };
+  let body: { name?: string; email?: string; phone?: string; message?: string; course?: string };
   try {
     body = (await request.json()) as typeof body;
   } catch {
     return Response.json({ error: "Invalid JSON body." }, { status: 400, headers: { ...cors, "Content-Type": "application/json" } });
+  }
+
+  const course: CheckoutCourse = parseCheckoutCourse(body.course);
+  const priceId = priceIdForCourse(course, env);
+
+  if (!priceId) {
+    return Response.json(
+      { error: "Checkout is not configured for this course (missing Stripe price ID on the server)." },
+      { status: 503, headers: { ...cors, "Content-Type": "application/json" } },
+    );
   }
 
   const name = String(body.name || "").trim().slice(0, 200);
@@ -81,8 +96,8 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
   }
 
   const base = siteOrigin(request, env);
-  const successUrl = `${base}/payment/success?session_id={CHECKOUT_SESSION_ID}`;
-  const cancelUrl = `${base}/payment/cancel`;
+  const successUrl = `${base}/payment/success?session_id={CHECKOUT_SESSION_ID}&course=${encodeURIComponent(course)}`;
+  const cancelUrl = `${base}/payment/cancel?course=${encodeURIComponent(course)}`;
 
   const params = new URLSearchParams();
   params.set("mode", "payment");
@@ -90,11 +105,11 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
   params.set("cancel_url", cancelUrl);
   params.set("customer_email", email);
   params.set("client_reference_id", email.slice(0, 200));
-  params.set("line_items[0][price]", env.STRIPE_PRICE_ID);
+  params.set("line_items[0][price]", priceId);
   params.set("line_items[0][quantity]", "1");
   params.set("metadata[buyer_name]", name);
   params.set("metadata[buyer_phone]", phone);
-  params.set("metadata[course]", "agentic-ai-founding");
+  params.set("metadata[course]", course);
   if (message) params.set("metadata[note]", message);
 
   const stripeRes = await fetch("https://api.stripe.com/v1/checkout/sessions", {

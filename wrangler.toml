@@ -1,6 +1,7 @@
 # Cloudflare Pages — bind secrets in the dashboard (not in this file):
 #   STRIPE_SECRET_KEY   — Restricted or standard secret key (never expose to the browser)
-#   STRIPE_PRICE_ID     — e.g. price_1TVnFvJNVnfKQL0g0IgW81bG (Agentic AI course; set in dashboard / .dev.vars)
+#   STRIPE_PRICE_ID       — Agentic AI course (e.g. price_1TVnFvJNVnfKQL0g0IgW81bG)
+#   STRIPE_VIBE_PRICE_ID  — Vibe Coding bootcamp (e.g. price_1TXaJZJNVnfKQL0gBMQKf0Z3)
 # Optional:
 #   SITE_URL            — https://yourdomain.com (redirect URLs if Origin header is missing)
 #   ALLOWED_ORIGINS     — Comma-separated origins allowed to call this API (CORS)

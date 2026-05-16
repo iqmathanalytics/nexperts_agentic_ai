@@ -53,7 +53,7 @@ const CourseCheckout = () => {
       const res = await fetch(checkoutApiUrl(), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, phone, message }),
+        body: JSON.stringify({ name, email, phone, message, course: "agentic-ai-founding" }),
       });
       const data = (await res.json()) as { url?: string; error?: string };
 
