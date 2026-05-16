@@ -1,15 +1,17 @@
+import { AGENTIC_COHORT, AGENTIC_COHORT_SCHEDULE_LINE } from "@/lib/agentic-cohort";
+
 const forYou = [
   "You're a software developer, IT pro, or data analyst wanting to specialise in AI engineering",
   "You're a fresh graduate or career switcher with basic programming who wants to enter AI",
   "You're a business owner or technical lead who wants to build AI systems for your organisation",
   "You've tried YouTube AI tutorials but want structured, deep, hands-on live instruction",
-  "You can commit to Mon–Fri 6pm–10pm for 4 weeks — no excuses, full presence",
+  `You can commit to ${AGENTIC_COHORT_SCHEDULE_LINE} — no excuses, full presence`,
   "You want to leave with a portfolio-ready, deployed AI system — not just a certificate",
 ];
 
 const notForYou = [
   "You want passive video content you can watch whenever you feel like it",
-  "You can't commit to attending daily — this is a rigorous intensive, not a casual course",
+  `You can't commit to all live sessions (${AGENTIC_COHORT.days}, ${AGENTIC_COHORT.time}) — this is a rigorous intensive, not a casual course`,
   "You expect to learn without doing — every session requires you to build, not just listen",
   "You have zero interest in writing any code — some Python is involved and required",
 ];
@@ -22,7 +24,7 @@ const prereqs = [
       "Basic programming knowledge in any language",
       "Basic understanding of what an API is",
       "A laptop with internet access",
-      "Commitment to attend every daily session",
+      `Commitment to attend every live session (${AGENTIC_COHORT.days})`,
     ],
   },
   {

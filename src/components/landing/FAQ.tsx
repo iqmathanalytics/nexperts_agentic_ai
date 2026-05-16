@@ -1,8 +1,13 @@
 import { useState } from "react";
 import { ChevronDown } from "lucide-react";
+import { AGENTIC_COHORT, AGENTIC_COHORT_SUMMARY } from "@/lib/agentic-cohort";
 import { WHATSAPP_HREF } from "@/lib/whatsapp";
 
 const faqs = [
+  {
+    q: "When is the next cohort and what is the schedule?",
+    a: `${AGENTIC_COHORT_SUMMARY}. All sessions are live on ${AGENTIC_COHORT.delivery}. Recordings are shared within 24 hours if you miss a session.`,
+  },
   { q: "I have zero Python experience. Can I still join?", a: "Yes — sessions 1–3 cover Python from scratch, focused specifically on what you need for AI engineering. You don't need prior Python, but you do need basic programming knowledge in any language." },
   { q: "Will I get a recording if I miss a session?", a: "Yes, all sessions are recorded and shared within 24 hours. However, this is a live, intensive programme — we strongly recommend attending live to do the exercises in real-time alongside the instructor." },
   { q: "What happens after I complete the programme?", a: "You receive a Professional Certificate, lifetime access to materials, and entry into our private alumni community. We also help connect strong graduates with hiring partners." },

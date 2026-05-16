@@ -13,6 +13,7 @@ import Enquire from "@/components/landing/Enquire";
 import Footer from "@/components/landing/Footer";
 import { useReveal } from "@/hooks/useReveal";
 import { useLandingAnalytics } from "@/hooks/useLandingAnalytics";
+import { AGENTIC_COHORT_SUMMARY } from "@/lib/agentic-cohort";
 
 const Index = () => {
   useReveal();
@@ -31,7 +32,7 @@ const Index = () => {
     };
     ensureMeta(
       "description",
-      "Live, instructor-led Agentic AI Engineering programme in Malaysia. 20 sessions, 80 hours. Limited offer RM 799 (excluding 8% SST) — save RM 11,201."
+      `Live, instructor-led Agentic AI Engineering in Malaysia. 20 sessions, 80 hours. ${AGENTIC_COHORT_SUMMARY}. Limited offer RM 799 (excluding 8% SST).`
     );
     ensureMeta("viewport", "width=device-width, initial-scale=1");
   }, []);

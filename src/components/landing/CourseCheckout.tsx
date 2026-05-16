@@ -1,6 +1,7 @@
 import { useState, type FormEvent } from "react";
 import { ArrowRight, CreditCard, Loader2 } from "lucide-react";
 import { toast } from "sonner";
+import { AGENTIC_COHORT_SUMMARY } from "@/lib/agentic-cohort";
 import { normalizeMalaysiaPhone } from "@/lib/phone";
 import { trackConversion, trackEvent } from "@/lib/analytics";
 import {
@@ -101,8 +102,8 @@ const CourseCheckout = () => {
           <DialogHeader>
             <DialogTitle className="font-display text-xl text-white">Course checkout</DialogTitle>
             <DialogDescription className="text-white/55">
-              Enter the same details we use for your cohort record. You will be redirected to Stripe to complete RM
-              799 (+ SST). If you close Stripe without paying, you can try again from here.
+              Enter the same details we use for your cohort record. {AGENTIC_COHORT_SUMMARY}. You will be redirected to
+              Stripe to complete RM 799 (+ SST). If you close Stripe without paying, you can try again from here.
             </DialogDescription>
           </DialogHeader>
 

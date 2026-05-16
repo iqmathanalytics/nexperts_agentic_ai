@@ -357,6 +357,11 @@
     animation: overlay-float 6.4s ease-in-out infinite reverse;
   }
 
+  .animate-fade-up {
+    opacity: 0;
+    animation-fill-mode: forwards;
+  }
+
   .reveal {
     opacity: 0;
     transform: translateY(20px);

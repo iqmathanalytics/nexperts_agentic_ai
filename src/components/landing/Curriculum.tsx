@@ -1,3 +1,5 @@
+import { AGENTIC_COHORT, AGENTIC_COHORT_SUMMARY } from "@/lib/agentic-cohort";
+
 const curriculum = [
   { n: 1, title: "Python Setup & Foundations for AI", sub: "Python environments (venv/conda), VS Code setup, pip, variables, data types, strings, loops, functions. Build a simple prompt formatter.", tools: "Python · VS Code" },
   { n: 2, title: "Python for Data & APIs", sub: "Lists, dicts, JSON, file I/O, try-except, requests library, API keys, environment variables. Call a live API.", tools: "requests · json · os" },
@@ -32,7 +34,8 @@ const Curriculum = () => (
         <em>From Python to production.</em>
       </h2>
       <p className="body-prose mt-3 max-w-xl">
-        Each session is 4 hours of live, hands-on training. You build alongside the instructor — no passive watching.
+        {AGENTIC_COHORT_SUMMARY}. Each session is 4 hours of live, hands-on training on {AGENTIC_COHORT.delivery} — you
+        build alongside the instructor, no passive watching.
       </p>
     </div>
 

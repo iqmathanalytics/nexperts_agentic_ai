@@ -1,5 +1,6 @@
 import { useState, type CSSProperties, type MouseEvent } from "react";
 import { ArrowRight, Bot, Calendar, Orbit, Radar, Sparkles } from "lucide-react";
+import { AGENTIC_COHORT, AGENTIC_COHORT_SCHEDULE_LINE } from "@/lib/agentic-cohort";
 import { WHATSAPP_HREF } from "@/lib/whatsapp";
 import CourseCheckout from "@/components/landing/CourseCheckout";
 
@@ -46,7 +47,7 @@ const Hero = () => {
             <a
               href="/Vibe%20coding.html"
               className="vibe-banner group inline-flex min-h-[52px] w-full max-w-[34rem] items-center justify-between gap-2 rounded-xl px-4 py-2.5 animate-fade-up sm:w-auto"
-              style={{ animationDelay: ".06s", opacity: 0 }}
+              style={{ animationDelay: ".06s" }}
             >
               <span className="inline-flex items-center gap-2">
                 <Sparkles className="h-4 w-4 shrink-0 text-[#fde68a]" />
@@ -62,7 +63,7 @@ const Hero = () => {
 
           <h1
             className="display-xl mb-5 text-balance text-pretty text-white xl:whitespace-nowrap animate-fade-up"
-            style={{ animationDelay: ".1s", opacity: 0 }}
+            style={{ animationDelay: ".1s" }}
           >
             <span className="block md:inline">Professional </span>
             <span className="block md:inline font-semibold">Agentic AI </span>
@@ -71,16 +72,18 @@ const Hero = () => {
 
           <p
             className="mb-8 max-w-xl text-pretty text-base font-light leading-[1.85] text-white/45 sm:mb-9 md:text-lg animate-fade-up"
-            style={{ animationDelay: ".2s", opacity: 0 }}
+            style={{ animationDelay: ".2s" }}
           >
             A rigorous, live instructor-led programme that takes you from Python basics to building and deploying
             production-grade multi-agent AI systems — in 20 intensive sessions.
           </p>
 
-          <div className="mb-10 flex flex-wrap gap-1.5 sm:gap-2 animate-fade-up" style={{ animationDelay: ".3s", opacity: 0 }}>
+          <div className="mb-10 flex flex-wrap gap-1.5 sm:gap-2 animate-fade-up" style={{ animationDelay: ".3s" }}>
             <span className="pill-hl">20 Live Sessions</span>
             <span className="pill-hl">80 Hours</span>
-            <span className="pill-hl">6pm–10pm</span>
+            <span className="pill-hl">{AGENTIC_COHORT.weeksLabel}</span>
+            <span className="pill-hl">{AGENTIC_COHORT.daysPill}</span>
+            <span className="pill-hl">{AGENTIC_COHORT.time}</span>
             <span className="pill">Live Online · Microsoft Teams</span>
             <span className="pill">Python Basics Included</span>
             <span className="pill">Certificate of Completion</span>
@@ -90,14 +93,13 @@ const Hero = () => {
             className="relative mb-10 inline-flex w-full max-w-md flex-col rounded-md p-5 pb-5 pt-6 max-sm:pt-12 sm:p-6 sm:pb-6 sm:pt-7 md:p-7 md:pt-8 animate-fade-up"
             style={{
               animationDelay: ".4s",
-              opacity: 0,
               background: "hsl(var(--primary-glow) / 0.06)",
               border: "1px solid hsl(var(--primary-glow) / 0.22)",
             }}
           >
             <aside
               className="pointer-events-none absolute right-2 top-0 z-[2] w-[min(9.75rem,calc(100%-1.25rem))] max-sm:-translate-y-1/2 max-sm:translate-x-0 sm:right-0 sm:top-0 sm:w-[11.25rem] sm:max-w-[min(100%,calc(100%-0.5rem))] sm:translate-x-[calc(50%+0.3rem)] sm:translate-y-[calc(-50%+0.7rem)] md:w-[12rem] md:translate-x-[calc(50%+0.4rem)] md:translate-y-[calc(-50%+0.8rem)]"
-              aria-label="Expected start date 9 June 2026; scheduled 9 June through 16 July 2026, seven weeks"
+              aria-label={`${AGENTIC_COHORT.label} ${AGENTIC_COHORT.dateRange}; ${AGENTIC_COHORT_SCHEDULE_LINE}`}
             >
               <div className="relative">
                 <div className="hero-intake-badge__ornament max-sm:scale-90" aria-hidden>
@@ -108,16 +110,16 @@ const Hero = () => {
                 <div className="hero-intake-badge__panel rounded-lg border border-amber-400/55 bg-gradient-to-br from-[#1c1508] via-[#2a1f0c] to-[#3d2a0a] px-2.5 py-1.5 shadow-[0_12px_36px_-8px_rgba(0,0,0,0.55),inset_0_1px_0_rgba(255,255,255,0.12)] sm:px-3 sm:py-2.5">
                   <div className="flex items-center gap-1 text-[0.52rem] font-semibold uppercase tracking-[0.12em] text-amber-200/95 sm:gap-1.5 sm:text-[0.58rem] sm:tracking-[0.18em]">
                     <Calendar className="h-2.5 w-2.5 shrink-0 text-amber-300 sm:h-3 sm:w-3" strokeWidth={2.25} />
-                    <span>Expected date</span>
+                    <span>{AGENTIC_COHORT.label}</span>
                   </div>
                   <p className="mt-0.5 font-display text-[0.95rem] font-semibold leading-none tracking-tight text-[#fde68a] drop-shadow-sm sm:mt-1 sm:text-lg">
-                    9 June 2026
+                    {AGENTIC_COHORT.startDate}
                   </p>
                   <p className="mt-0.5 font-mono text-[0.55rem] leading-snug text-amber-100/80 sm:mt-1 sm:text-[0.62rem]">
-                    9 Jun – 16 Jul 2026
+                    {AGENTIC_COHORT.dateRange}
                   </p>
                   <p className="mt-0 font-mono text-[0.5rem] font-medium uppercase tracking-wider text-amber-200/75 sm:mt-0.5 sm:text-[0.58rem]">
-                    7 weeks · Teams live
+                    {AGENTIC_COHORT_SCHEDULE_LINE} · {AGENTIC_COHORT.delivery}
                   </p>
                 </div>
               </div>
@@ -154,7 +156,7 @@ const Hero = () => {
 
           <div
             className="flex flex-col flex-wrap items-stretch gap-3 animate-fade-up sm:flex-row sm:items-center"
-            style={{ animationDelay: ".5s", opacity: 0 }}
+            style={{ animationDelay: ".5s" }}
           >
             <CourseCheckout />
             <a

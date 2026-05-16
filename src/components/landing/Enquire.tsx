@@ -1,6 +1,7 @@
 import { useState, type FormEvent } from "react";
 import { ArrowRight, Check, Loader2 } from "lucide-react";
 import { toast } from "sonner";
+import { AGENTIC_COHORT_SUMMARY } from "@/lib/agentic-cohort";
 import { normalizeMalaysiaPhone } from "@/lib/phone";
 import { trackConversion, trackEvent } from "@/lib/analytics";
 
@@ -132,6 +133,7 @@ const Enquire = () => {
 
           <ul className="flex flex-col gap-3 text-sm text-white/70">
             {[
+              AGENTIC_COHORT_SUMMARY,
               "Full curriculum PDF emailed within minutes",
               "Personal call with our programme advisor",
               "Limited offer price locked in: RM 799 (excluding 8% SST)",

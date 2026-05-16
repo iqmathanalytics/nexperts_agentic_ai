@@ -1,7 +1,10 @@
+import { AGENTIC_COHORT } from "@/lib/agentic-cohort";
+
 const stats = [
   { n: "20", l: "Live instructor-led sessions" },
   { n: "80h", l: "Total hands-on training" },
-  { n: "4h", l: "Per session · 6pm–10pm" },
+  { n: String(AGENTIC_COHORT.weeks), l: `Weeks · ${AGENTIC_COHORT.daysPill}` },
+  { n: "4h", l: `Per session · ${AGENTIC_COHORT.time}` },
   { n: "5+", l: "Frameworks mastered" },
   { n: "RM 799", l: "Limited offer · Save RM 11,201", success: true },
 ];
