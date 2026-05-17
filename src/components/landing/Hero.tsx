@@ -1,6 +1,12 @@
 import { useState, type CSSProperties, type MouseEvent } from "react";
 import { ArrowRight, Bot, Calendar, Orbit, Radar, Sparkles } from "lucide-react";
-import { AGENTIC_COHORT, AGENTIC_COHORT_SCHEDULE_LINE } from "@/lib/agentic-cohort";
+import {
+  AGENTIC_COHORT,
+  AGENTIC_COHORT_SCHEDULE_LINE,
+  COHORT_SCHEDULE,
+  FIRST_COHORT,
+  NEXT_COHORT,
+} from "@/lib/agentic-cohort";
 import { WHATSAPP_HREF } from "@/lib/whatsapp";
 import CourseCheckout from "@/components/landing/CourseCheckout";
 
@@ -98,8 +104,8 @@ const Hero = () => {
             }}
           >
             <aside
-              className="pointer-events-none absolute right-2 top-0 z-[2] w-[min(9.75rem,calc(100%-1.25rem))] max-sm:-translate-y-1/2 max-sm:translate-x-0 sm:right-0 sm:top-0 sm:w-[11.25rem] sm:max-w-[min(100%,calc(100%-0.5rem))] sm:translate-x-[calc(50%+0.3rem)] sm:translate-y-[calc(-50%+0.7rem)] md:w-[12rem] md:translate-x-[calc(50%+0.4rem)] md:translate-y-[calc(-50%+0.8rem)]"
-              aria-label={`${AGENTIC_COHORT.label} ${AGENTIC_COHORT.dateRange}; ${AGENTIC_COHORT_SCHEDULE_LINE}`}
+              className="pointer-events-none absolute right-2 top-0 z-[2] w-[min(11.5rem,calc(100%-1.25rem))] max-sm:-translate-y-1/2 max-sm:translate-x-0 sm:right-0 sm:top-0 sm:w-[12.5rem] sm:max-w-[min(100%,calc(100%-0.5rem))] sm:translate-x-[calc(50%+0.3rem)] sm:translate-y-[calc(-50%+0.7rem)] md:w-[13.5rem] md:translate-x-[calc(50%+0.4rem)] md:translate-y-[calc(-50%+0.8rem)]"
+              aria-label={`${FIRST_COHORT.label} full. ${NEXT_COHORT.label} ${NEXT_COHORT.dateRange}. ${AGENTIC_COHORT_SCHEDULE_LINE}`}
             >
               <div className="relative">
                 <div className="hero-intake-badge__ornament max-sm:scale-90" aria-hidden>
@@ -107,26 +113,39 @@ const Hero = () => {
                   <span className="hero-intake-badge__gem" />
                   <span className="hero-intake-badge__gem" />
                 </div>
-                <div className="hero-intake-badge__panel rounded-lg border border-amber-400/55 bg-gradient-to-br from-[#1c1508] via-[#2a1f0c] to-[#3d2a0a] px-2.5 py-1.5 shadow-[0_12px_36px_-8px_rgba(0,0,0,0.55),inset_0_1px_0_rgba(255,255,255,0.12)] sm:px-3 sm:py-2.5">
-                  <div className="flex items-center gap-1 text-[0.52rem] font-semibold uppercase tracking-[0.12em] text-amber-200/95 sm:gap-1.5 sm:text-[0.58rem] sm:tracking-[0.18em]">
-                    <Calendar className="h-2.5 w-2.5 shrink-0 text-amber-300 sm:h-3 sm:w-3" strokeWidth={2.25} />
-                    <span>{AGENTIC_COHORT.label}</span>
+                <div className="hero-intake-badge__panel space-y-2 rounded-lg border border-amber-400/55 bg-gradient-to-br from-[#1c1508] via-[#2a1f0c] to-[#3d2a0a] px-2.5 py-2 shadow-[0_12px_36px_-8px_rgba(0,0,0,0.55),inset_0_1px_0_rgba(255,255,255,0.12)] sm:px-3 sm:py-2.5">
+                  <div className="rounded-md border border-white/10 bg-black/20 px-2 py-1.5 opacity-80">
+                    <p className="font-mono text-[0.48rem] font-semibold uppercase tracking-wider text-white/45">
+                      {FIRST_COHORT.label}
+                    </p>
+                    <p className="mt-0.5 font-mono text-[0.52rem] leading-snug text-white/55 line-through decoration-white/35">
+                      {FIRST_COHORT.dateRange}
+                    </p>
+                    <p className="mt-0.5 inline-flex rounded-sm border border-red-400/35 bg-red-500/15 px-1.5 py-0.5 font-mono text-[0.48rem] font-bold uppercase tracking-wider text-red-200">
+                      {FIRST_COHORT.statusLabel}
+                    </p>
                   </div>
-                  <p className="mt-0.5 font-display text-[0.95rem] font-semibold leading-none tracking-tight text-[#fde68a] drop-shadow-sm sm:mt-1 sm:text-lg">
-                    {AGENTIC_COHORT.startDate}
-                  </p>
-                  <p className="mt-0.5 font-mono text-[0.55rem] leading-snug text-amber-100/80 sm:mt-1 sm:text-[0.62rem]">
-                    {AGENTIC_COHORT.dateRange}
-                  </p>
-                  <p className="mt-0 font-mono text-[0.5rem] font-medium uppercase tracking-wider text-amber-200/75 sm:mt-0.5 sm:text-[0.58rem]">
-                    {AGENTIC_COHORT_SCHEDULE_LINE} · {AGENTIC_COHORT.delivery}
-                  </p>
+                  <div>
+                    <div className="flex items-center gap-1 text-[0.52rem] font-semibold uppercase tracking-[0.12em] text-amber-200/95 sm:gap-1.5 sm:text-[0.58rem] sm:tracking-[0.18em]">
+                      <Calendar className="h-2.5 w-2.5 shrink-0 text-amber-300 sm:h-3 sm:w-3" strokeWidth={2.25} />
+                      <span>{NEXT_COHORT.label}</span>
+                    </div>
+                    <p className="mt-0.5 font-display text-[0.95rem] font-semibold leading-none tracking-tight text-[#fde68a] drop-shadow-sm sm:mt-1 sm:text-lg">
+                      {NEXT_COHORT.startDate}
+                    </p>
+                    <p className="mt-0.5 font-mono text-[0.55rem] leading-snug text-amber-100/80 sm:mt-1 sm:text-[0.62rem]">
+                      {NEXT_COHORT.dateRange}
+                    </p>
+                    <p className="mt-0 font-mono text-[0.5rem] font-medium uppercase tracking-wider text-amber-200/75 sm:mt-0.5 sm:text-[0.58rem]">
+                      {AGENTIC_COHORT_SCHEDULE_LINE} · {COHORT_SCHEDULE.delivery}
+                    </p>
+                  </div>
                 </div>
               </div>
             </aside>
 
-            <span className="mb-2 max-sm:pr-[min(10rem,calc(100%-1rem))] text-pretty font-mono text-[0.58rem] font-semibold uppercase tracking-[0.12em] text-primary-glow/80 sm:pr-[9rem] sm:text-[0.6rem] sm:tracking-[0.16em] md:pr-[11rem]">
-              Founding Cohort — Limited Seats
+            <span className="mb-2 max-sm:pr-[min(11rem,calc(100%-1rem))] text-pretty font-mono text-[0.58rem] font-semibold uppercase tracking-[0.12em] text-primary-glow/80 sm:pr-[10rem] sm:text-[0.6rem] sm:tracking-[0.16em] md:pr-[12rem]">
+              Next cohort — Limited seats
             </span>
             <div className="mb-1 font-mono text-[0.65rem] text-white/25 line-through sm:text-xs">
               International market value: RM 12,000+
