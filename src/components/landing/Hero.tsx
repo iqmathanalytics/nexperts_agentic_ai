@@ -104,7 +104,7 @@ const Hero = () => {
             }}
           >
             <aside
-              className="pointer-events-none absolute right-2 top-0 z-[2] w-[min(11.5rem,calc(100%-1.25rem))] max-sm:-translate-y-1/2 max-sm:translate-x-0 sm:right-0 sm:top-0 sm:w-[12.5rem] sm:max-w-[min(100%,calc(100%-0.5rem))] sm:translate-x-[calc(50%+0.3rem)] sm:translate-y-[calc(-50%+0.7rem)] md:w-[13.5rem] md:translate-x-[calc(50%+0.4rem)] md:translate-y-[calc(-50%+0.8rem)]"
+              className="pointer-events-none absolute right-2 top-0 z-[2] w-[min(11.5rem,calc(100%-1.25rem))] max-sm:-translate-y-1/2 max-sm:translate-x-0 sm:right-0 sm:top-6 sm:w-[12.5rem] sm:max-w-[min(100%,calc(100%-0.5rem))] sm:translate-x-[calc(50%+0.3rem)] sm:translate-y-[calc(-50%+2.25rem)] md:w-[13.5rem] md:translate-x-[calc(50%+0.4rem)] md:translate-y-[calc(-50%+2.75rem)]"
               aria-label={`${FIRST_COHORT.label} full. ${NEXT_COHORT.label} ${NEXT_COHORT.dateRange}. ${AGENTIC_COHORT_SCHEDULE_LINE}`}
             >
               <div className="relative">
