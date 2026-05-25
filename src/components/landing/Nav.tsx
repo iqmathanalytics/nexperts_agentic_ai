@@ -19,10 +19,12 @@ const Nav = () => (
     <div className="ml-auto flex min-w-0 shrink items-center gap-2 sm:gap-5">
       <a
         href="https://www.nexpertsacademy.com/"
-        className="hidden md:inline-flex items-center gap-1.5 text-[0.7rem] tracking-wider text-white/45 hover:text-white/85 transition-colors"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="nav-academy-link hidden md:inline-flex"
       >
-        <ArrowLeft className="h-3.5 w-3.5" />
-        Nexperts Academy
+        <ArrowLeft className="nav-academy-link__icon h-3.5 w-3.5 shrink-0" aria-hidden />
+        <span className="nav-academy-link__text">Nexperts Academy</span>
       </a>
       <a href="#who" className="hidden md:inline text-[0.7rem] tracking-wider text-white/40 hover:text-white/80 transition-colors">
         Who

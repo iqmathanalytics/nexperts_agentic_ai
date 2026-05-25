@@ -29,6 +29,7 @@ function doPost(e) {
       sheet: sheetName,
       programmePage: programmePage,
       course: course,
+      scriptTag: "header-map-v2",
     });
   } catch (err) {
     return jsonResponse({ ok: false, error: String(err && err.message ? err.message : err) }, 500);

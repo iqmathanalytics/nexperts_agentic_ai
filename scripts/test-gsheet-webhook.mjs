@@ -42,9 +42,15 @@ console.log("Response:", text.slice(0, 500));
 
 try {
   const json = JSON.parse(text);
-  if (json.ok === true) {
+  if (json.ok === true && json.programmePage && json.course) {
     console.log("OK — programmePage:", json.programmePage, "course:", json.course);
     process.exit(0);
+  }
+  if (json.ok === true) {
+    console.error(
+      "Script returned ok:true but missing programmePage/course — deployment is still an OLD version. Redeploy Apps Script (Manage deployments → edit → Version: latest).",
+    );
+    process.exit(1);
   }
   console.error("Script returned error:", json.error || json);
   process.exit(1);

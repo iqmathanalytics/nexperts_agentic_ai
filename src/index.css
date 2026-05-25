@@ -707,3 +707,113 @@
       inset 0 1px 0 rgba(255, 255, 255, 0.16);
   }
 }
+
+/* Nav — shining Nexperts Academy parent-site link */
+.nav-academy-link {
+  position: relative;
+  align-items: center;
+  gap: 0.4rem;
+  overflow: hidden;
+  border-radius: 9999px;
+  border: 1px solid hsl(var(--primary-glow) / 0.45);
+  background: linear-gradient(
+    135deg,
+    hsl(var(--primary-glow) / 0.18) 0%,
+    hsl(var(--primary) / 0.12) 45%,
+    rgba(251, 191, 36, 0.1) 100%
+  );
+  padding: 0.35rem 0.85rem 0.35rem 0.7rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: hsl(var(--primary-glow));
+  box-shadow:
+    0 0 0 1px hsl(var(--primary-glow) / 0.08),
+    0 0 18px -4px hsl(var(--primary-glow) / 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.25s ease,
+    border-color 0.25s ease;
+}
+
+.nav-academy-link::before {
+  content: "";
+  position: absolute;
+  inset: -40% -60%;
+  background: linear-gradient(
+    105deg,
+    transparent 38%,
+    rgba(255, 255, 255, 0.22) 48%,
+    rgba(253, 230, 138, 0.35) 52%,
+    transparent 62%
+  );
+  transform: translateX(-120%) skewX(-12deg);
+  animation: nav-academy-shine 3.2s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.nav-academy-link:hover {
+  transform: translateY(-1px);
+  border-color: hsl(var(--primary-glow) / 0.75);
+  color: #fff7d4;
+  box-shadow:
+    0 0 0 1px hsl(var(--primary-glow) / 0.2),
+    0 0 28px -2px hsl(var(--primary-glow) / 0.55),
+    0 4px 16px -6px rgba(251, 191, 36, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18);
+}
+
+.nav-academy-link__text {
+  position: relative;
+  z-index: 1;
+  text-shadow: 0 0 20px hsl(var(--primary-glow) / 0.5);
+}
+
+.nav-academy-link__icon {
+  position: relative;
+  z-index: 1;
+  color: #fde68a;
+  filter: drop-shadow(0 0 6px hsl(var(--primary-glow) / 0.65));
+  transition: transform 0.2s ease;
+}
+
+.nav-academy-link:hover .nav-academy-link__icon {
+  transform: translateX(-2px);
+}
+
+@keyframes nav-academy-shine {
+  0%,
+  72%,
+  100% {
+    transform: translateX(-120%) skewX(-12deg);
+  }
+  38% {
+    transform: translateX(140%) skewX(-12deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav-academy-link::before {
+    animation: none;
+  }
+}
+
+.hackathon-stage {
+  animation: hackathon-stage-glow 4s ease-in-out infinite;
+}
+
+@keyframes hackathon-stage-glow {
+  0%,
+  100% {
+    box-shadow:
+      0 24px 60px -20px rgba(0, 0, 0, 0.65),
+      0 0 0 1px hsl(var(--primary-glow) / 0.12);
+  }
+  50% {
+    box-shadow:
+      0 28px 64px -18px rgba(0, 0, 0, 0.7),
+      0 0 0 1px hsl(var(--primary-glow) / 0.28);
+  }
+}

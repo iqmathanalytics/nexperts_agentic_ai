@@ -1,5 +1,5 @@
 import {
-  isGsheetWebhookSuccess,
+  gsheetDeploymentId,
   phoneForGsheet,
   postToGsheetWebhook,
   resolveGsheetWebhookUrl,
@@ -28,7 +28,6 @@ type Env = {
   ENQUIRY_GSHEET_WEBHOOK_URL?: string;
   PAYMENTS_GSHEET_WEBHOOK_URL?: string;
   GSHEET_WEBHOOK_URL?: string;
-  VITE_GSHEET_WEBHOOK_URL?: string;
   SITE_PUBLIC_URL?: string;
   ALLOWED_ORIGINS?: string;
 };
@@ -413,6 +412,10 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
 
   const enquirySheetWebhook = resolveGsheetWebhookUrl(env);
   let sheetLogged = false;
+  let sheetProgrammePage: string | undefined;
+  let sheetCourse: string | undefined;
+  let sheetWebhookDebug: string | undefined;
+  const sheetWebhookDeploymentId = enquirySheetWebhook ? gsheetDeploymentId(enquirySheetWebhook) : undefined;
 
   if (enquirySheetWebhook) {
     const sheetResult = await postToGsheetWebhook(enquirySheetWebhook, {
@@ -426,8 +429,13 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
       programmePage,
       course: courseKey,
       channel: channel || (isVibe ? "vibe_page" : "agentic_page"),
-    }).catch(() => ({ ok: false, status: 0, body: "" }));
-    sheetLogged = isGsheetWebhookSuccess(sheetResult);
+    }).catch(() => ({ ok: false, status: 0, body: "", json: null }));
+    sheetLogged = sheetResult.ok;
+    sheetProgrammePage = sheetResult.json?.programmePage;
+    sheetCourse = sheetResult.json?.course;
+    if (!sheetLogged) {
+      sheetWebhookDebug = sheetResult.body.slice(0, 300);
+    }
   }
 
   if (sameAsLeadInbox) {
@@ -436,6 +444,8 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
         ok: true,
         leadDigestSent: false,
         sheetLogged,
+        sheetProgrammePage,
+        sheetCourse,
         note: "Lead inbox matches visitor email; skipped separate internal notification.",
       },
       { status: 200, headers: { ...cors, "Content-Type": "application/json" } },
@@ -457,6 +467,8 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
         ok: true,
         leadDigestSent: false,
         sheetLogged,
+        sheetProgrammePage,
+        sheetCourse,
         warning:
           "Confirmation was sent to the visitor. The separate lead summary email could not be sent — check Brevo logs and recipient allowlists.",
         detail: lead.body,
@@ -466,7 +478,16 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
   }
 
   return Response.json(
-    { ok: true, leadDigestSent: true, sheetLogged },
+    {
+      ok: true,
+      leadDigestSent: true,
+      sheetLogged,
+      sheetProgrammePage,
+      sheetCourse,
+      ...(sheetWebhookDebug
+        ? { sheetWebhookDebug, sheetWebhookDeploymentId }
+        : {}),
+    },
     { status: 200, headers: { ...cors, "Content-Type": "application/json" } },
   );
 }

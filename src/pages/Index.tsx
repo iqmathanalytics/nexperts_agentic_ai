@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import Nav from "@/components/landing/Nav";
 import Hero from "@/components/landing/Hero";
 import Stats from "@/components/landing/Stats";
+import HackathonShowcase from "@/components/landing/HackathonShowcase";
 import LiveDemoSection from "@/components/landing/LiveDemoSection";
 import WhoCanJoin from "@/components/landing/WhoCanJoin";
 import Objectives from "@/components/landing/Objectives";
@@ -43,6 +44,7 @@ const Index = () => {
       <main className="min-w-0 overflow-x-hidden">
         <Hero />
         <Stats />
+        <HackathonShowcase />
         <LiveDemoSection />
         <WhoCanJoin />
         <Objectives />

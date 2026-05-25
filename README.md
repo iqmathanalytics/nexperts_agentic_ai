@@ -15,7 +15,9 @@ The enquiry acknowledgement email links to **`/Agentic_AI_Engineering_Curriculum
 
 ## Enquiry form (Brevo email + optional Google Sheets)
 
-The enquiry form in `src/components/landing/Enquire.tsx` sends email through your Cloudflare Pages Function `POST /api/send-enquiry-emails` (Brevo). When `ENQUIRY_GSHEET_WEBHOOK_URL` or `PAYMENTS_GSHEET_WEBHOOK_URL` is set on the server, the same handler also appends a **Leads** row (including `programmePage`: Agentic AI vs Vibe Coding).
+The enquiry form in `src/components/landing/Enquire.tsx` sends email through your Cloudflare Pages Function `POST /api/send-enquiry-emails` (Brevo). When `ENQUIRY_GSHEET_WEBHOOK_URL` (or `PAYMENTS_GSHEET_WEBHOOK_URL` / `GSHEET_WEBHOOK_URL`) is set on the server, the same handler also appends a **Leads** row (including `programmePage`: Agentic AI vs Vibe Coding).
+
+**Important:** Use one Apps Script **Web app** deployment URL everywhere (`.env`, `.dev.vars`, Cloudflare secrets). The API only treats a sheet write as successful when the script JSON includes `programmePage` and `course` (latest `scripts/google-apps-script-doPost.gs`). If an old deployment only returns `{ ok: true }`, the browser posts again via `VITE_GSHEET_WEBHOOK_URL`. Delete any stale `GSHEET_WEBHOOK_URL` secret that points at an older `/exec` URL.
 
 ### Brevo (required for enquiries to succeed)
 
@@ -39,7 +41,25 @@ Local testing with Functions: create `.dev.vars` (gitignored) with `BREVO_API_KE
 VITE_GSHEET_WEBHOOK_URL=https://script.google.com/macros/s/REPLACE_WITH_YOUR_DEPLOYMENT_ID/exec
 ```
 
-3. Restart `npm run dev` after changing env vars.
+In `.dev.vars` (local Functions) set the **same** URL:
+
+```bash
+ENQUIRY_GSHEET_WEBHOOK_URL=https://script.google.com/macros/s/REPLACE_WITH_YOUR_DEPLOYMENT_ID/exec
+PAYMENTS_GSHEET_WEBHOOK_URL=https://script.google.com/macros/s/REPLACE_WITH_YOUR_DEPLOYMENT_ID/exec
+```
+
+After pasting `scripts/google-apps-script-doPost.gs` into Apps Script: **Deploy → Manage deployments → edit your Web app → Version: latest** (or create a new deployment and update all env vars to the new `/exec` URL).
+
+**Cloudflare Pages secrets:** If `ENQUIRY_GSHEET_WEBHOOK_URL` still points at an older `/exec` URL (e.g. deployment id starting with `AKfycbzF65…`), the API will skip that deployment and the browser will log the row via `VITE_GSHEET_WEBHOOK_URL` instead. Update all server secrets to the **same** latest `/exec` URL as in `.env` / `.dev.vars` (e.g. `AKfycbz3a4g0…`).
+
+3. Restart `npm run dev` and `npm run dev:api` after changing env vars.
+
+Verify:
+
+```bash
+npm run test:gsheet
+npm run test:enquiry-api
+```
 
 ## Stripe course checkout
 

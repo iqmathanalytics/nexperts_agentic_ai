@@ -1,9 +1,15 @@
-import { isGsheetWebhookSuccess, phoneForGsheet, postToGsheetWebhook } from "../lib/gsheet-webhook";
+import {
+  phoneForGsheet,
+  postToGsheetWebhook,
+  resolvePaymentsGsheetWebhookUrl,
+} from "../lib/gsheet-webhook";
 import { programmePageFromCourse } from "../lib/programme-page";
 
 type Env = {
   STRIPE_SECRET_KEY: string;
   PAYMENTS_GSHEET_WEBHOOK_URL?: string;
+  ENQUIRY_GSHEET_WEBHOOK_URL?: string;
+  GSHEET_WEBHOOK_URL?: string;
   SITE_URL?: string;
   ALLOWED_ORIGINS?: string;
 };
@@ -47,9 +53,13 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
   const origin = request.headers.get("Origin");
   const cors = corsFor(origin, env);
 
-  if (!env.PAYMENTS_GSHEET_WEBHOOK_URL) {
+  const paymentsSheetWebhook = resolvePaymentsGsheetWebhookUrl(env);
+  if (!paymentsSheetWebhook) {
     return Response.json(
-      { error: "Payments sheet webhook is not configured (PAYMENTS_GSHEET_WEBHOOK_URL)." },
+      {
+        error:
+          "Payments sheet webhook is not configured (set PAYMENTS_GSHEET_WEBHOOK_URL or ENQUIRY_GSHEET_WEBHOOK_URL to your latest Apps Script /exec URL).",
+      },
       { status: 503, headers: { ...cors, "Content-Type": "application/json" } },
     );
   }
@@ -87,7 +97,7 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
   const metadata = stripeJson.metadata || {};
   const courseKey = metadata.course || "agentic-ai-founding";
   const programmePage = programmePageFromCourse(courseKey);
-  const sheetResult = await postToGsheetWebhook(env.PAYMENTS_GSHEET_WEBHOOK_URL, {
+  const sheetResult = await postToGsheetWebhook(paymentsSheetWebhook, {
     sheet: "Payments",
     status: stripeJson.payment_status || "unknown",
     sessionId: stripeJson.id,
@@ -103,7 +113,7 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
     programmePage,
   });
 
-  if (!isGsheetWebhookSuccess(sheetResult)) {
+  if (!sheetResult.ok) {
     return Response.json(
       { ok: false, error: "Sheet webhook failed.", detail: sheetResult.body },
       { status: 502, headers: { ...cors, "Content-Type": "application/json" } },
