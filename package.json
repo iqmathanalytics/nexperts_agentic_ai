@@ -13,6 +13,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:gsheet": "node scripts/test-gsheet-webhook.mjs",
+    "test:payments-gsheet": "node scripts/test-payments-gsheet.mjs",
     "test:enquiry-api": "node scripts/test-enquiry-api.mjs"
   },
   "dependencies": {

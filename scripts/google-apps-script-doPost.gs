@@ -29,7 +29,7 @@ function doPost(e) {
       sheet: sheetName,
       programmePage: programmePage,
       course: course,
-      scriptTag: "header-map-v2",
+      scriptTag: "header-map-v3",
     });
   } catch (err) {
     return jsonResponse({ ok: false, error: String(err && err.message ? err.message : err) }, 500);
@@ -129,21 +129,26 @@ function resolveCourse_(p) {
 
 function appendLeadRow_(sheet, p, programmePage, course) {
   var phone = stripLeadingApostrophe_(p.phone || "");
+  var receivedAt = new Date();
   var valueMap = {
-    serverreceivedat: new Date(),
+    timestamp: receivedAt,
+    serverreceivedat: receivedAt,
+    datereceived: receivedAt,
     name: p.name || "",
     phone: phone,
     email: p.email || "",
     message: p.message || "",
     source: p.source || "",
     submittedat: p.submittedAt || "",
+    submitted: p.submittedAt || "",
     programmepage: programmePage,
     programme: programmePage,
+    program: programmePage,
     course: course,
     coursekey: course,
   };
   var fallback = [
-    new Date(),
+    receivedAt,
     p.name || "",
     phone,
     p.email || "",
@@ -154,6 +159,7 @@ function appendLeadRow_(sheet, p, programmePage, course) {
     course,
   ];
   var lastRow = appendRowByHeaders_(sheet, valueMap, fallback);
+  applyTimestampColumn_(sheet, lastRow, receivedAt);
   var phoneCol = findColumnByHeader_(sheet, ["phone", "mobile", "phonenumber"]);
   if (phoneCol > 0) {
     var phoneCell = sheet.getRange(lastRow, phoneCol);
@@ -166,9 +172,12 @@ function appendPaymentRow_(sheet, p, programmePage, course) {
   var amountTotal = toNumber_(p.amountTotal);
   var amountDisplay = amountTotal ? amountTotal / 100 : "";
   var phone = stripLeadingApostrophe_(p.payerPhone || "");
+  var receivedAt = new Date();
 
   var valueMap = {
-    serverreceivedat: new Date(),
+    timestamp: receivedAt,
+    serverreceivedat: receivedAt,
+    datereceived: receivedAt,
     status: p.status || "",
     sessionid: p.sessionId || "",
     payername: p.payerName || "",
@@ -180,13 +189,15 @@ function appendPaymentRow_(sheet, p, programmePage, course) {
     note: p.note || "",
     source: p.source || "",
     submittedat: p.submittedAt || "",
+    submitted: p.submittedAt || "",
     programmepage: programmePage,
     programme: programmePage,
+    program: programmePage,
     course: course,
     coursekey: course,
   };
   var fallback = [
-    new Date(),
+    receivedAt,
     p.status || "",
     p.sessionId || "",
     p.payerName || "",
@@ -202,6 +213,7 @@ function appendPaymentRow_(sheet, p, programmePage, course) {
     course,
   ];
   var lastRow = appendRowByHeaders_(sheet, valueMap, fallback);
+  applyTimestampColumn_(sheet, lastRow, receivedAt);
 
   var phoneCol = findColumnByHeader_(sheet, ["payerphone", "phone", "mobile"]);
   if (phoneCol > 0) {
@@ -216,6 +228,22 @@ function appendPaymentRow_(sheet, p, programmePage, course) {
   var displayAmountCol = findColumnByHeader_(sheet, ["amountdisplay", "amount"]);
   if (displayAmountCol > 0 && amountDisplay !== "") {
     sheet.getRange(lastRow, displayAmountCol).setNumberFormat("#,##0.00");
+  }
+}
+
+function applyTimestampColumn_(sheet, lastRow, when) {
+  var col = findColumnByHeader_(sheet, [
+    "timestamp",
+    "serverreceivedat",
+    "datereceived",
+    "createdat",
+    "created",
+    "datetime",
+  ]);
+  if (col > 0) {
+    var cell = sheet.getRange(lastRow, col);
+    cell.setValue(when || new Date());
+    cell.setNumberFormat("yyyy-mm-dd hh:mm:ss");
   }
 }
 

@@ -132,7 +132,7 @@ The server fetches session details from Stripe and appends to your Google Sheet 
 Copy the complete script from **`scripts/google-apps-script-doPost.gs`** in this repo. It:
 
 - Parses `e.parameter`, urlencoded `postData`, and a `jsonPayload` fallback field
-- Writes **`programmePage`** (`Agentic AI` / `Vibe Coding`) and **`course`** on every row
+- Writes **`Timestamp`** (server time), **`programmePage`** (`Agentic AI` / `Vibe Coding`), and **`course`** on every row (Leads and Payments)
 - Infers programme from `source` URL when fields are missing (legacy rows)
 
 After editing the script: **Deploy → Manage deployments → Edit → New version → Deploy** (required or Sheets will keep using the old code).
