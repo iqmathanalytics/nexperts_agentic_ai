@@ -9,6 +9,7 @@ import {
 } from "@/lib/agentic-cohort";
 import { WHATSAPP_HREF } from "@/lib/whatsapp";
 import CourseCheckout from "@/components/landing/CourseCheckout";
+import HeroSocialLinks from "@/components/landing/HeroSocialLinks";
 
 const Hero = () => {
   const [tilt, setTilt] = useState({ x: 0, y: 0 });
@@ -197,6 +198,8 @@ const Hero = () => {
               WhatsApp Us
             </a>
           </div>
+
+          <HeroSocialLinks className="mt-6 animate-fade-up sm:mt-7" style={{ animationDelay: ".55s" }} />
         </div>
 
         <div className="hidden lg:flex justify-center min-w-0">
