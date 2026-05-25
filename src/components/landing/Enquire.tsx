@@ -2,10 +2,12 @@ import { useState, type FormEvent } from "react";
 import { ArrowRight, Check, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { AGENTIC_COHORT_SUMMARY } from "@/lib/agentic-cohort";
+import { postToGsheetClient } from "@/lib/gsheet-client";
 import { normalizeMalaysiaPhone } from "@/lib/phone";
+import { AGENTIC_PROGRAMME } from "@/lib/programme-source";
 import { trackConversion, trackEvent } from "@/lib/analytics";
 
-const GSHEET_WEBHOOK_URL = import.meta.env.VITE_GSHEET_WEBHOOK_URL;
+const GSHEET_WEBHOOK_URL = import.meta.env.VITE_GSHEET_WEBHOOK_URL as string | undefined;
 const MIN_LOADING_MS = 1100;
 
 const enquiryEmailApiUrl = () => {
@@ -37,18 +39,6 @@ const Enquire = () => {
       source: "landing",
     });
 
-    // Leading apostrophe helps Google Sheets treat the cell as plain text when Apps Script appends a row.
-    const phoneForSheet = `'${phone}`;
-
-    const payload = new URLSearchParams({
-      name,
-      phone: phoneForSheet,
-      email,
-      message,
-      submittedAt: new Date().toISOString(),
-      source: window.location.href,
-    });
-
     try {
       const start = Date.now();
 
@@ -61,6 +51,8 @@ const Enquire = () => {
           phone,
           message,
           source: window.location.href,
+          course: "agentic-ai-founding",
+          programmePage: "Agentic AI",
         }),
       });
 
@@ -68,6 +60,7 @@ const Enquire = () => {
         error?: string;
         warning?: string;
         leadDigestSent?: boolean;
+        sheetLogged?: boolean;
       };
 
       if (!emailRes.ok) {
@@ -81,12 +74,19 @@ const Enquire = () => {
         toast.warning(emailJson.warning);
       }
 
-      if (GSHEET_WEBHOOK_URL) {
-        // Google Apps Script endpoints commonly work best with urlencoded form data.
-        await fetch(GSHEET_WEBHOOK_URL, {
-          method: "POST",
-          mode: "no-cors",
-          body: payload,
+      if (emailJson.sheetLogged !== true && GSHEET_WEBHOOK_URL) {
+        const phoneForSheet = phone.startsWith("'") ? phone : `'${phone}`;
+        await postToGsheetClient(GSHEET_WEBHOOK_URL, {
+          sheet: "Leads",
+          name,
+          phone: phoneForSheet,
+          email,
+          message,
+          submittedAt: new Date().toISOString(),
+          source: window.location.href,
+          programmePage: AGENTIC_PROGRAMME.programmePage,
+          course: AGENTIC_PROGRAMME.course,
+          channel: "agentic_page",
         });
       }
 

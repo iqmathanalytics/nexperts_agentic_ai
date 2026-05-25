@@ -15,7 +15,7 @@ The enquiry acknowledgement email links to **`/Agentic_AI_Engineering_Curriculum
 
 ## Enquiry form (Brevo email + optional Google Sheets)
 
-The enquiry form in `src/components/landing/Enquire.tsx` sends email through your Cloudflare Pages Function `POST /api/send-enquiry-emails` (Brevo). Optionally it still posts to a Google Apps Script Web App if `VITE_GSHEET_WEBHOOK_URL` is set.
+The enquiry form in `src/components/landing/Enquire.tsx` sends email through your Cloudflare Pages Function `POST /api/send-enquiry-emails` (Brevo). When `ENQUIRY_GSHEET_WEBHOOK_URL` or `PAYMENTS_GSHEET_WEBHOOK_URL` is set on the server, the same handler also appends a **Leads** row (including `programmePage`: Agentic AI vs Vibe Coding).
 
 ### Brevo (required for enquiries to succeed)
 
@@ -91,10 +91,12 @@ The server fetches session details from Stripe and appends to your Google Sheet 
 - `amountTotal`
 - `submittedAt`
 - `note`
+- `programmePage` — `Agentic AI` or `Vibe Coding` (which course page the booking came from)
+- `course` — internal key (`agentic-ai-founding` or `vibe-coding-bootcamp`)
 
 ### Expected payload fields
 
-The form sends urlencoded fields:
+**Leads (enquiries)** — urlencoded fields from `/api/send-enquiry-emails`:
 
 - `name`
 - `phone` (sent with a leading `'` so Google Sheets keeps it as **plain text**; see Apps Script note below)
@@ -102,30 +104,16 @@ The form sends urlencoded fields:
 - `message`
 - `submittedAt` (ISO timestamp)
 - `source` (page URL)
+- `programmePage` — `Agentic AI` or `Vibe Coding`
+- `course` — `agentic-ai-founding` or `vibe-coding-bootcamp`
 
-### Minimal Google Apps Script example
+### Google Apps Script (full file)
 
-```javascript
-function doPost(e) {
-  var sheet = SpreadsheetApp.openById("YOUR_SHEET_ID").getSheetByName("Leads");
-  var phone = e.parameter.phone || "";
-  sheet.appendRow([
-    new Date(),
-    e.parameter.name || "",
-    phone,
-    e.parameter.email || "",
-    e.parameter.message || "",
-    e.parameter.source || "",
-    e.parameter.submittedAt || ""
-  ]);
-  // Phone column is index 3 here — force text format so +60 numbers never become scientific notation.
-  var phoneCell = sheet.getRange(sheet.getLastRow(), 3);
-  phoneCell.setNumberFormat("@");
-  phoneCell.setValue(phone.replace(/^'/, ""));
+Copy the complete script from **`scripts/google-apps-script-doPost.gs`** in this repo. It:
 
-  return ContentService
-    .createTextOutput(JSON.stringify({ ok: true }))
-    .setMimeType(ContentService.MimeType.JSON);
-}
-```
+- Parses `e.parameter`, urlencoded `postData`, and a `jsonPayload` fallback field
+- Writes **`programmePage`** (`Agentic AI` / `Vibe Coding`) and **`course`** on every row
+- Infers programme from `source` URL when fields are missing (legacy rows)
+
+After editing the script: **Deploy → Manage deployments → Edit → New version → Deploy** (required or Sheets will keep using the old code).
 

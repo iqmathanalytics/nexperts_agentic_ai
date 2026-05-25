@@ -1,3 +1,6 @@
+import { phoneForGsheet, postToGsheetWebhook } from "../lib/gsheet-webhook";
+import { programmePageFromCourse } from "../lib/programme-page";
+
 type Env = {
   STRIPE_SECRET_KEY: string;
   PAYMENTS_GSHEET_WEBHOOK_URL?: string;
@@ -82,26 +85,33 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
   }
 
   const metadata = stripeJson.metadata || {};
-  const payload = new URLSearchParams({
+  const courseKey = metadata.course || "agentic-ai-founding";
+  const programmePage = programmePageFromCourse(courseKey);
+  const sheetResult = await postToGsheetWebhook(env.PAYMENTS_GSHEET_WEBHOOK_URL, {
     sheet: "Payments",
     status: stripeJson.payment_status || "unknown",
     sessionId: stripeJson.id,
     payerName: metadata.buyer_name || "",
     payerEmail: stripeJson.customer_email || stripeJson.client_reference_id || "",
-    payerPhone: metadata.buyer_phone || "",
+    payerPhone: phoneForGsheet(metadata.buyer_phone || ""),
     currency: stripeJson.currency || "",
     amountTotal: String(stripeJson.amount_total ?? ""),
-    source: request.url,
+    source: request.headers.get("Referer") || request.url,
     submittedAt: new Date((stripeJson.created || Math.floor(Date.now() / 1000)) * 1000).toISOString(),
     note: metadata.note || "",
-    course: metadata.course || "",
+    course: courseKey,
+    programmePage,
   });
 
-  await fetch(env.PAYMENTS_GSHEET_WEBHOOK_URL, {
-    method: "POST",
-    headers: { "Content-Type": "application/x-www-form-urlencoded" },
-    body: payload,
-  });
+  if (!sheetResult.ok) {
+    return Response.json(
+      { ok: false, error: "Sheet webhook failed.", detail: sheetResult.body },
+      { status: 502, headers: { ...cors, "Content-Type": "application/json" } },
+    );
+  }
 
-  return Response.json({ ok: true }, { status: 200, headers: { ...cors, "Content-Type": "application/json" } });
+  return Response.json(
+    { ok: true, programmePage, course: courseKey },
+    { status: 200, headers: { ...cors, "Content-Type": "application/json" } },
+  );
 }

@@ -1,3 +1,10 @@
+import {
+  phoneForGsheet,
+  postToGsheetWebhook,
+  resolveGsheetWebhookUrl,
+} from "../lib/gsheet-webhook";
+import { programmePageFromCourse } from "../lib/programme-page";
+
 /**
  * Cloudflare Pages Function — sends enquiry acknowledgement (Brevo) to the visitor
  * and a lead notification to the admissions inbox.
@@ -347,7 +354,16 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
     );
   }
 
-  let body: { name?: string; email?: string; phone?: string; message?: string; source?: string; course?: string; channel?: string };
+  let body: {
+    name?: string;
+    email?: string;
+    phone?: string;
+    message?: string;
+    source?: string;
+    course?: string;
+    programmePage?: string;
+    channel?: string;
+  };
   try {
     body = (await request.json()) as typeof body;
   } catch {
@@ -370,7 +386,10 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
   }
 
   const site = publicSiteUrl(env, request);
-  const isVibe = course === "vibe-coding-bootcamp";
+  const isVibe = course === "vibe-coding-bootcamp" || channel === "vibe_page";
+  const courseKey = isVibe ? "vibe-coding-bootcamp" : "agentic-ai-founding";
+  const programmePage =
+    String(body.programmePage || "").trim().slice(0, 80) || programmePageFromCourse(courseKey);
   const leadTo = normalizeEmail(env.ENQUIRY_LEAD_EMAIL?.trim() || "vaheed.2000@gmail.com");
   const visitorDisplay = brevoSafeDisplayName(name, 120) || "Prospective student";
   const sameAsLeadInbox = email === leadTo;
@@ -391,29 +410,23 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
 
   await new Promise((r) => setTimeout(r, 150));
 
-  const enquirySheetWebhook =
-    env.ENQUIRY_GSHEET_WEBHOOK_URL?.trim() ||
-    env.PAYMENTS_GSHEET_WEBHOOK_URL?.trim() ||
-    env.GSHEET_WEBHOOK_URL?.trim() ||
-    env.VITE_GSHEET_WEBHOOK_URL?.trim();
+  const enquirySheetWebhook = resolveGsheetWebhookUrl(env);
+  let sheetLogged = false;
 
-  if (isVibe && enquirySheetWebhook) {
-    const payload = new URLSearchParams({
+  if (enquirySheetWebhook) {
+    const sheetResult = await postToGsheetWebhook(enquirySheetWebhook, {
+      sheet: "Leads",
       name,
-      phone: `'${phone}`,
+      phone: phoneForGsheet(phone),
       email,
-      message: message || "Vibe coding page enquiry",
+      message: message || (isVibe ? "Vibe Coding page enquiry" : "Agentic AI page enquiry"),
       submittedAt: new Date().toISOString(),
       source,
-      course: "Software Development Bootcamp with Generative AI & Vibe Coding",
-    });
-    await fetch(enquirySheetWebhook, {
-      method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8" },
-      body: payload,
-    }).catch(() => {
-      /* keep enquiry flow resilient even if sheet logging fails */
-    });
+      programmePage,
+      course: courseKey,
+      channel: channel || (isVibe ? "vibe_page" : "agentic_page"),
+    }).catch(() => ({ ok: false, status: 0, body: "" }));
+    sheetLogged = sheetResult.ok;
   }
 
   if (sameAsLeadInbox) {
@@ -421,6 +434,7 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
       {
         ok: true,
         leadDigestSent: false,
+        sheetLogged,
         note: "Lead inbox matches visitor email; skipped separate internal notification.",
       },
       { status: 200, headers: { ...cors, "Content-Type": "application/json" } },
@@ -441,6 +455,7 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
       {
         ok: true,
         leadDigestSent: false,
+        sheetLogged,
         warning:
           "Confirmation was sent to the visitor. The separate lead summary email could not be sent — check Brevo logs and recipient allowlists.",
         detail: lead.body,
@@ -449,6 +464,9 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
     );
   }
 
-  return Response.json({ ok: true, leadDigestSent: true }, { status: 200, headers: { ...cors, "Content-Type": "application/json" } });
+  return Response.json(
+    { ok: true, leadDigestSent: true, sheetLogged },
+    { status: 200, headers: { ...cors, "Content-Type": "application/json" } },
+  );
 }
 
