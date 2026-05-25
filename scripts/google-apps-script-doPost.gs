@@ -1,7 +1,6 @@
 /**
  * Nexperts Academy — Google Sheets webhook (Leads + Payments).
- * Deploy as Web App: Execute as Me, Who has access: Anyone.
- * Paste into Apps Script, add headers on row 1, then Deploy → New version.
+ * Deploy: Execute as Me · Who has access: Anyone · New version after every edit.
  */
 
 function doPost(e) {
@@ -16,19 +15,26 @@ function doPost(e) {
       return jsonResponse({ ok: false, error: "Sheet not found: " + sheetName }, 400);
     }
 
+    var programmePage = resolveProgrammePage_(p);
+    var course = resolveCourse_(p);
+
     if (sheetName === "Payments") {
-      appendPaymentRow_(sheet, p);
+      appendPaymentRow_(sheet, p, programmePage, course);
     } else {
-      appendLeadRow_(sheet, p);
+      appendLeadRow_(sheet, p, programmePage, course);
     }
 
-    return jsonResponse({ ok: true, sheet: sheetName, programmePage: resolveProgrammePage_(p), course: resolveCourse_(p) });
+    return jsonResponse({
+      ok: true,
+      sheet: sheetName,
+      programmePage: programmePage,
+      course: course,
+    });
   } catch (err) {
     return jsonResponse({ ok: false, error: String(err && err.message ? err.message : err) }, 500);
   }
 }
 
-/** Merge e.parameter, urlencoded body, JSON body, and jsonPayload field. */
 function getRequestParams_(e) {
   var p = {};
   if (e && e.parameter) {
@@ -71,6 +77,39 @@ function getRequestParams_(e) {
   return p;
 }
 
+function normalizeHeaderKey_(h) {
+  return String(h || "")
+    .trim()
+    .toLowerCase()
+    .replace(/[\s_\-]+/g, "");
+}
+
+/** Write values into columns that match row-1 headers (any column order). */
+function appendRowByHeaders_(sheet, valueMap, fallbackRow) {
+  var lastCol = Math.max(sheet.getLastColumn(), 1);
+  var headers = sheet.getRange(1, 1, 1, lastCol).getValues()[0];
+  var hasHeader = false;
+  for (var h = 0; h < headers.length; h++) {
+    if (String(headers[h] || "").trim()) {
+      hasHeader = true;
+      break;
+    }
+  }
+
+  if (!hasHeader) {
+    sheet.appendRow(fallbackRow);
+    return sheet.getLastRow();
+  }
+
+  var row = [];
+  for (var c = 0; c < headers.length; c++) {
+    var key = normalizeHeaderKey_(headers[c]);
+    row.push(key && valueMap.hasOwnProperty(key) ? valueMap[key] : "");
+  }
+  sheet.appendRow(row);
+  return sheet.getLastRow();
+}
+
 function resolveProgrammePage_(p) {
   if (p.programmePage) return String(p.programmePage);
   if (p.programme_page) return String(p.programme_page);
@@ -83,45 +122,75 @@ function resolveProgrammePage_(p) {
 
 function resolveCourse_(p) {
   if (p.course) return String(p.course);
+  if (p.course_key) return String(p.course_key);
   return resolveProgrammePage_(p) === "Vibe Coding" ? "vibe-coding-bootcamp" : "agentic-ai-founding";
 }
 
-function appendLeadRow_(sheet, p) {
-  var programmePage = resolveProgrammePage_(p);
-  var course = resolveCourse_(p);
-
-  var row = [
+function appendLeadRow_(sheet, p, programmePage, course) {
+  var phone = stripLeadingApostrophe_(p.phone || "");
+  var valueMap = {
+    serverreceivedat: new Date(),
+    name: p.name || "",
+    phone: phone,
+    email: p.email || "",
+    message: p.message || "",
+    source: p.source || "",
+    submittedat: p.submittedAt || "",
+    programmepage: programmePage,
+    programme: programmePage,
+    course: course,
+    coursekey: course,
+  };
+  var fallback = [
     new Date(),
     p.name || "",
-    stripLeadingApostrophe_(p.phone || ""),
+    phone,
     p.email || "",
     p.message || "",
     p.source || "",
     p.submittedAt || "",
     programmePage,
-    course
+    course,
   ];
-  sheet.appendRow(row);
-
-  var lastRow = sheet.getLastRow();
-  var phoneCell = sheet.getRange(lastRow, 3);
-  phoneCell.setNumberFormat("@");
-  phoneCell.setValue(stripLeadingApostrophe_(p.phone || ""));
+  var lastRow = appendRowByHeaders_(sheet, valueMap, fallback);
+  var phoneCol = findColumnByHeader_(sheet, ["phone", "mobile", "phonenumber"]);
+  if (phoneCol > 0) {
+    var phoneCell = sheet.getRange(lastRow, phoneCol);
+    phoneCell.setNumberFormat("@");
+    phoneCell.setValue(phone);
+  }
 }
 
-function appendPaymentRow_(sheet, p) {
+function appendPaymentRow_(sheet, p, programmePage, course) {
   var amountTotal = toNumber_(p.amountTotal);
   var amountDisplay = amountTotal ? amountTotal / 100 : "";
-  var programmePage = resolveProgrammePage_(p);
-  var course = resolveCourse_(p);
+  var phone = stripLeadingApostrophe_(p.payerPhone || "");
 
-  var row = [
+  var valueMap = {
+    serverreceivedat: new Date(),
+    status: p.status || "",
+    sessionid: p.sessionId || "",
+    payername: p.payerName || "",
+    payeremail: p.payerEmail || "",
+    payerphone: phone,
+    currency: p.currency || "",
+    amounttotal: amountTotal === "" ? "" : amountTotal,
+    amountdisplay: amountDisplay === "" ? "" : amountDisplay,
+    note: p.note || "",
+    source: p.source || "",
+    submittedat: p.submittedAt || "",
+    programmepage: programmePage,
+    programme: programmePage,
+    course: course,
+    coursekey: course,
+  };
+  var fallback = [
     new Date(),
     p.status || "",
     p.sessionId || "",
     p.payerName || "",
     p.payerEmail || "",
-    stripLeadingApostrophe_(p.payerPhone || ""),
+    phone,
     p.currency || "",
     amountTotal === "" ? "" : amountTotal,
     amountDisplay === "" ? "" : amountDisplay,
@@ -129,17 +198,36 @@ function appendPaymentRow_(sheet, p) {
     p.source || "",
     p.submittedAt || "",
     programmePage,
-    course
+    course,
   ];
-  sheet.appendRow(row);
+  var lastRow = appendRowByHeaders_(sheet, valueMap, fallback);
 
-  var lastRow = sheet.getLastRow();
-  var phoneCell = sheet.getRange(lastRow, 6);
-  phoneCell.setNumberFormat("@");
-  phoneCell.setValue(stripLeadingApostrophe_(p.payerPhone || ""));
+  var phoneCol = findColumnByHeader_(sheet, ["payerphone", "phone", "mobile"]);
+  if (phoneCol > 0) {
+    var phoneCell = sheet.getRange(lastRow, phoneCol);
+    phoneCell.setNumberFormat("@");
+    phoneCell.setValue(phone);
+  }
+  var rawAmountCol = findColumnByHeader_(sheet, ["amounttotal", "amountraw"]);
+  if (rawAmountCol > 0 && amountTotal !== "") {
+    sheet.getRange(lastRow, rawAmountCol).setNumberFormat("0");
+  }
+  var displayAmountCol = findColumnByHeader_(sheet, ["amountdisplay", "amount"]);
+  if (displayAmountCol > 0 && amountDisplay !== "") {
+    sheet.getRange(lastRow, displayAmountCol).setNumberFormat("#,##0.00");
+  }
+}
 
-  if (amountTotal !== "") sheet.getRange(lastRow, 8).setNumberFormat("0");
-  if (amountDisplay !== "") sheet.getRange(lastRow, 9).setNumberFormat("#,##0.00");
+function findColumnByHeader_(sheet, aliases) {
+  var lastCol = Math.max(sheet.getLastColumn(), 1);
+  var headers = sheet.getRange(1, 1, 1, lastCol).getValues()[0];
+  for (var i = 0; i < headers.length; i++) {
+    var key = normalizeHeaderKey_(headers[i]);
+    for (var a = 0; a < aliases.length; a++) {
+      if (key === normalizeHeaderKey_(aliases[a])) return i + 1;
+    }
+  }
+  return 0;
 }
 
 function stripLeadingApostrophe_(v) {

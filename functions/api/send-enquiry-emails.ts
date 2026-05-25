@@ -1,4 +1,5 @@
 import {
+  isGsheetWebhookSuccess,
   phoneForGsheet,
   postToGsheetWebhook,
   resolveGsheetWebhookUrl,
@@ -426,7 +427,7 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
       course: courseKey,
       channel: channel || (isVibe ? "vibe_page" : "agentic_page"),
     }).catch(() => ({ ok: false, status: 0, body: "" }));
-    sheetLogged = sheetResult.ok;
+    sheetLogged = isGsheetWebhookSuccess(sheetResult);
   }
 
   if (sameAsLeadInbox) {

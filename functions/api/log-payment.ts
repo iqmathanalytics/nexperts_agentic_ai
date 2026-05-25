@@ -1,4 +1,4 @@
-import { phoneForGsheet, postToGsheetWebhook } from "../lib/gsheet-webhook";
+import { isGsheetWebhookSuccess, phoneForGsheet, postToGsheetWebhook } from "../lib/gsheet-webhook";
 import { programmePageFromCourse } from "../lib/programme-page";
 
 type Env = {
@@ -103,7 +103,7 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
     programmePage,
   });
 
-  if (!sheetResult.ok) {
+  if (!isGsheetWebhookSuccess(sheetResult)) {
     return Response.json(
       { ok: false, error: "Sheet webhook failed.", detail: sheetResult.body },
       { status: 502, headers: { ...cors, "Content-Type": "application/json" } },

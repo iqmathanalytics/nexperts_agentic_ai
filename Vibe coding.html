@@ -1008,6 +1008,26 @@ nav{
 const VIBE_ENQUIRY_API_PATH = '/api/send-enquiry-emails';
 const VIBE_CHECKOUT_API_PATH = '/api/create-checkout-session';
 const VIBE_CHECKOUT_COURSE = 'vibe-coding-bootcamp';
+const GSHEET_WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycbz3a4g0cz4KXRlsjUpCAGOvrJLIhfdI-vWxmn9cmhWgSXovtrWTIaiHdRoJxa11WikC2w/exec';
+
+function buildGsheetFormBody(fields){
+  const params = new URLSearchParams();
+  Object.entries(fields).forEach(([k,v]) => params.set(k, String(v ?? '')));
+  if (fields.programmePage) params.set('programme_page', fields.programmePage);
+  if (fields.course) params.set('course_key', fields.course);
+  params.set('jsonPayload', JSON.stringify(fields));
+  return params.toString();
+}
+
+async function postVibeGsheetLead(fields){
+  if (!GSHEET_WEBHOOK_URL) return;
+  await fetch(GSHEET_WEBHOOK_URL, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
+    body: buildGsheetFormBody(fields),
+  });
+}
 
 function candidateApiUrls(path){
   const sameOrigin = `${window.location.origin}${path}`;
@@ -1189,11 +1209,27 @@ document.getElementById('vibe-enquiry-form').addEventListener('submit',async fun
       message,
       source:window.location.href,
       course:'vibe-coding-bootcamp',
+      programmePage:'Vibe Coding',
       channel:'vibe_page'
     };
     const result = await postVibeEnquiry(payload);
     if(!result.ok){
       throw new Error(result.error || 'Unable to submit enquiry right now.');
+    }
+
+    if (result.data && result.data.sheetLogged !== true) {
+      await postVibeGsheetLead({
+        sheet: 'Leads',
+        name,
+        phone: `'${phone.replace(/^\+/, '')}`,
+        email,
+        message,
+        submittedAt: new Date().toISOString(),
+        source: window.location.href,
+        programmePage: 'Vibe Coding',
+        course: 'vibe-coding-bootcamp',
+        channel: 'vibe_page',
+      });
     }
 
     msg.style.display='block';

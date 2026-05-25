@@ -2,12 +2,11 @@ import { useState, type FormEvent } from "react";
 import { ArrowRight, Check, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { AGENTIC_COHORT_SUMMARY } from "@/lib/agentic-cohort";
-import { postToGsheetClient } from "@/lib/gsheet-client";
+import { GSHEET_WEBHOOK_URL, postToGsheetClient } from "@/lib/gsheet-client";
 import { normalizeMalaysiaPhone } from "@/lib/phone";
 import { AGENTIC_PROGRAMME } from "@/lib/programme-source";
 import { trackConversion, trackEvent } from "@/lib/analytics";
 
-const GSHEET_WEBHOOK_URL = import.meta.env.VITE_GSHEET_WEBHOOK_URL as string | undefined;
 const MIN_LOADING_MS = 1100;
 
 const enquiryEmailApiUrl = () => {
@@ -76,7 +75,7 @@ const Enquire = () => {
 
       if (emailJson.sheetLogged !== true && GSHEET_WEBHOOK_URL) {
         const phoneForSheet = phone.startsWith("'") ? phone : `'${phone}`;
-        await postToGsheetClient(GSHEET_WEBHOOK_URL, {
+        await postToGsheetClient({
           sheet: "Leads",
           name,
           phone: phoneForSheet,
