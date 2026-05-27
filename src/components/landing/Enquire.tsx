@@ -2,6 +2,7 @@ import { useState, type FormEvent } from "react";
 import { ArrowRight, Check, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { AGENTIC_COHORT_SUMMARY } from "@/lib/agentic-cohort";
+import { CONTACT_EMAIL, CONTACT_MAILTO } from "@/lib/contact";
 import { GSHEET_WEBHOOK_URL, postToGsheetClient } from "@/lib/gsheet-client";
 import { normalizeMalaysiaPhone } from "@/lib/phone";
 import { AGENTIC_PROGRAMME } from "@/lib/programme-source";
@@ -160,7 +161,11 @@ const Enquire = () => {
                 We've received your enquiry. Expect a message from our team within 24 hours.
               </p>
               <p className="text-sm text-white/50 leading-relaxed mt-2">
-                Need an instant answer? Email vaheed.2000@gmail.com.
+                Need an instant answer?{" "}
+                <a href={CONTACT_MAILTO} className="text-primary-glow underline underline-offset-2 hover:text-primary-glow/90">
+                  {CONTACT_EMAIL}
+                </a>
+                .
               </p>
             </div>
           ) : submitting ? (

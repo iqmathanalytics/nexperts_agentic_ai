@@ -1,3 +1,4 @@
+import { CONTACT_EMAIL } from "../lib/contact";
 import {
   gsheetDeploymentId,
   phoneForGsheet,
@@ -13,9 +14,9 @@ import { programmePageFromCourse } from "../lib/programme-page";
  * Secrets (dashboard or `wrangler pages secret` / `.dev.vars` locally):
  *   BREVO_API_KEY
  * Optional:
- *   BREVO_SENDER_EMAIL   — verified sender in Brevo (default: info@nexpertsai.com)
+ *   BREVO_SENDER_EMAIL   — verified sender in Brevo (default: enquiry@nexpertsacademy.com)
  *   BREVO_SENDER_NAME    — display name (default: Nexperts Academy)
- *   ENQUIRY_LEAD_EMAIL   — internal recipient (default: vaheed.2000@gmail.com)
+ *   ENQUIRY_LEAD_EMAIL   — internal recipient (default: enquiry@nexpertsacademy.com)
  *   SITE_PUBLIC_URL      — canonical site for CTA links (default: https://nexpertsai.com)
  *   ALLOWED_ORIGINS      — same pattern as checkout (CORS)
  */
@@ -299,7 +300,7 @@ async function sendBrevoEmail(
     replyTo?: { email: string; name?: string };
   },
 ): Promise<{ ok: boolean; status: number; body: string }> {
-  const senderEmail = env.BREVO_SENDER_EMAIL?.trim() || "info@nexpertsai.com";
+  const senderEmail = env.BREVO_SENDER_EMAIL?.trim() || CONTACT_EMAIL;
   const senderName = env.BREVO_SENDER_NAME?.trim() || "Nexperts Academy";
 
   const to = opts.to.map((r) => {
@@ -390,7 +391,7 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
   const courseKey = isVibe ? "vibe-coding-bootcamp" : "agentic-ai-founding";
   const programmePage =
     String(body.programmePage || "").trim().slice(0, 80) || programmePageFromCourse(courseKey);
-  const leadTo = normalizeEmail(env.ENQUIRY_LEAD_EMAIL?.trim() || "vaheed.2000@gmail.com");
+  const leadTo = normalizeEmail(env.ENQUIRY_LEAD_EMAIL?.trim() || CONTACT_EMAIL);
   const visitorDisplay = brevoSafeDisplayName(name, 120) || "Prospective student";
   const sameAsLeadInbox = email === leadTo;
 

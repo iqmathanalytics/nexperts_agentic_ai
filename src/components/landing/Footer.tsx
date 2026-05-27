@@ -1,3 +1,4 @@
+import { CONTACT_EMAIL, CONTACT_MAILTO } from "@/lib/contact";
 import { WHATSAPP_HREF } from "@/lib/whatsapp";
 
 const Footer = () => (
@@ -14,8 +15,8 @@ const Footer = () => (
         <a href={WHATSAPP_HREF} target="_blank" rel="noopener" className="hover:text-success transition-colors">
           WhatsApp
         </a>
-        <a href="mailto:hello@nexpertsacademy.com" className="hover:text-white/80 transition-colors">
-          hello@nexpertsacademy.com
+        <a href={CONTACT_MAILTO} className="hover:text-white/80 transition-colors">
+          {CONTACT_EMAIL}
         </a>
       </div>
     </div>
