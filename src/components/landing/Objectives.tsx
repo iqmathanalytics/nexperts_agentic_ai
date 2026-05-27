@@ -12,7 +12,7 @@ const objectives = [
 ];
 
 const Objectives = () => (
-  <section className="px-[5vw] py-20 md:py-24 bg-background">
+  <section className="section-x bg-background py-20 md:py-24">
     <div className="reveal">
       <div className="eyebrow mb-3.5">Programme Objectives</div>
       <h2 className="display text-foreground text-balance">

@@ -881,7 +881,7 @@ const LiveDemoSection = () => {
   };
 
   return (
-    <section id="live-demo" className="overflow-x-hidden border-t border-border bg-paper px-[5vw] py-14 md:py-24">
+    <section id="live-demo" className="section-x overflow-x-hidden border-t border-border bg-paper py-14 md:py-24">
       <div className="mx-auto max-w-6xl reveal">
         <div className="eyebrow mb-3 text-primary">Interactive lab</div>
         <h2 className="display mb-3 text-balance text-foreground">

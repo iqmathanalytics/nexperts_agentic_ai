@@ -56,7 +56,7 @@ const tagClasses: Record<string, string> = {
 };
 
 const WhoCanJoin = () => (
-  <section id="who" className="px-[5vw] py-20 md:py-24 bg-paper">
+  <section id="who" className="section-x bg-paper py-20 md:py-24">
     <div className="reveal">
       <div className="eyebrow mb-3.5">Who Can Join</div>
       <h2 className="display text-foreground text-balance">

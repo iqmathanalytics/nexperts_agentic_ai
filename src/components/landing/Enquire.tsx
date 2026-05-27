@@ -108,13 +108,13 @@ const Enquire = () => {
   };
 
   return (
-    <section id="enquire" className="px-[5vw] py-20 md:py-28 bg-obsidian relative overflow-hidden">
+    <section id="enquire" className="section-x relative overflow-hidden bg-obsidian py-20 md:py-28">
       <div className="absolute inset-0 grid-bg opacity-50" />
       <div className="absolute -top-32 left-1/3 w-[500px] h-[500px] rounded-full pointer-events-none"
            style={{ background: "radial-gradient(circle, hsl(var(--primary-glow) / 0.15), transparent 65%)" }} />
 
-      <div className="relative max-w-5xl mx-auto grid lg:grid-cols-[1.1fr_1fr] gap-10 lg:gap-16 items-start">
-        <div className="reveal">
+      <div className="relative mx-auto grid max-w-5xl grid-cols-1 items-start gap-10 min-w-0 lg:grid-cols-[1.1fr_1fr] lg:gap-16">
+        <div className="reveal min-w-0">
           <div className="flex items-center gap-2.5 mb-4">
             <span className="w-3.5 h-px bg-primary-glow/60" />
             <span className="font-mono text-[0.62rem] font-semibold tracking-[0.2em] uppercase text-primary-glow">

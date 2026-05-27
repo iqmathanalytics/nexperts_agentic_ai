@@ -26,7 +26,7 @@ const curriculum = [
 const tools = ["Python","LangChain","LangGraph","CrewAI","AutoGen","Flowise","Azure OpenAI","Azure AI Studio","HuggingFace","ChromaDB · FAISS","FastAPI","Streamlit","LangSmith","Anthropic Claude","TensorFlow","NLTK · SpaCy"];
 
 const Curriculum = () => (
-  <section id="curriculum" className="px-[5vw] py-20 md:py-24 bg-paper">
+  <section id="curriculum" className="section-x bg-paper py-20 md:py-24">
     <div className="reveal">
       <div className="eyebrow mb-3.5">The Curriculum</div>
       <h2 className="display text-foreground text-balance">

@@ -87,11 +87,18 @@
     scroll-behavior: smooth;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
   }
 
   body {
     @apply bg-background text-foreground font-sans;
     font-feature-settings: "ss01", "cv01";
+    overflow-x: hidden;
+  }
+
+  #root {
+    overflow-x: hidden;
+    width: 100%;
   }
 
   ::selection {
@@ -101,6 +108,10 @@
 }
 
 @layer components {
+  .section-x {
+    @apply px-4 sm:px-6 lg:px-[5vw];
+  }
+
   .font-display { font-family: 'GT Super', 'Recoleta', 'Cormorant Garamond', 'Times New Roman', serif; }
   .font-mono-ui { font-family: 'JetBrains Mono', monospace; }
 
@@ -149,6 +160,29 @@
 
   .hero-grid {
     animation: grid-drift 16s linear infinite;
+  }
+
+  /* Hero → light sections: soft fade (replaces ellipse arch) */
+  .hero-bottom-fade {
+    pointer-events: none;
+    position: absolute;
+    inset-inline: 0;
+    bottom: 0;
+    z-index: 1;
+    height: 4.5rem;
+    background: linear-gradient(
+      to bottom,
+      transparent 0%,
+      hsl(var(--obsidian) / 0.35) 35%,
+      hsl(var(--background) / 0.92) 78%,
+      hsl(var(--background)) 100%
+    );
+  }
+
+  @media (min-width: 640px) {
+    .hero-bottom-fade {
+      height: 5.5rem;
+    }
   }
 
   .hero-aurora {
@@ -917,6 +951,34 @@
   box-shadow:
     0 0 24px -4px rgba(255, 0, 0, 0.45),
     inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.hero-social__link--tiktok:hover {
+  border-color: rgba(0, 242, 234, 0.55);
+  color: #fff;
+  background: linear-gradient(145deg, rgba(255, 0, 80, 0.35), rgba(0, 0, 0, 0.85) 55%, rgba(0, 242, 234, 0.2));
+  box-shadow:
+    0 0 24px -4px rgba(0, 242, 234, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+@media (max-width: 639px) {
+  .pill,
+  .pill-hl {
+    white-space: normal;
+    text-align: center;
+    line-height: 1.35;
+  }
+
+  .hero-social {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.65rem;
+  }
+
+  .hero-social__list {
+    max-width: 100%;
+  }
 }
 
 @keyframes hero-social-shine {

@@ -57,7 +57,7 @@ const PaymentSuccess = () => {
   return (
     <>
       <Nav />
-      <main className="min-h-[70vh] bg-paper px-[5vw] py-24">
+      <main className="section-x min-h-[70vh] bg-paper py-24">
         <div className="mx-auto max-w-lg text-center">
           <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full border border-success/30 bg-success/10">
             <CheckCircle2 className="h-8 w-8 text-success" />

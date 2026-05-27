@@ -3,7 +3,7 @@ import { WHATSAPP_HREF } from "@/lib/whatsapp";
 import { ArrowLeft } from "lucide-react";
 
 const Nav = () => (
-  <nav className="fixed inset-x-0 top-0 z-50 flex h-14 items-center border-b border-white/[0.06] bg-obsidian/90 px-4 backdrop-blur-xl sm:px-[5vw]">
+  <nav className="section-x fixed inset-x-0 top-0 z-50 flex h-14 items-center border-b border-white/[0.06] bg-obsidian/90 backdrop-blur-xl">
     <Link
       to="/#top"
       className="inline-flex items-center transition-opacity hover:opacity-90"

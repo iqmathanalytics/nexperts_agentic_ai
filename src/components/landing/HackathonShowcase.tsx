@@ -30,7 +30,7 @@ const HackathonShowcase = () => {
   return (
     <section
       id="hackathon"
-      className="relative overflow-hidden border-t border-border bg-obsidian px-[5vw] py-14 md:py-20"
+      className="section-x relative overflow-hidden border-t border-border bg-obsidian py-14 md:py-20"
       aria-labelledby="hackathon-heading"
     >
       <div

@@ -43,7 +43,7 @@ const team: TeamMember[] = [
 ];
 
 const About = () => (
-  <section id="about" className="px-[5vw] py-20 md:py-24 bg-obsidian relative overflow-hidden">
+  <section id="about" className="section-x relative overflow-hidden bg-obsidian py-20 md:py-24">
     <div className="absolute top-0 right-0 w-[400px] h-[400px] rounded-full pointer-events-none"
          style={{ background: "radial-gradient(circle, hsl(var(--primary-glow) / 0.08), transparent 70%)" }} />
 

@@ -1,4 +1,4 @@
-export type SocialPlatform = "facebook" | "instagram" | "linkedin" | "youtube";
+export type SocialPlatform = "facebook" | "instagram" | "linkedin" | "youtube" | "tiktok";
 
 export type SocialLink = {
   platform: SocialPlatform;
@@ -26,5 +26,10 @@ export const NEXPERTS_SOCIAL_LINKS: SocialLink[] = [
     platform: "youtube",
     href: "https://www.youtube.com/channel/UC9yAHm3DmVqrVf4fJFKWEQA",
     label: "Nexperts Academy on YouTube",
+  },
+  {
+    platform: "tiktok",
+    href: "https://www.tiktok.com/@nexperts_academy",
+    label: "Nexperts Academy on TikTok",
   },
 ];

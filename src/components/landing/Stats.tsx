@@ -10,11 +10,11 @@ const stats = [
 ];
 
 const Stats = () => (
-  <div className="bg-card border-b border-border flex flex-wrap reveal">
+  <div className="grid grid-cols-2 gap-px border-b border-border bg-border reveal sm:grid-cols-3 md:flex">
     {stats.map((s, i) => (
       <div
         key={i}
-        className="flex-1 min-w-[50%] sm:min-w-[33%] md:min-w-0 px-5 py-7 border-r border-border last:border-r-0 hover:bg-paper transition-colors"
+        className="bg-card px-4 py-6 transition-colors hover:bg-paper sm:px-5 sm:py-7 md:flex-1 md:border-r md:border-border md:last:border-r-0"
       >
         <div
           className={`font-display text-3xl font-light leading-none mb-1 ${

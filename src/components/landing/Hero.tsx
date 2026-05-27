@@ -24,7 +24,7 @@ const Hero = () => {
   return (
     <section
       id="top"
-      className="relative flex min-h-0 items-start bg-obsidian px-4 pb-16 pt-24 overflow-hidden sm:min-h-screen sm:px-[5vw] sm:pb-24 sm:pt-28 lg:items-center"
+      className="section-x relative flex min-h-0 items-start overflow-hidden bg-obsidian pb-16 pt-24 sm:min-h-screen sm:pb-24 sm:pt-28 lg:items-center"
     >
       <div className="absolute inset-0 grid-bg hero-grid opacity-90" />
       <div className="absolute inset-0 hero-aurora opacity-80" />
@@ -37,7 +37,7 @@ const Hero = () => {
         className="absolute -bottom-32 -left-20 w-[500px] h-[500px] rounded-full pointer-events-none hero-orb hero-orb-b"
         style={{ background: "radial-gradient(circle, hsl(var(--primary) / 0.14), transparent 65%)" }}
       />
-      <div className="absolute bottom-0 inset-x-0 h-20 bg-background" style={{ clipPath: "ellipse(60% 100% at 50% 100%)" }} />
+      <div className="hero-bottom-fade" aria-hidden />
 
       <div className="relative z-10 grid w-full max-w-6xl grid-cols-1 items-center gap-6 sm:gap-8 lg:grid-cols-[1.18fr_0.82fr] xl:gap-10">
         <div className="min-w-0">
@@ -53,16 +53,16 @@ const Hero = () => {
             </div>
             <a
               href="/Vibe%20coding.html"
-              className="vibe-banner group inline-flex min-h-[52px] w-full max-w-[34rem] items-center justify-between gap-2 rounded-xl px-4 py-2.5 animate-fade-up sm:w-auto"
+              className="vibe-banner group flex min-h-[52px] w-full max-w-[34rem] flex-col items-stretch justify-between gap-2 rounded-xl px-4 py-2.5 animate-fade-up sm:inline-flex sm:w-auto sm:flex-row sm:items-center"
               style={{ animationDelay: ".06s" }}
             >
-              <span className="inline-flex items-center gap-2">
+              <span className="inline-flex min-w-0 items-center gap-2">
                 <Sparkles className="h-4 w-4 shrink-0 text-[#fde68a]" />
-                <span className="font-mono text-[0.62rem] font-semibold uppercase tracking-[0.12em] text-[#fff7d4] sm:text-[0.66rem]">
+                <span className="min-w-0 text-balance font-mono text-[0.62rem] font-semibold uppercase tracking-[0.12em] text-[#fff7d4] sm:text-[0.66rem]">
                   New: Explore the Vibe Coding Masterclass Experience
                 </span>
               </span>
-              <span className="vibe-banner__cta inline-flex items-center rounded-md px-3 py-1 text-[0.56rem] font-semibold uppercase tracking-[0.13em] text-[#1f1300]">
+              <span className="vibe-banner__cta inline-flex w-fit items-center self-start rounded-md px-3 py-1 text-[0.56rem] font-semibold uppercase tracking-[0.13em] text-[#1f1300] sm:self-auto">
                 Explore
               </span>
             </a>
@@ -97,7 +97,7 @@ const Hero = () => {
           </div>
 
           <div
-            className="relative mb-10 inline-flex w-full max-w-md flex-col rounded-md p-5 pb-5 pt-6 max-sm:pt-12 sm:p-6 sm:pb-6 sm:pt-7 md:p-7 md:pt-8 animate-fade-up"
+            className="relative mb-10 flex w-full max-w-md flex-col rounded-md p-5 sm:p-6 sm:pb-6 sm:pt-7 md:p-7 md:pt-8 animate-fade-up"
             style={{
               animationDelay: ".4s",
               background: "hsl(var(--primary-glow) / 0.06)",
@@ -105,7 +105,7 @@ const Hero = () => {
             }}
           >
             <aside
-              className="pointer-events-none absolute right-2 top-0 z-[2] w-[min(11.5rem,calc(100%-1.25rem))] max-sm:-translate-y-1/2 max-sm:translate-x-0 sm:right-0 sm:top-6 sm:w-[12.5rem] sm:max-w-[min(100%,calc(100%-0.5rem))] sm:translate-x-[calc(50%+0.3rem)] sm:translate-y-[calc(-50%+2.25rem)] md:w-[13.5rem] md:translate-x-[calc(50%+0.4rem)] md:translate-y-[calc(-50%+2.75rem)]"
+              className="pointer-events-none relative z-[2] mb-4 w-full max-w-[14rem] sm:absolute sm:right-0 sm:top-6 sm:mb-0 sm:w-[12.5rem] sm:max-w-[min(100%,calc(100%-0.5rem))] sm:translate-x-[calc(50%+0.3rem)] sm:translate-y-[calc(-50%+2.25rem)] md:w-[13.5rem] md:translate-x-[calc(50%+0.4rem)] md:translate-y-[calc(-50%+2.75rem)]"
               aria-label={`${FIRST_COHORT.label} full. ${NEXT_COHORT.label} ${NEXT_COHORT.dateRange}. ${AGENTIC_COHORT_SCHEDULE_LINE}`}
             >
               <div className="relative">
@@ -145,7 +145,7 @@ const Hero = () => {
               </div>
             </aside>
 
-            <span className="mb-2 max-sm:pr-[min(11rem,calc(100%-1rem))] text-pretty font-mono text-[0.58rem] font-semibold uppercase tracking-[0.12em] text-primary-glow/80 sm:pr-[10rem] sm:text-[0.6rem] sm:tracking-[0.16em] md:pr-[12rem]">
+            <span className="mb-2 text-pretty font-mono text-[0.58rem] font-semibold uppercase tracking-[0.12em] text-primary-glow/80 sm:pr-[10rem] sm:text-[0.6rem] sm:tracking-[0.16em] md:pr-[12rem]">
               Next cohort — Limited seats
             </span>
             <div className="mb-1 font-mono text-[0.65rem] text-white/25 line-through sm:text-xs">

@@ -22,7 +22,7 @@ const FAQ = () => {
   const [open, setOpen] = useState<number | null>(0);
 
   return (
-    <section id="faq" className="px-[5vw] py-20 md:py-24 bg-paper">
+    <section id="faq" className="section-x bg-paper py-20 md:py-24">
       <div className="grid lg:grid-cols-[1fr_2fr] gap-10 lg:gap-16 items-start">
         <div className="reveal lg:sticky lg:top-24">
           <div className="eyebrow mb-3.5">Frequently Asked</div>

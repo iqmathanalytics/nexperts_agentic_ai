@@ -1,7 +1,7 @@
 import { WHATSAPP_HREF } from "@/lib/whatsapp";
 
 const Footer = () => (
-  <footer className="bg-obsidian border-t border-white/[0.06] px-[5vw] py-10">
+  <footer className="section-x border-t border-white/[0.06] bg-obsidian py-10">
     <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
       <div className="flex items-center gap-2">
         <img src="/logo.png" alt="Nexperts Academy" className="h-8 w-auto object-contain" />
