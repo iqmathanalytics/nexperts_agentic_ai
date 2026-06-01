@@ -69,12 +69,11 @@ const Hero = () => {
           </div>
 
           <h1
-            className="display-xl mb-5 text-balance text-pretty text-white xl:whitespace-nowrap animate-fade-up"
+            className="display-xl mb-5 text-balance text-pretty text-white animate-fade-up"
             style={{ animationDelay: ".1s" }}
           >
-            <span className="block md:inline">Professional </span>
-            <span className="block md:inline font-semibold">Agentic AI </span>
-            <em className="block md:inline not-italic italic text-primary-glow">Engineering</em>
+            Professional Agentic AI Engineering{" "}
+            <span className="font-semibold text-primary-glow">Course in Malaysia</span>
           </h1>
 
           <p
