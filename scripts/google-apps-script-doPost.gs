@@ -5,14 +5,24 @@
 
 function doPost(e) {
   try {
-    var SPREADSHEET_ID = "1hHD-UEP-O2unUh0_Osq9gGsve24dUyfKr2MxW5Vm3RY";
-    var ss = SpreadsheetApp.openById(SPREADSHEET_ID);
+    var DEFAULT_SPREADSHEET_ID = "1hHD-UEP-O2unUh0_Osq9gGsve24dUyfKr2MxW5Vm3RY";
     var p = getRequestParams_(e);
 
     var sheetName = p.sheet ? String(p.sheet) : "Leads";
+    var ssId = p.spreadsheetId ? String(p.spreadsheetId) : DEFAULT_SPREADSHEET_ID;
+    var ss = SpreadsheetApp.openById(ssId);
     var sheet = ss.getSheetByName(sheetName);
     if (!sheet) {
       return jsonResponse({ ok: false, error: "Sheet not found: " + sheetName }, 400);
+    }
+
+    if (sheetName === "DemoRegistrations") {
+      appendDemoRegistrationRow_(sheet, p);
+      return jsonResponse({
+        ok: true,
+        sheet: sheetName,
+        scriptTag: "header-map-v3-demo",
+      });
     }
 
     var programmePage = resolveProgrammePage_(p);
@@ -125,6 +135,67 @@ function resolveCourse_(p) {
   if (p.course) return String(p.course);
   if (p.course_key) return String(p.course_key);
   return resolveProgrammePage_(p) === "Vibe Coding" ? "vibe-coding-bootcamp" : "agentic-ai-founding";
+}
+
+function resolveDemoTitle_(p) {
+  if (p.demoTitle) return String(p.demoTitle);
+  if (p.demotitle) return String(p.demotitle);
+  var t = String(p.demoType || "").toLowerCase();
+  if (t.indexOf("vibe") >= 0) return "Vibe Coding Demo";
+  if (t.indexOf("agentic") >= 0) return "Agentic AI Demo";
+  return "";
+}
+
+function resolveSessionLabel_(p) {
+  if (p.sessionDateLabel) return String(p.sessionDateLabel);
+  if (p.sessionlabel) return String(p.sessionlabel);
+  if (p.sessionLabel) return String(p.sessionLabel);
+  return "";
+}
+
+function appendDemoRegistrationRow_(sheet, p) {
+  var phone = stripLeadingApostrophe_(p.phone || "");
+  var receivedAt = new Date();
+  var demoTitle = resolveDemoTitle_(p);
+  var sessionLabel = resolveSessionLabel_(p);
+  var valueMap = {
+    timestamp: receivedAt,
+    serverreceivedat: receivedAt,
+    datereceived: receivedAt,
+    name: p.name || "",
+    phone: phone,
+    email: p.email || "",
+    demotype: p.demoType || "",
+    demotitle: demoTitle,
+    demo: demoTitle || p.demoType || "",
+    sessiondate: p.sessionDate || "",
+    sessionlabel: sessionLabel,
+    sessiondatelabel: sessionLabel,
+    session: sessionLabel,
+    source: p.source || "",
+    submittedat: p.submittedAt || "",
+    channel: p.channel || "demo_page",
+  };
+  var fallback = [
+    receivedAt,
+    p.name || "",
+    phone,
+    p.email || "",
+    p.demoType || "",
+    demoTitle,
+    p.sessionDate || "",
+    sessionLabel,
+    p.source || "",
+    p.submittedAt || "",
+  ];
+  var lastRow = appendRowByHeaders_(sheet, valueMap, fallback);
+  applyTimestampColumn_(sheet, lastRow, receivedAt);
+  var phoneCol = findColumnByHeader_(sheet, ["phone", "mobile", "phonenumber"]);
+  if (phoneCol > 0) {
+    var phoneCell = sheet.getRange(lastRow, phoneCol);
+    phoneCell.setNumberFormat("@");
+    phoneCell.setValue(phone);
+  }
 }
 
 function appendLeadRow_(sheet, p, programmePage, course) {

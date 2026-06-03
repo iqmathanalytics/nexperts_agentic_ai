@@ -29,6 +29,8 @@ if (existsSync(devVarsPath)) {
     "GSHEET_WEBHOOK_URL",
     "ENQUIRY_GSHEET_WEBHOOK_URL",
     "PAYMENTS_GSHEET_WEBHOOK_URL",
+    "DEMO_GSHEET_WEBHOOK_URL",
+    "DEMO_GSHEET_SPREADSHEET_ID",
   ]) {
     if (vars[key]) bindings.push("-b", `${key}=${vars[key]}`);
   }

@@ -1,0 +1,120 @@
+/**
+ * Demo page UI fixes — scoped so landing Tailwind tokens do not break buttons/links.
+ */
+
+.demo-page {
+  color: #dde1ea;
+  background-color: #060910;
+  --demo-accent: #00d4aa;
+  --demo-accent2: #38bdf8;
+  --demo-surface: #141b25;
+  --demo-text: #dde1ea;
+  --demo-muted: #6b7689;
+}
+
+.demo-page .demo-body-root {
+  color: var(--demo-text);
+}
+
+/* Primary CTA links */
+.demo-page .demo-body-root a.btn-register,
+.demo-page .demo-body-root a.btn-f-pri,
+.demo-page .demo-body-root a.btn-nudge-pri,
+.demo-page .demo-body-root a.btn-uc-open,
+.demo-page .demo-body-root .reality-resolve a.btn-nudge-pri {
+  background-color: var(--demo-accent) !important;
+  color: #020d09 !important;
+  border: none !important;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.demo-page .demo-body-root .demo-card.vibe a.btn-register {
+  background-color: var(--demo-accent2) !important;
+  color: #ffffff !important;
+}
+
+/* Secondary / outline buttons */
+.demo-page .demo-body-root a.btn-f-sec,
+.demo-page .demo-body-root a.btn-nudge-sec,
+.demo-page .demo-body-root a.btn-consult {
+  background-color: rgba(20, 27, 37, 0.65) !important;
+  color: var(--demo-text) !important;
+  border: 1px solid rgba(255, 255, 255, 0.14) !important;
+}
+
+.demo-page .demo-body-root a.btn-f-sec:hover,
+.demo-page .demo-body-root a.btn-nudge-sec:hover,
+.demo-page .demo-body-root a.btn-consult:hover {
+  background-color: #1a2233 !important;
+  border-color: rgba(255, 255, 255, 0.22) !important;
+  color: #ffffff !important;
+}
+
+.demo-page .demo-body-root .consult-card.featured a.btn-consult {
+  background-color: var(--demo-accent) !important;
+  color: #020d09 !important;
+  border-color: transparent !important;
+}
+
+.demo-page .demo-body-root button.btn-uc-locked {
+  background-color: var(--demo-surface) !important;
+  color: var(--demo-muted) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  cursor: not-allowed;
+}
+
+/* Section headings & copy on dark bg */
+.demo-page .demo-body-root h1,
+.demo-page .demo-body-root h2,
+.demo-page .demo-body-root h3,
+.demo-page .demo-body-root h4,
+.demo-page .demo-body-root p,
+.demo-page .demo-body-root li,
+.demo-page .demo-body-root .section-title,
+.demo-page .demo-body-root .uc-title {
+  color: inherit;
+}
+
+/* Registration modal — wider, no scrollbar, clear of nav */
+.demo-registration-dialog {
+  top: max(5.5rem, 8vh) !important;
+  bottom: auto !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  max-height: none !important;
+  overflow: hidden !important;
+  margin: 0;
+  z-index: 200 !important;
+  width: min(36rem, calc(100vw - 2rem)) !important;
+  max-width: 36rem !important;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.demo-registration-dialog::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+.demo-registration-overlay {
+  z-index: 199 !important;
+}
+
+.demo-registration-dialog [data-radix-dialog-close] {
+  top: 1rem;
+  right: 1rem;
+  color: rgba(255, 255, 255, 0.5);
+  border-radius: 6px;
+  padding: 4px;
+}
+
+.demo-registration-dialog [data-radix-dialog-close]:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.demo-registration-dialog--vibe fieldset input:focus-within,
+.demo-registration-dialog--vibe .focus-within\:ring-\[\#00d4aa\]\/15:focus-within {
+  --tw-ring-color: rgba(56, 189, 248, 0.15);
+}

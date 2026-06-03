@@ -6,6 +6,11 @@ interface ImportMetaEnv {
   readonly VITE_CHECKOUT_API_URL?: string;
 }
 
+declare module "*.html?raw" {
+  const content: string;
+  export default content;
+}
+
 interface ImportMeta {
   readonly env: ImportMetaEnv;
 }

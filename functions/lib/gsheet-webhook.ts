@@ -147,3 +147,33 @@ export async function postToGsheetWebhook(
     ok: isGsheetWebhookSuccess(parsed),
   };
 }
+
+export function resolveDemoGsheetWebhookUrl(env: Record<string, string | undefined>): string | null {
+  return env.DEMO_GSHEET_WEBHOOK_URL?.trim() || null;
+}
+
+export function isDemoGsheetWebhookSuccess(result: { ok: boolean; status: number; body: string }): boolean {
+  if (!result.ok || result.status < 200 || result.status >= 300) return false;
+  const json = parseGsheetWebhookJson(result.body);
+  return json?.ok === true;
+}
+
+export async function postToDemoGsheetWebhook(
+  webhookUrl: string,
+  spreadsheetId: string | undefined,
+  fields: Record<string, string>,
+): Promise<{ ok: boolean; status: number; body: string; json: GsheetWebhookJson | null }> {
+  const payload = {
+    ...fields,
+    sheet: "DemoRegistrations",
+    ...(spreadsheetId ? { spreadsheetId } : {}),
+  };
+  const body = buildGsheetFormBody(payload);
+  const { res, text } = await fetchGsheetPost(webhookUrl, body);
+  const json = parseGsheetWebhookJson(text);
+  const parsed = { ok: res.ok, status: res.status, body: text.slice(0, 2000), json };
+  return {
+    ...parsed,
+    ok: isDemoGsheetWebhookSuccess(parsed),
+  };
+}

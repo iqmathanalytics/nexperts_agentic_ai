@@ -6,6 +6,9 @@
 #   SITE_URL            — https://yourdomain.com (redirect URLs if Origin header is missing)
 #   ALLOWED_ORIGINS     — Comma-separated origins allowed to call this API (CORS)
 #   PAYMENTS_GSHEET_WEBHOOK_URL — Apps Script Web App URL used to append rows to the "Payments" sheet
+#   DEMO_GSHEET_WEBHOOK_URL — Apps Script URL for /demo registrations (sheet tab: DemoRegistrations)
+#   DEMO_GSHEET_SPREADSHEET_ID — optional separate Google Sheet ID for demo registrations
+#   BREVO_API_KEY — required for demo registration confirmation emails (same as enquiry form)
 #   BREVO_API_KEY — Brevo transactional email (enquiry acknowledgement + lead to admissions)
 #   BREVO_SENDER_EMAIL — verified sender (e.g. enquiry@nexpertsacademy.com)
 #   BREVO_SENDER_NAME — optional display name
