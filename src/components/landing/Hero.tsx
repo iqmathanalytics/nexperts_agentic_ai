@@ -10,6 +10,7 @@ import {
 import { WHATSAPP_HREF } from "@/lib/whatsapp";
 import CourseCheckout from "@/components/landing/CourseCheckout";
 import HeroSocialLinks from "@/components/landing/HeroSocialLinks";
+import DemoLaunchCta from "@/components/landing/DemoLaunchCta";
 
 const Hero = () => {
   const [tilt, setTilt] = useState({ x: 0, y: 0 });
@@ -77,12 +78,16 @@ const Hero = () => {
           </h1>
 
           <p
-            className="mb-8 max-w-xl text-pretty text-base font-light leading-[1.85] text-white/45 sm:mb-9 md:text-lg animate-fade-up"
+            className="mb-6 max-w-xl text-pretty text-base font-light leading-[1.85] text-white/45 sm:mb-7 md:text-lg animate-fade-up"
             style={{ animationDelay: ".2s" }}
           >
             A rigorous, live instructor-led programme that takes you from Python basics to building and deploying
             production-grade multi-agent AI systems — in 20 intensive sessions.
           </p>
+
+          <div className="mb-8 animate-fade-up sm:mb-9" style={{ animationDelay: ".24s" } as CSSProperties}>
+            <DemoLaunchCta />
+          </div>
 
           <div className="mb-10 flex flex-wrap gap-1.5 sm:gap-2 animate-fade-up" style={{ animationDelay: ".3s" }}>
             <span className="pill-hl">20 Live Sessions</span>

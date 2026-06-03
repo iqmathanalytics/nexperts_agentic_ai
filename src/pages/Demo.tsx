@@ -7,6 +7,8 @@ import "@/styles/demo-page-fixes.css";
 
 const Demo = () => {
   useEffect(() => {
+    window.scrollTo(0, 0);
+
     document.title = "See AI Work. Then Build It. — Nexperts AI Demos";
     const meta = document.querySelector('meta[name="description"]');
     if (meta) {
