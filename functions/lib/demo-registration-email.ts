@@ -11,7 +11,12 @@ function topicsListHtml(topics: string[], accent: string): string {
     .join("");
 }
 
-export function demoConfirmationEmailHtml(name: string, demo: DemoRegistrationDetails, siteUrl: string): string {
+export function demoConfirmationEmailHtml(
+  name: string,
+  demo: DemoRegistrationDetails,
+  siteUrl: string,
+  contactEmail = "info@nexpertsai.com",
+): string {
   const safeName = escapeHtml(name);
   const demoUrl = `${siteUrl.replace(/\/$/, "")}/demo`;
 
@@ -106,8 +111,9 @@ export function demoConfirmationEmailHtml(name: string, demo: DemoRegistrationDe
                 ${demo.highlights.map((h) => escapeHtml(h)).join(" · ")}
               </p>
               <p style="margin:0;font-size:13px;line-height:1.65;color:rgba(255,255,255,0.45);">
-                Questions before the session? Reply to this email or visit
-                <a href="${demoUrl}" style="color:${demo.accent};text-decoration:underline;">nexpertsai.com/demo</a>.
+                Questions before the session? Reply to this email or write to
+                <a href="mailto:${escapeHtml(contactEmail)}" style="color:${demo.accent};text-decoration:underline;">${escapeHtml(contactEmail)}</a>
+                · <a href="${demoUrl}" style="color:${demo.accent};text-decoration:underline;">nexpertsai.com/demo</a>
               </p>
             </td>
           </tr>

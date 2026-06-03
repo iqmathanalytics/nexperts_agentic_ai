@@ -1,5 +1,5 @@
 import { brevoSafeDisplayName, normalizeEmail, sendBrevoEmail, type BrevoEnv } from "../lib/brevo";
-import { CONTACT_EMAIL } from "../lib/contact";
+import { DEMO_CONTACT_EMAIL } from "../lib/contact";
 import { getDemoDetails } from "../lib/demo-details";
 import { demoConfirmationEmailHtml } from "../lib/demo-registration-email";
 import { phoneForGsheet, postToDemoGsheetWebhook, resolveDemoGsheetWebhookUrl } from "../lib/gsheet-webhook";
@@ -8,7 +8,6 @@ type Env = BrevoEnv & {
   DEMO_GSHEET_WEBHOOK_URL?: string;
   DEMO_GSHEET_SPREADSHEET_ID?: string;
   ALLOWED_ORIGINS?: string;
-  ENQUIRY_LEAD_EMAIL?: string;
   SITE_PUBLIC_URL?: string;
 };
 
@@ -113,7 +112,7 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
   const demoTitle = demo.title;
   const sessionDateLabel = demo.sessionLabel;
   const site = publicSiteUrl(env, request);
-  const leadTo = normalizeEmail(env.ENQUIRY_LEAD_EMAIL?.trim() || CONTACT_EMAIL);
+  const demoReplyTo = DEMO_CONTACT_EMAIL;
   const visitorDisplay = brevoSafeDisplayName(name, 120) || "Demo attendee";
 
   const sheetResult = await postToDemoGsheetWebhook(webhookUrl, env.DEMO_GSHEET_SPREADSHEET_ID?.trim(), {
@@ -141,8 +140,8 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
   const confirmation = await sendBrevoEmail(env, {
     to: [{ email, name: visitorDisplay }],
     subject: `Your ${demo.title} is confirmed — ${demo.dateDisplay} (${demo.day})`,
-    html: demoConfirmationEmailHtml(name, demo, site),
-    replyTo: { email: leadTo, name: "Nexperts Academy" },
+    html: demoConfirmationEmailHtml(name, demo, site, demoReplyTo),
+    replyTo: { email: demoReplyTo, name: "Nexperts AI" },
   });
 
   if (!confirmation.ok) {
