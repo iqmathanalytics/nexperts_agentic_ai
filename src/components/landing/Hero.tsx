@@ -25,22 +25,22 @@ const Hero = () => {
   return (
     <section
       id="top"
-      className="section-x relative flex min-h-0 items-start overflow-hidden bg-obsidian pb-16 pt-24 sm:min-h-screen sm:pb-24 sm:pt-28 lg:items-center"
+      className="hero-section section-x relative flex min-h-0 items-start overflow-x-hidden overflow-y-visible bg-obsidian pb-16 pt-24 sm:min-h-screen sm:overflow-hidden sm:pb-24 sm:pt-28 lg:items-center"
     >
-      <div className="absolute inset-0 grid-bg hero-grid opacity-90" />
-      <div className="absolute inset-0 hero-aurora opacity-80" />
-      <div className="absolute inset-0 hero-scanlines opacity-55" />
+      <div className="absolute inset-0 grid-bg hero-grid hero-section__bg opacity-90" />
+      <div className="absolute inset-0 hero-aurora hero-section__bg opacity-80" />
+      <div className="absolute inset-0 hero-scanlines hero-section__bg opacity-55" />
       <div
-        className="absolute -top-48 -right-24 w-[600px] h-[600px] rounded-full pointer-events-none hero-orb hero-orb-a"
+        className="absolute -top-48 -right-24 w-[600px] h-[600px] rounded-full pointer-events-none hero-orb hero-orb-a hero-section__bg"
         style={{ background: "radial-gradient(circle, hsl(var(--primary-glow) / 0.18), transparent 65%)" }}
       />
       <div
-        className="absolute -bottom-32 -left-20 w-[500px] h-[500px] rounded-full pointer-events-none hero-orb hero-orb-b"
+        className="absolute -bottom-32 -left-20 w-[500px] h-[500px] rounded-full pointer-events-none hero-orb hero-orb-b hero-section__bg"
         style={{ background: "radial-gradient(circle, hsl(var(--primary) / 0.14), transparent 65%)" }}
       />
-      <div className="hero-bottom-fade" aria-hidden />
+      <div className="hero-bottom-fade hero-section__bg" aria-hidden />
 
-      <div className="relative z-10 grid w-full max-w-6xl grid-cols-1 items-center gap-6 sm:gap-8 lg:grid-cols-[1.18fr_0.82fr] xl:gap-10">
+      <div className="hero-section__content relative z-10 grid w-full max-w-6xl grid-cols-1 items-center gap-6 sm:gap-8 lg:grid-cols-[1.18fr_0.82fr] xl:gap-10">
         <div className="min-w-0">
           <div className="mb-6 flex flex-wrap items-center gap-2.5 sm:mb-7">
             <div
@@ -85,7 +85,7 @@ const Hero = () => {
             production-grade multi-agent AI systems — in 20 intensive sessions.
           </p>
 
-          <div className="mb-8 animate-fade-up sm:mb-9" style={{ animationDelay: ".24s" } as CSSProperties}>
+          <div className="animate-fade-up sm:mb-9" style={{ animationDelay: ".24s" } as CSSProperties}>
             <DemoLaunchCta />
           </div>
 

@@ -1,0 +1,297 @@
+/* Shared demo launch CTA — landing hero + Vibe Coding page */
+.demo-launch-cta-wrap {
+  margin-bottom: 2rem;
+  max-width: 42rem;
+}
+
+.demo-launch-cta {
+  position: relative;
+  z-index: 2;
+  isolation: isolate;
+  mix-blend-mode: normal;
+  opacity: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  overflow: hidden;
+  border-radius: 1rem;
+  border: 1px solid rgba(0, 212, 170, 0.45);
+  text-decoration: none;
+  color: inherit;
+  background: linear-gradient(145deg, rgba(8, 14, 22, 0.98), rgba(13, 20, 32, 0.96) 45%, rgba(10, 18, 28, 0.98));
+  box-shadow:
+    0 0 0 1px rgba(56, 189, 248, 0.12) inset,
+    0 20px 50px -24px rgba(0, 212, 170, 0.45),
+    0 20px 50px -28px rgba(56, 189, 248, 0.35),
+    0 8px 32px -16px rgba(0, 0, 0, 0.65);
+  transition: transform 220ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 220ms ease, border-color 220ms ease;
+}
+
+@media (min-width: 640px) {
+  .demo-launch-cta {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+}
+
+.demo-launch-cta__shine {
+  position: absolute;
+  z-index: 0;
+  top: 0;
+  left: -60%;
+  width: 38%;
+  height: 100%;
+  background: linear-gradient(105deg, transparent, rgba(255, 255, 255, 0.14), transparent);
+  transform: skewX(-16deg);
+  animation: demo-launch-shine 4s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.demo-launch-cta__glow {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 30% 50%, rgba(0, 212, 170, 0.14), transparent 55%),
+    radial-gradient(ellipse at 75% 50%, rgba(56, 189, 248, 0.12), transparent 50%);
+  pointer-events: none;
+  animation: demo-launch-glow-pulse 3.5s ease-in-out infinite;
+}
+
+.demo-launch-cta:hover {
+  opacity: 1;
+  transform: translateY(-2px);
+  border-color: rgba(56, 189, 248, 0.55);
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.1) inset,
+    0 28px 56px -20px rgba(0, 212, 170, 0.55),
+    0 28px 56px -24px rgba(56, 189, 248, 0.45),
+    0 12px 40px -16px rgba(0, 0, 0, 0.7);
+}
+
+.demo-launch-cta:hover .demo-launch-cta__shine {
+  opacity: 0;
+}
+
+.demo-launch-cta__inner {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  flex-direction: column;
+  gap: 0.625rem;
+  padding: 1rem 1.25rem;
+}
+
+.demo-launch-cta__badges {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.demo-launch-cta__live {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  border: 1px solid rgba(0, 212, 170, 0.35);
+  border-radius: 9999px;
+  padding: 0.25rem 0.625rem;
+  font-family: ui-monospace, "Cascadia Code", monospace;
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  background: rgba(0, 212, 170, 0.1);
+  color: #6ee7d6;
+}
+
+.demo-launch-cta__live-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #00d4aa;
+  box-shadow: 0 0 10px rgba(0, 212, 170, 0.9);
+  animation: demo-launch-live-pulse 1.8s ease-in-out infinite;
+}
+
+.demo-launch-cta__seats {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  border-radius: 9999px;
+  padding: 0.125rem 0.5rem;
+  font-family: ui-monospace, "Cascadia Code", monospace;
+  font-size: 0.55rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.demo-launch-cta__headline {
+  margin: 0;
+  font-size: 1.125rem;
+  font-weight: 500;
+  line-height: 1.35;
+  color: #fff;
+}
+
+@media (min-width: 640px) {
+  .demo-launch-cta__headline {
+    font-size: 1.25rem;
+  }
+}
+
+.demo-launch-cta__headline em {
+  font-style: normal;
+  font-weight: 600;
+}
+
+.demo-launch-cta__headline em.em-agentic {
+  color: #00d4aa;
+}
+
+.demo-launch-cta__headline em.em-vibe {
+  color: #38bdf8;
+}
+
+.demo-launch-cta__sub {
+  margin: 0;
+  font-size: 0.8125rem;
+  font-weight: 300;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.demo-launch-cta__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.demo-launch-cta__chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 0.375rem;
+  padding: 0.375rem 0.625rem;
+  font-size: 0.65rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.85);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.demo-launch-cta__chip--agentic {
+  box-shadow: 0 0 20px -10px rgba(0, 212, 170, 0.5);
+}
+
+.demo-launch-cta__chip--vibe {
+  box-shadow: 0 0 20px -10px rgba(56, 189, 248, 0.45);
+}
+
+.demo-launch-cta__chip-icon {
+  font-size: 0.875rem;
+  line-height: 1;
+}
+
+.demo-launch-cta__action {
+  position: relative;
+  z-index: 2;
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  align-self: flex-start;
+  margin: 0 1rem 1rem;
+  padding: 0.875rem 1.25rem;
+  border-radius: 0.75rem;
+  font-family: ui-monospace, "Cascadia Code", monospace;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  background: linear-gradient(135deg, #00d4aa 0%, #14b8a6 40%, #38bdf8 100%);
+  color: #021a14;
+  box-shadow:
+    0 8px 24px -8px rgba(0, 212, 170, 0.65),
+    0 0 0 1px rgba(255, 255, 255, 0.25) inset;
+  transition: box-shadow 220ms ease, filter 220ms ease;
+}
+
+@media (min-width: 640px) {
+  .demo-launch-cta__action {
+    align-self: center;
+    margin: 0 1.25rem 0 0;
+  }
+}
+
+.demo-launch-cta:hover .demo-launch-cta__action {
+  box-shadow:
+    0 12px 32px -6px rgba(0, 212, 170, 0.75),
+    0 8px 24px -8px rgba(56, 189, 248, 0.5),
+    0 0 0 1px rgba(255, 255, 255, 0.35) inset;
+  filter: brightness(1.06);
+}
+
+.demo-launch-cta__arrow {
+  display: inline-block;
+  transition: transform 300ms ease;
+}
+
+.demo-launch-cta:hover .demo-launch-cta__arrow {
+  transform: translateX(4px);
+}
+
+@keyframes demo-launch-shine {
+  0%,
+  78%,
+  100% {
+    left: -60%;
+    opacity: 0;
+  }
+  42% {
+    left: 125%;
+    opacity: 0.65;
+  }
+}
+
+@keyframes demo-launch-glow-pulse {
+  0%,
+  100% {
+    opacity: 0.7;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes demo-launch-live-pulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(0.85);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .demo-launch-cta__shine,
+  .demo-launch-cta__glow,
+  .demo-launch-cta__live-dot {
+    animation: none;
+  }
+
+  .demo-launch-cta:hover {
+    transform: none;
+  }
+}
