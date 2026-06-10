@@ -14,7 +14,7 @@ const Demo = () => {
     if (meta) {
       meta.setAttribute(
         "content",
-        "Free live Agentic AI (8 Jun 2026) and Vibe Coding (12 Jun 2026) demos in Malaysia. Register for 2-hour Microsoft Teams sessions, 8PM–10PM MYT.",
+        "Free live Agentic AI (20 Jun 2026) and Vibe Coding (21 Jun 2026) demos in Malaysia. Register for 2-hour Microsoft Teams sessions, 10AM–12PM MYT.",
       );
     }
 

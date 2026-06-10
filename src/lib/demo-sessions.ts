@@ -24,12 +24,12 @@ export const DEMO_PROGRAMMES: Record<DemoProgramme, DemoProgrammeConfig> = {
     registerLabel: "Register for Agentic AI Demo",
     accentClass: "agentic",
     session: {
-      id: "2026-06-08",
-      dateDisplay: "08.06.2026",
-      day: "Monday",
-      time: "8:00 PM – 10:00 PM",
-      label: "Monday, 8 June 2026 · 8:00 PM – 10:00 PM (MYT)",
-      shortLabel: "8 June 2026",
+      id: "2026-06-20",
+      dateDisplay: "20.06.2026",
+      day: "Saturday",
+      time: "10:00 AM – 12:00 PM",
+      label: "Saturday, 20 June 2026 · 10:00 AM – 12:00 PM (MYT)",
+      shortLabel: "20 June 2026",
     },
   },
   "vibe-coding-demo": {
@@ -38,15 +38,15 @@ export const DEMO_PROGRAMMES: Record<DemoProgramme, DemoProgrammeConfig> = {
     registerLabel: "Register for Vibe Coding Demo",
     accentClass: "vibe",
     session: {
-      id: "2026-06-12",
-      dateDisplay: "12.06.2026",
-      day: "Friday",
-      time: "8:00 PM – 10:00 PM",
-      label: "Friday, 12 June 2026 · 8:00 PM – 10:00 PM (MYT)",
-      shortLabel: "12 June 2026",
+      id: "2026-06-21",
+      dateDisplay: "21.06.2026",
+      day: "Sunday",
+      time: "10:00 AM – 12:00 PM",
+      label: "Sunday, 21 June 2026 · 10:00 AM – 12:00 PM (MYT)",
+      shortLabel: "21 June 2026",
     },
   },
 };
 
-export const DEMO_TIME_SLOT = "8:00 PM – 10:00 PM Malaysian Time";
+export const DEMO_TIME_SLOT = "10:00 AM – 12:00 PM Malaysian Time";
 export const DEMO_SEATS_NOTE = "50 seats · Free · Online via Microsoft Teams";

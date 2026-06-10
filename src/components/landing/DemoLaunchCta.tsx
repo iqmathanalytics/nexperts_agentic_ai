@@ -39,13 +39,13 @@ const DemoLaunchCta = ({ className = "", style }: Props) => (
             <span className="demo-launch-cta__chip-icon" aria-hidden>
               🤖
             </span>
-            Agentic AI · 8 Jun · Mon
+            Agentic AI · 20 Jun · Sat
           </span>
           <span className="demo-launch-cta__chip demo-launch-cta__chip--vibe">
             <span className="demo-launch-cta__chip-icon" aria-hidden>
               ✨
             </span>
-            Vibe Coding · 12 Jun · Fri
+            Vibe Coding · 21 Jun · Sun
           </span>
         </div>
       </div>
