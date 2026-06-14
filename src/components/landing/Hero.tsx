@@ -4,7 +4,7 @@ import {
   AGENTIC_COHORT,
   AGENTIC_COHORT_SCHEDULE_LINE,
   COHORT_SCHEDULE,
-  FIRST_COHORT,
+  FULL_COHORT,
   NEXT_COHORT,
 } from "@/lib/agentic-cohort";
 import { WHATSAPP_HREF } from "@/lib/whatsapp";
@@ -110,7 +110,7 @@ const Hero = () => {
           >
             <aside
               className="pointer-events-none relative z-[2] mb-4 w-full max-w-[14rem] sm:absolute sm:right-0 sm:top-6 sm:mb-0 sm:w-[12.5rem] sm:max-w-[min(100%,calc(100%-0.5rem))] sm:translate-x-[calc(50%+0.3rem)] sm:translate-y-[calc(-50%+2.25rem)] md:w-[13.5rem] md:translate-x-[calc(50%+0.4rem)] md:translate-y-[calc(-50%+2.75rem)]"
-              aria-label={`${FIRST_COHORT.label} full. ${NEXT_COHORT.label} ${NEXT_COHORT.dateRange}. ${AGENTIC_COHORT_SCHEDULE_LINE}`}
+              aria-label={`${FULL_COHORT.label} full. ${NEXT_COHORT.label} ${NEXT_COHORT.dateRange}. ${AGENTIC_COHORT_SCHEDULE_LINE}`}
             >
               <div className="relative">
                 <div className="hero-intake-badge__ornament max-sm:scale-90" aria-hidden>
@@ -121,13 +121,13 @@ const Hero = () => {
                 <div className="hero-intake-badge__panel space-y-2 rounded-lg border border-amber-400/55 bg-gradient-to-br from-[#1c1508] via-[#2a1f0c] to-[#3d2a0a] px-2.5 py-2 shadow-[0_12px_36px_-8px_rgba(0,0,0,0.55),inset_0_1px_0_rgba(255,255,255,0.12)] sm:px-3 sm:py-2.5">
                   <div className="rounded-md border border-white/10 bg-black/20 px-2 py-1.5 opacity-80">
                     <p className="font-mono text-[0.48rem] font-semibold uppercase tracking-wider text-white/45">
-                      {FIRST_COHORT.label}
+                      {FULL_COHORT.label}
                     </p>
                     <p className="mt-0.5 font-mono text-[0.52rem] leading-snug text-white/55 line-through decoration-white/35">
-                      {FIRST_COHORT.dateRange}
+                      {FULL_COHORT.dateRange}
                     </p>
                     <p className="mt-0.5 inline-flex rounded-sm border border-red-400/35 bg-red-500/15 px-1.5 py-0.5 font-mono text-[0.48rem] font-bold uppercase tracking-wider text-red-200">
-                      {FIRST_COHORT.statusLabel}
+                      {FULL_COHORT.statusLabel}
                     </p>
                   </div>
                   <div>
