@@ -10,7 +10,6 @@ import {
 import { WHATSAPP_HREF } from "@/lib/whatsapp";
 import CourseCheckout from "@/components/landing/CourseCheckout";
 import HeroSocialLinks from "@/components/landing/HeroSocialLinks";
-import DemoLaunchCta from "@/components/landing/DemoLaunchCta";
 
 const Hero = () => {
   const [tilt, setTilt] = useState({ x: 0, y: 0 });
@@ -85,8 +84,22 @@ const Hero = () => {
             production-grade multi-agent AI systems — in 20 intensive sessions.
           </p>
 
-          <div className="animate-fade-up sm:mb-9" style={{ animationDelay: ".24s" } as CSSProperties}>
-            <DemoLaunchCta />
+          <div className="mb-7 animate-fade-up sm:mb-8" style={{ animationDelay: ".24s" }}>
+            <a
+              href="/demo"
+              className="group relative inline-flex min-h-[58px] w-full max-w-md items-center justify-center overflow-hidden rounded-2xl border border-primary-glow/45 bg-gradient-to-r from-primary-glow via-success to-[#fde68a] px-5 py-4 text-center font-mono text-[0.72rem] font-black uppercase tracking-[0.16em] text-obsidian shadow-[0_0_34px_-8px_hsl(var(--primary-glow)/0.85)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_0_52px_-6px_hsl(var(--primary-glow)/0.95)] sm:w-auto sm:px-7"
+              aria-label="Run the live Agentic AI demo"
+            >
+              <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/45 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
+              <span className="relative inline-flex items-center gap-2.5">
+                <Bot className="h-4 w-4 shrink-0" />
+                Run Live Agentic AI Demo
+                <ArrowRight className="h-4 w-4 shrink-0 transition-transform group-hover:translate-x-1" />
+              </span>
+            </a>
+            <p className="mt-3 max-w-md text-pretty text-xs leading-6 text-primary-glow/70">
+              Launch a working AI agent and see it think, use tools, and respond live.
+            </p>
           </div>
 
           <div className="mb-10 flex flex-wrap gap-1.5 sm:gap-2 animate-fade-up" style={{ animationDelay: ".3s" }}>
