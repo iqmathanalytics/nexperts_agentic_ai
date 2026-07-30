@@ -169,13 +169,14 @@ const Hero = () => {
             <div className="mb-1 font-mono text-[0.65rem] text-white/25 line-through sm:text-xs">
               International market value: {AGENTIC_COURSE_PRICE.marketValueDisplay}
             </div>
-            <div className="mb-2 flex flex-wrap items-baseline gap-2 max-sm:flex-col max-sm:items-start max-sm:gap-1 sm:gap-3">
-              <span className="font-display text-4xl font-semibold leading-none text-success sm:text-5xl md:text-6xl">
+            <div className="relative z-[3] mb-2 flex flex-nowrap items-end gap-2.5 sm:gap-3 sm:pr-[11rem] md:pr-[13rem]">
+              <span className="shrink-0 whitespace-nowrap font-display text-4xl font-semibold leading-none text-success sm:text-5xl md:text-6xl">
                 {AGENTIC_COURSE_PRICE.display}
               </span>
-              <div className="flex min-w-0 flex-col gap-0.5">
-                <span className="font-mono text-[0.58rem] text-white/30 sm:text-[0.6rem]">{AGENTIC_COURSE_PRICE.sstNote}</span>
-              </div>
+              <span className="inline-flex shrink-0 flex-col font-mono text-[0.55rem] leading-[1.25] text-white/55 sm:text-[0.58rem]">
+                <span>excluding</span>
+                <span>8% SST</span>
+              </span>
             </div>
             <div
               className="mb-2.5 inline-flex max-w-full items-center gap-1.5 rounded-sm px-2 py-1 sm:w-fit sm:px-2.5"

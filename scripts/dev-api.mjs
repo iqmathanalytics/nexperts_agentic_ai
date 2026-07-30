@@ -1,6 +1,6 @@
 /**
- * Local Pages Functions dev — binds .dev.vars webhook URLs so they override
- * stale Cloudflare dashboard secrets (old Apps Script deployment).
+ * Local Pages Functions dev — bind selected .dev.vars so they override stale
+ * Cloudflare dashboard secrets (Stripe price IDs, webhooks, etc.).
  */
 import { readFileSync, existsSync } from "fs";
 import { spawn } from "child_process";
@@ -9,6 +9,18 @@ import { fileURLToPath } from "url";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const devVarsPath = resolve(root, ".dev.vars");
+
+/** Keys that must override remote dashboard values during local dev. */
+const OVERRIDE_KEYS = [
+  "STRIPE_SECRET_KEY",
+  "STRIPE_PRICE_ID",
+  "STRIPE_VIBE_PRICE_ID",
+  "GSHEET_WEBHOOK_URL",
+  "ENQUIRY_GSHEET_WEBHOOK_URL",
+  "PAYMENTS_GSHEET_WEBHOOK_URL",
+  "DEMO_GSHEET_WEBHOOK_URL",
+  "DEMO_GSHEET_SPREADSHEET_ID",
+];
 
 function parseDevVars(content) {
   const out = {};
@@ -25,13 +37,7 @@ function parseDevVars(content) {
 const bindings = [];
 if (existsSync(devVarsPath)) {
   const vars = parseDevVars(readFileSync(devVarsPath, "utf8"));
-  for (const key of [
-    "GSHEET_WEBHOOK_URL",
-    "ENQUIRY_GSHEET_WEBHOOK_URL",
-    "PAYMENTS_GSHEET_WEBHOOK_URL",
-    "DEMO_GSHEET_WEBHOOK_URL",
-    "DEMO_GSHEET_SPREADSHEET_ID",
-  ]) {
+  for (const key of OVERRIDE_KEYS) {
     if (vars[key]) bindings.push("-b", `${key}=${vars[key]}`);
   }
 }
@@ -47,6 +53,6 @@ const args = [
   ...bindings,
 ];
 
-console.log("Starting wrangler pages dev (webhook URLs from .dev.vars bindings)");
+console.log("Starting wrangler pages dev (.dev.vars overrides dashboard Stripe + sheet URLs)");
 const child = spawn("npx", args, { cwd: root, stdio: "inherit", shell: true });
 child.on("exit", (code) => process.exit(code ?? 0));

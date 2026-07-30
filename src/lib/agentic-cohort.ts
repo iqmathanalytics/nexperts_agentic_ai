@@ -2,7 +2,7 @@
 
 export const AGENTIC_COURSE_PRICE = {
   amount: 2500,
-  display: "RM 2,500",
+  display: "RM\u00A02,500",
   marketValueDisplay: "RM 12,000+",
   savingsAmount: 9500,
   savingsDisplay: "RM 9,500",

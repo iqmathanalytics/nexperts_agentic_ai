@@ -137,8 +137,11 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
 
     if (!stripeRes.ok || !stripeJson.url) {
       const msg = stripeJson.error?.message || "Could not start checkout. Please try again later.";
-      console.error("Stripe checkout session failed:", stripeRes.status, msg);
-      return Response.json({ error: msg }, { status: 502, headers: { ...cors, "Content-Type": "application/json" } });
+      console.error("Stripe checkout session failed:", stripeRes.status, msg, "price:", priceId);
+      return Response.json(
+        { error: msg, priceIdSuffix: priceId.slice(-8) },
+        { status: 502, headers: { ...cors, "Content-Type": "application/json" } },
+      );
     }
 
     return Response.json({ url: stripeJson.url }, { status: 200, headers: { ...cors, "Content-Type": "application/json" } });
