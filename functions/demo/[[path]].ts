@@ -4,31 +4,32 @@ type PagesFunctionContext = {
   request: Request;
 };
 
+/**
+ * Upstream demo app is already built with base `/demo/`.
+ * Keep the same pathname so `/demo/assets/...` maps 1:1.
+ */
 function toUpstreamUrl(requestUrl: URL): URL {
   const upstreamUrl = new URL(DEMO_UPSTREAM);
-  const pathAfterDemo = requestUrl.pathname.replace(/^\/demo\/?/, "");
+  const pathname = requestUrl.pathname.replace(/\/+$/, "") || "/demo";
 
-  upstreamUrl.pathname = pathAfterDemo ? `/${pathAfterDemo}` : "/";
+  // /demo -> /demo/ (upstream SPA entry)
+  upstreamUrl.pathname = pathname === "/demo" ? "/demo/" : pathname;
   upstreamUrl.search = requestUrl.search;
 
   return upstreamUrl;
 }
 
-function rewriteHtml(html: string): string {
-  return html
-    .replaceAll('href="/', 'href="/demo/')
-    .replaceAll("href='/", "href='/demo/")
-    .replaceAll('src="/', 'src="/demo/')
-    .replaceAll("src='/", "src='/demo/")
-    .replaceAll('url("/', 'url("/demo/')
-    .replaceAll("url('/", "url('/demo/")
-    .replaceAll('url(/', "url(/demo/");
-}
-
 export const onRequest = async ({ request }: PagesFunctionContext): Promise<Response> => {
   const requestUrl = new URL(request.url);
   const upstreamUrl = toUpstreamUrl(requestUrl);
-  const upstreamRequest = new Request(upstreamUrl.toString(), request);
+
+  const upstreamRequest = new Request(upstreamUrl.toString(), {
+    method: request.method,
+    headers: request.headers,
+    body: request.method === "GET" || request.method === "HEAD" ? undefined : request.body,
+    redirect: "manual",
+  });
+
   const upstreamResponse = await fetch(upstreamRequest);
   const headers = new Headers(upstreamResponse.headers);
 
@@ -38,19 +39,12 @@ export const onRequest = async ({ request }: PagesFunctionContext): Promise<Resp
 
   const location = headers.get("location");
   if (location) {
-    headers.set("location", location.replace(DEMO_UPSTREAM, `${requestUrl.origin}/demo`));
-  }
-
-  const contentType = headers.get("content-type") || "";
-  if (contentType.includes("text/html")) {
-    const html = await upstreamResponse.text();
-    headers.set("content-type", "text/html; charset=utf-8");
-
-    return new Response(rewriteHtml(html), {
-      status: upstreamResponse.status,
-      statusText: upstreamResponse.statusText,
-      headers,
-    });
+    headers.set(
+      "location",
+      location
+        .replace(DEMO_UPSTREAM, requestUrl.origin)
+        .replace(`${requestUrl.origin}/`, `${requestUrl.origin}/`),
+    );
   }
 
   return new Response(upstreamResponse.body, {
