@@ -1,5 +1,9 @@
 {
   "version": 1,
   "include": ["/api/*", "/demo", "/demo/*"],
-  "exclude": ["/assets/*"]
+  "exclude": [
+    "/assets/*",
+    "/demo/nexperts-logo.png",
+    "/nexperts-logo.png"
+  ]
 }

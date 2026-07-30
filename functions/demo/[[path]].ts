@@ -4,6 +4,14 @@ type PagesFunctionContext = {
   request: Request;
 };
 
+function isLikelyStaticAsset(pathname: string): boolean {
+  return /\.(png|jpe?g|gif|webp|svg|ico|css|js|map|woff2?|ttf|txt|json)$/i.test(pathname);
+}
+
+function isHtmlResponse(res: Response): boolean {
+  return (res.headers.get("content-type") || "").includes("text/html");
+}
+
 /**
  * Upstream demo app is built with Vite `base: "/demo/"`.
  * Keep `/demo/...` paths 1:1 with upstream, and collapse any `/demo/demo/...` doubles.
@@ -12,7 +20,6 @@ function toUpstreamUrl(requestUrl: URL): URL {
   const upstreamUrl = new URL(DEMO_UPSTREAM);
   let pathname = requestUrl.pathname;
 
-  // Older proxy versions rewrote /demo/assets -> /demo/demo/assets
   pathname = pathname.replace(/^\/demo\/demo(\/|$)/, "/demo$1");
   pathname = pathname.replace(/\/+$/, "") || "/demo";
   upstreamUrl.pathname = pathname === "/demo" ? "/demo/" : pathname;
@@ -22,34 +29,52 @@ function toUpstreamUrl(requestUrl: URL): URL {
 }
 
 function rewriteHtml(html: string): string {
-  // Undo any doubled prefixes first
   let out = html.replaceAll("/demo/demo/", "/demo/");
-
-  // Prefix only root-absolute paths that are not already under /demo/
   out = out.replace(/(href|src)=(["'])\/(?!demo\/)/g, "$1=$2/demo/");
   out = out.replace(/url\((["']?)\/(?!demo\/)/g, "url($1/demo/");
-
   return out;
 }
 
-export const onRequest = async ({ request }: PagesFunctionContext): Promise<Response> => {
-  const requestUrl = new URL(request.url);
-  const upstreamUrl = toUpstreamUrl(requestUrl);
-
-  const upstreamRequest = new Request(upstreamUrl.toString(), {
+async function fetchUpstream(request: Request, url: URL): Promise<Response> {
+  const upstreamRequest = new Request(url.toString(), {
     method: request.method,
     headers: request.headers,
     body: request.method === "GET" || request.method === "HEAD" ? undefined : request.body,
     redirect: "manual",
   });
 
-  const upstreamResponse = await fetch(upstreamRequest);
+  let upstreamResponse = await fetch(upstreamRequest);
+
+  // Some files (e.g. nexperts-logo.png) live at upstream root, not under /demo/.
+  if (isLikelyStaticAsset(url.pathname) && isHtmlResponse(upstreamResponse)) {
+    const fallbackUrl = new URL(url.toString());
+    fallbackUrl.pathname = url.pathname.replace(/^\/demo/, "") || "/";
+    if (fallbackUrl.pathname !== url.pathname) {
+      const fallbackRes = await fetch(
+        new Request(fallbackUrl.toString(), {
+          method: "GET",
+          headers: request.headers,
+          redirect: "manual",
+        }),
+      );
+      if (!isHtmlResponse(fallbackRes) && fallbackRes.ok) {
+        upstreamResponse = fallbackRes;
+      }
+    }
+  }
+
+  return upstreamResponse;
+}
+
+export const onRequest = async ({ request }: PagesFunctionContext): Promise<Response> => {
+  const requestUrl = new URL(request.url);
+  const upstreamUrl = toUpstreamUrl(requestUrl);
+  const upstreamResponse = await fetchUpstream(request, upstreamUrl);
   const headers = new Headers(upstreamResponse.headers);
 
   headers.delete("content-security-policy");
   headers.delete("content-security-policy-report-only");
   headers.delete("x-frame-options");
-  // Avoid stale HTML/asset mismatches while debugging proxy rewrites
   headers.set("cache-control", "no-store");
 
   const location = headers.get("location");
