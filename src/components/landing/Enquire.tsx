@@ -1,7 +1,7 @@
 import { useState, type FormEvent } from "react";
 import { ArrowRight, Check, Loader2 } from "lucide-react";
 import { toast } from "sonner";
-import { AGENTIC_COHORT_SUMMARY } from "@/lib/agentic-cohort";
+import { AGENTIC_COHORT_SUMMARY, AGENTIC_COURSE_PRICE } from "@/lib/agentic-cohort";
 import { CONTACT_EMAIL, CONTACT_MAILTO } from "@/lib/contact";
 import { GSHEET_WEBHOOK_URL, postToGsheetClient } from "@/lib/gsheet-client";
 import { normalizeMalaysiaPhone } from "@/lib/phone";
@@ -136,7 +136,7 @@ const Enquire = () => {
               AGENTIC_COHORT_SUMMARY,
               "Full curriculum PDF emailed within minutes",
               "Personal call with our programme advisor",
-              "Limited offer price locked in: RM 799 (excluding 8% SST)",
+              `Limited offer price locked in: ${AGENTIC_COURSE_PRICE.display} (${AGENTIC_COURSE_PRICE.sstNote})`,
               "No payment required to enquire",
             ].map((t) => (
               <li key={t} className="flex items-start gap-2.5">

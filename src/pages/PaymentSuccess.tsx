@@ -4,6 +4,7 @@ import { CheckCircle2 } from "lucide-react";
 import Nav from "@/components/landing/Nav";
 import Footer from "@/components/landing/Footer";
 import { trackConversion, trackEvent } from "@/lib/analytics";
+import { AGENTIC_COURSE_PRICE } from "@/lib/agentic-cohort";
 
 const PaymentSuccess = () => {
   const [params] = useSearchParams();
@@ -24,7 +25,7 @@ const PaymentSuccess = () => {
     if (!sessionId) {
       trackConversion("purchase", {
         source: "landing",
-        value: 799,
+        value: AGENTIC_COURSE_PRICE.amount,
         currency: "MYR",
       });
       return;
@@ -46,7 +47,7 @@ const PaymentSuccess = () => {
         setLoggingState("saved");
         trackConversion("purchase", {
           source: "landing",
-          value: 799,
+          value: AGENTIC_COURSE_PRICE.amount,
           currency: "MYR",
           transaction_id: sessionId,
         });

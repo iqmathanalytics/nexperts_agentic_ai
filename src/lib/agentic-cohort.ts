@@ -1,5 +1,14 @@
 /** Agentic AI Engineering — cohort schedule (single source of truth for the landing page). */
 
+export const AGENTIC_COURSE_PRICE = {
+  amount: 2500,
+  display: "RM 2,500",
+  marketValueDisplay: "RM 12,000+",
+  savingsAmount: 9500,
+  savingsDisplay: "RM 9,500",
+  sstNote: "excluding 8% SST",
+} as const;
+
 export const COHORT_SCHEDULE = {
   days: "Mon, Wed, Fri",
   daysPill: "Mon · Wed · Fri",
@@ -18,20 +27,20 @@ export type CohortSlot = {
 
 /** Most recently filled cohort — shown struck-through in the hero badge. */
 export const FULL_COHORT: CohortSlot = {
-  label: "Cohort 2",
-  startDate: "6 July 2026",
-  dateRange: "6 Jul – 21 Aug 2026",
-  dateRangeShort: "6/7 – 21/8",
+  label: "Cohort 3",
+  startDate: "17 August 2026",
+  dateRange: "17 Aug – 2 Oct 2026",
+  dateRangeShort: "17/8 – 2/10",
   status: "full",
   statusLabel: "Full",
 };
 
 /** Active enrolling cohort — checkout, stats pills, and schedule copy. */
 export const NEXT_COHORT: CohortSlot = {
-  label: "Cohort 3",
-  startDate: "17 August 2026",
-  dateRange: "17 Aug – 2 Oct 2026",
-  dateRangeShort: "17/8 – 2/10",
+  label: "Cohort 4",
+  startDate: "28 September 2026",
+  dateRange: "28 Sep – 13 Nov 2026",
+  dateRangeShort: "28/9 – 13/11",
   status: "open",
   statusLabel: "Enrolling",
 };

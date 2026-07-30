@@ -3,6 +3,7 @@ import { ArrowRight, Bot, Calendar, Orbit, Radar, Sparkles } from "lucide-react"
 import {
   AGENTIC_COHORT,
   AGENTIC_COHORT_SCHEDULE_LINE,
+  AGENTIC_COURSE_PRICE,
   COHORT_SCHEDULE,
   FULL_COHORT,
   NEXT_COHORT,
@@ -166,14 +167,14 @@ const Hero = () => {
               Next cohort — Limited seats
             </span>
             <div className="mb-1 font-mono text-[0.65rem] text-white/25 line-through sm:text-xs">
-              International market value: RM 12,000+
+              International market value: {AGENTIC_COURSE_PRICE.marketValueDisplay}
             </div>
             <div className="mb-2 flex flex-wrap items-baseline gap-2 max-sm:flex-col max-sm:items-start max-sm:gap-1 sm:gap-3">
               <span className="font-display text-4xl font-semibold leading-none text-success sm:text-5xl md:text-6xl">
-                RM 799
+                {AGENTIC_COURSE_PRICE.display}
               </span>
               <div className="flex min-w-0 flex-col gap-0.5">
-                <span className="font-mono text-[0.58rem] text-white/30 sm:text-[0.6rem]">excluding 8% SST</span>
+                <span className="font-mono text-[0.58rem] text-white/30 sm:text-[0.6rem]">{AGENTIC_COURSE_PRICE.sstNote}</span>
               </div>
             </div>
             <div
@@ -181,7 +182,7 @@ const Hero = () => {
               style={{ background: "hsl(var(--success) / 0.12)", border: "1px solid hsl(var(--success) / 0.25)" }}
             >
               <span className="text-pretty font-mono text-[0.52rem] font-semibold uppercase tracking-wide text-success sm:text-[0.58rem] sm:tracking-widest">
-                ✦ Limited offer — Save RM 11,201
+                ✦ Limited offer — Save {AGENTIC_COURSE_PRICE.savingsDisplay}
               </span>
             </div>
             <p className="mt-1 border-t border-white/[0.08] pt-2.5 text-xs font-light leading-relaxed text-white/35 text-pretty">

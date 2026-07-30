@@ -1,7 +1,7 @@
 import { useState, type FormEvent } from "react";
 import { ArrowRight, CreditCard, Loader2 } from "lucide-react";
 import { toast } from "sonner";
-import { AGENTIC_COHORT_SUMMARY } from "@/lib/agentic-cohort";
+import { AGENTIC_COHORT_SUMMARY, AGENTIC_COURSE_PRICE } from "@/lib/agentic-cohort";
 import { normalizeMalaysiaPhone } from "@/lib/phone";
 import { trackConversion, trackEvent } from "@/lib/analytics";
 import {
@@ -47,7 +47,7 @@ const CourseCheckout = () => {
     });
     trackConversion("begin_checkout", {
       source: "landing",
-      value: 799,
+      value: AGENTIC_COURSE_PRICE.amount,
       currency: "MYR",
     });
     try {
@@ -103,7 +103,7 @@ const CourseCheckout = () => {
             <DialogTitle className="font-display text-xl text-white">Course checkout</DialogTitle>
             <DialogDescription className="text-white/55">
               Enter the same details we use for your cohort record. {AGENTIC_COHORT_SUMMARY}. You will be redirected to
-              Stripe to complete RM 799 (+ SST). If you close Stripe without paying, you can try again from here.
+              Stripe to complete {AGENTIC_COURSE_PRICE.display} (+ SST). If you close Stripe without paying, you can try again from here.
             </DialogDescription>
           </DialogHeader>
 
