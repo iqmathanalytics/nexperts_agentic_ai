@@ -126,15 +126,27 @@ function resolveProgrammePage_(p) {
   if (p.programme_page) return String(p.programme_page);
   var ch = String(p.channel || "").toLowerCase();
   if (ch.indexOf("vibe") >= 0) return "Vibe Coding";
+  if (ch.indexOf("corporate") >= 0) return "Generative AI Corporate";
+  var course = String(p.course || p.course_key || "").toLowerCase();
+  if (course.indexOf("vibe") >= 0) return "Vibe Coding";
+  if (course.indexOf("corporate") >= 0 || course.indexOf("generative-ai") >= 0) {
+    return "Generative AI Corporate";
+  }
   var src = String(p.source || "").toLowerCase();
   if (src.indexOf("vibe") >= 0 || src.indexOf("vibe%20coding") >= 0) return "Vibe Coding";
+  if (src.indexOf("generative-ai-corporate") >= 0 || src.indexOf("corporate") >= 0) {
+    return "Generative AI Corporate";
+  }
   return "Agentic AI";
 }
 
 function resolveCourse_(p) {
   if (p.course) return String(p.course);
   if (p.course_key) return String(p.course_key);
-  return resolveProgrammePage_(p) === "Vibe Coding" ? "vibe-coding-bootcamp" : "agentic-ai-founding";
+  var page = resolveProgrammePage_(p);
+  if (page === "Vibe Coding") return "vibe-coding-bootcamp";
+  if (page === "Generative AI Corporate") return "generative-ai-corporate";
+  return "agentic-ai-founding";
 }
 
 function resolveDemoTitle_(p) {
@@ -217,6 +229,7 @@ function appendLeadRow_(sheet, p, programmePage, course) {
     program: programmePage,
     course: course,
     coursekey: course,
+    channel: p.channel || "",
   };
   var fallback = [
     receivedAt,

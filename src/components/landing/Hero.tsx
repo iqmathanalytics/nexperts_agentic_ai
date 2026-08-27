@@ -1,5 +1,6 @@
-import { useState, type CSSProperties, type MouseEvent } from "react";
-import { ArrowRight, Bot, Calendar, Orbit, Radar, Sparkles } from "lucide-react";
+import { useRef, type MouseEvent } from "react";
+import { Link } from "react-router-dom";
+import { ArrowRight, Bot, Building2, Calendar, Orbit, Radar, Sparkles } from "lucide-react";
 import {
   AGENTIC_COHORT,
   AGENTIC_COHORT_SCHEDULE_LINE,
@@ -11,32 +12,58 @@ import {
 import { WHATSAPP_HREF } from "@/lib/whatsapp";
 import CourseCheckout from "@/components/landing/CourseCheckout";
 import HeroSocialLinks from "@/components/landing/HeroSocialLinks";
+import { useHeroFxPause } from "@/hooks/useHeroFxPause";
 
 const Hero = () => {
-  const [tilt, setTilt] = useState({ x: 0, y: 0 });
+  const sectionRef = useHeroFxPause<HTMLElement>();
+  const globeRef = useRef<HTMLDivElement>(null);
+  const rafRef = useRef(0);
+  const pendingTilt = useRef({ x: 0, y: 0 });
+
+  const applyTilt = () => {
+    rafRef.current = 0;
+    const el = globeRef.current;
+    if (!el) return;
+    const { x, y } = pendingTilt.current;
+    el.style.setProperty("--hero-tilt-x", `${x}deg`);
+    el.style.setProperty("--hero-tilt-y", `${y}deg`);
+  };
 
   const onMove = (e: MouseEvent<HTMLDivElement>) => {
     const rect = e.currentTarget.getBoundingClientRect();
     const px = (e.clientX - rect.left) / rect.width;
     const py = (e.clientY - rect.top) / rect.height;
-    setTilt({ x: (0.5 - py) * 14, y: (px - 0.5) * 16 });
+    pendingTilt.current = { x: (0.5 - py) * 14, y: (px - 0.5) * 16 };
+    if (!rafRef.current) {
+      rafRef.current = window.requestAnimationFrame(applyTilt);
+    }
+  };
+
+  const onLeave = () => {
+    pendingTilt.current = { x: 0, y: 0 };
+    if (!rafRef.current) {
+      rafRef.current = window.requestAnimationFrame(applyTilt);
+    }
   };
 
   return (
     <section
+      ref={sectionRef}
       id="top"
-      className="hero-section section-x relative flex min-h-0 items-start overflow-x-hidden overflow-y-visible bg-obsidian pb-16 pt-24 sm:min-h-screen sm:overflow-hidden sm:pb-24 sm:pt-28 lg:items-center"
+      className="hero-section section-x relative flex items-start overflow-clip bg-obsidian pb-16 pt-24 sm:min-h-screen sm:pb-24 sm:pt-28 lg:items-center"
     >
-      <div className="absolute inset-0 grid-bg hero-grid hero-section__bg opacity-90" />
-      <div className="absolute inset-0 hero-aurora hero-section__bg opacity-80" />
-      <div className="absolute inset-0 hero-scanlines hero-section__bg opacity-55" />
+      <div className="absolute inset-0 grid-bg hero-grid hero-section__bg opacity-90" aria-hidden />
+      <div className="absolute inset-0 hero-aurora hero-section__bg opacity-80" aria-hidden />
+      <div className="absolute inset-0 hero-scanlines hero-section__bg opacity-55" aria-hidden />
       <div
         className="absolute -top-48 -right-24 w-[600px] h-[600px] rounded-full pointer-events-none hero-orb hero-orb-a hero-section__bg"
         style={{ background: "radial-gradient(circle, hsl(var(--primary-glow) / 0.18), transparent 65%)" }}
+        aria-hidden
       />
       <div
         className="absolute -bottom-32 -left-20 w-[500px] h-[500px] rounded-full pointer-events-none hero-orb hero-orb-b hero-section__bg"
         style={{ background: "radial-gradient(circle, hsl(var(--primary) / 0.14), transparent 65%)" }}
+        aria-hidden
       />
       <div className="hero-bottom-fade hero-section__bg" aria-hidden />
 
@@ -67,6 +94,21 @@ const Hero = () => {
                 Explore
               </span>
             </a>
+            <Link
+              to="/generative-ai-corporate"
+              className="corporate-banner group flex min-h-[52px] w-full max-w-[34rem] flex-col items-stretch justify-between gap-2 rounded-xl px-4 py-2.5 animate-fade-up sm:inline-flex sm:w-auto sm:flex-row sm:items-center"
+              style={{ animationDelay: ".09s" }}
+            >
+              <span className="inline-flex min-w-0 items-center gap-2">
+                <Building2 className="h-4 w-4 shrink-0 text-[#a5f3fc]" />
+                <span className="min-w-0 text-balance font-mono text-[0.62rem] font-semibold uppercase tracking-[0.12em] text-[#ecfeff] sm:text-[0.66rem]">
+                  New: Generative AI Corporate Training Programme
+                </span>
+              </span>
+              <span className="corporate-banner__cta inline-flex w-fit items-center self-start rounded-md px-3 py-1 text-[0.56rem] font-semibold uppercase tracking-[0.13em] text-[#042f2e] sm:self-auto">
+                Explore
+              </span>
+            </Link>
           </div>
 
           <h1
@@ -223,15 +265,10 @@ const Hero = () => {
 
         <div className="hidden lg:flex justify-center min-w-0">
           <div
+            ref={globeRef}
             className="hero-globe-scene hero-globe-real reveal in"
             onMouseMove={onMove}
-            onMouseLeave={() => setTilt({ x: 0, y: 0 })}
-            style={
-              {
-                "--hero-tilt-x": `${tilt.x}deg`,
-                "--hero-tilt-y": `${tilt.y}deg`,
-              } as CSSProperties
-            }
+            onMouseLeave={onLeave}
           >
             <div className="hero-earth-atmosphere" />
             <div className="hero-earth">

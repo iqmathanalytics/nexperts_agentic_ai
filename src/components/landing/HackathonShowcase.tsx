@@ -8,6 +8,7 @@ const AUTO_MS = 3000;
 const HackathonShowcase = () => {
   const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
+  const [inView, setInView] = useState(true);
   const total = HACKATHON_SLIDES.length;
 
   const go = useCallback(
@@ -18,19 +19,30 @@ const HackathonShowcase = () => {
   );
 
   useEffect(() => {
-    if (paused || total <= 1) return;
+    const section = document.getElementById("hackathon");
+    if (!section || typeof IntersectionObserver === "undefined") return;
+    const io = new IntersectionObserver(
+      ([entry]) => setInView(entry.isIntersecting),
+      { rootMargin: "120px 0px", threshold: 0.05 },
+    );
+    io.observe(section);
+    return () => io.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (paused || !inView || total <= 1) return;
     const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (prefersReduced) return;
     const id = window.setInterval(() => go(1), AUTO_MS);
     return () => window.clearInterval(id);
-  }, [paused, go, total]);
+  }, [paused, inView, go, total]);
 
   const slide = HACKATHON_SLIDES[index];
 
   return (
     <section
       id="hackathon"
-      className="section-x relative overflow-hidden border-t border-border bg-obsidian py-14 md:py-20"
+      className="section-x perf-cv relative overflow-hidden border-t border-border bg-obsidian py-14 md:py-20"
       aria-labelledby="hackathon-heading"
     >
       <div

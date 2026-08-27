@@ -24,24 +24,29 @@ export const useLandingAnalytics = () => {
     const pageStartMs = Date.now();
     let maxDepth = 0;
     let timeOnPageSent = false;
+    let scrollRaf = 0;
 
     const onScroll = () => {
-      const doc = document.documentElement;
-      const scrollTop = window.scrollY || doc.scrollTop || 0;
-      const totalScrollable = doc.scrollHeight - window.innerHeight;
-      if (totalScrollable <= 0) return;
+      if (scrollRaf) return;
+      scrollRaf = window.requestAnimationFrame(() => {
+        scrollRaf = 0;
+        const doc = document.documentElement;
+        const scrollTop = window.scrollY || doc.scrollTop || 0;
+        const totalScrollable = doc.scrollHeight - window.innerHeight;
+        if (totalScrollable <= 0) return;
 
-      const depth = Math.min(100, Math.round((scrollTop / totalScrollable) * 100));
-      if (depth > maxDepth) maxDepth = depth;
+        const depth = Math.min(100, Math.round((scrollTop / totalScrollable) * 100));
+        if (depth > maxDepth) maxDepth = depth;
 
-      SCROLL_MILESTONES.forEach((milestone) => {
-        if (depth >= milestone && !fired.has(milestone)) {
-          fired.add(milestone);
-          trackEvent("scroll_depth", {
-            page: "landing",
-            percent: milestone,
-          });
-        }
+        SCROLL_MILESTONES.forEach((milestone) => {
+          if (depth >= milestone && !fired.has(milestone)) {
+            fired.add(milestone);
+            trackEvent("scroll_depth", {
+              page: "landing",
+              percent: milestone,
+            });
+          }
+        });
       });
     };
 
@@ -84,6 +89,7 @@ export const useLandingAnalytics = () => {
     window.addEventListener("beforeunload", onBeforeUnload);
 
     return () => {
+      if (scrollRaf) window.cancelAnimationFrame(scrollRaf);
       window.removeEventListener("scroll", onScroll);
       document.removeEventListener("click", onClick);
       document.removeEventListener("visibilitychange", onVisibilityChange);

@@ -162,6 +162,73 @@
     animation: grid-drift 16s linear infinite;
   }
 
+  .hero-aurora {
+    background:
+      radial-gradient(circle at 18% 22%, hsl(var(--primary-glow) / 0.26), transparent 52%),
+      radial-gradient(circle at 78% 26%, hsl(var(--primary) / 0.2), transparent 50%),
+      radial-gradient(circle at 58% 74%, hsl(var(--success) / 0.1), transparent 42%);
+    /* Soft glow without live blur filters (blur forces continuous GPU repaint) */
+    transform: translateZ(0);
+    animation: aurora-drift 14s ease-in-out infinite alternate;
+  }
+
+  .hero-scanlines {
+    background: repeating-linear-gradient(
+      to bottom,
+      transparent 0px,
+      transparent 3px,
+      hsl(var(--primary-glow) / 0.045) 4px
+    );
+    mix-blend-mode: screen;
+    animation: scanline-shift 7s linear infinite;
+    transform: translateZ(0);
+  }
+
+  .hero-laser {
+    background: linear-gradient(90deg, transparent, hsl(var(--primary-glow) / 0.7), transparent);
+    animation: laser-sweep 4.5s linear infinite;
+  }
+
+  .hero-orb {
+    animation: orb-float 10s ease-in-out infinite;
+    transform: translateZ(0);
+    contain: layout paint;
+  }
+
+  .hero-orb-b {
+    animation-delay: -4s;
+  }
+
+  /* Pause decorative loops while scrolled past / tab hidden — UI unchanged when visible */
+  .hero-section.hero-fx-paused .hero-grid,
+  .hero-section.hero-fx-paused .hero-aurora,
+  .hero-section.hero-fx-paused .hero-scanlines,
+  .hero-section.hero-fx-paused .hero-orb,
+  .hero-section.hero-fx-paused .hero-earth-map,
+  .hero-section.hero-fx-paused .hero-earth-clouds,
+  .hero-section.hero-fx-paused .hero-earth-night,
+  .hero-section.hero-fx-paused .hero-earth-atmosphere,
+  .hero-section.hero-fx-paused .hero-orbit,
+  .hero-section.hero-fx-paused .hero-bot-card,
+  .hero-section.hero-fx-paused .vibe-banner::before,
+  .hero-section.hero-fx-paused .corporate-banner::before,
+  .hero-section.hero-fx-paused .cta-pay-high,
+  .hero-section.hero-fx-paused .cta-pay-high::before,
+  .hero-section.hero-fx-paused .cta-pay-high::after,
+  .hero-section.hero-fx-paused .cta-medium,
+  .hero-section.hero-fx-paused .hero-intake-badge__gem,
+  .hero-section.hero-fx-paused .hero-social__link::before,
+  .hero-section.hero-fx-paused .nav-academy-link::before {
+    animation-play-state: paused !important;
+  }
+
+  .hero-section__bg {
+    pointer-events: none;
+    contain: paint;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+  }
+
   /* Hero → light sections: soft fade (replaces ellipse arch) */
   .hero-bottom-fade {
     pointer-events: none;
@@ -185,39 +252,6 @@
     }
   }
 
-  .hero-aurora {
-    background:
-      radial-gradient(circle at 18% 22%, hsl(var(--primary-glow) / 0.26), transparent 52%),
-      radial-gradient(circle at 78% 26%, hsl(var(--primary) / 0.2), transparent 50%),
-      radial-gradient(circle at 58% 74%, hsl(var(--success) / 0.1), transparent 42%);
-    filter: blur(2px);
-    animation: aurora-drift 14s ease-in-out infinite alternate;
-  }
-
-  .hero-scanlines {
-    background: repeating-linear-gradient(
-      to bottom,
-      transparent 0px,
-      transparent 3px,
-      hsl(var(--primary-glow) / 0.045) 4px
-    );
-    mix-blend-mode: screen;
-    animation: scanline-shift 7s linear infinite;
-  }
-
-  .hero-laser {
-    background: linear-gradient(90deg, transparent, hsl(var(--primary-glow) / 0.7), transparent);
-    animation: laser-sweep 4.5s linear infinite;
-  }
-
-  .hero-orb {
-    animation: orb-float 10s ease-in-out infinite;
-  }
-
-  .hero-orb-b {
-    animation-delay: -4s;
-  }
-
   .hero-globe-scene {
     --hero-tilt-x: 0deg;
     --hero-tilt-y: 0deg;
@@ -228,6 +262,7 @@
     transform: rotateX(var(--hero-tilt-x)) rotateY(var(--hero-tilt-y));
     transition: transform 240ms ease-out;
     filter: drop-shadow(0 20px 64px hsl(var(--primary-glow) / 0.26));
+    contain: layout style;
   }
 
   .hero-globe-real {
@@ -239,9 +274,9 @@
     inset: 8%;
     border-radius: 999px;
     background:
-      radial-gradient(circle, hsl(var(--primary-glow) / 0.2), transparent 65%);
-    filter: blur(3px);
+      radial-gradient(circle, hsl(var(--primary-glow) / 0.28), transparent 68%);
     animation: halo-breathe 4s ease-in-out infinite;
+    transform: translateZ(0);
   }
 
   .hero-earth {
@@ -487,6 +522,46 @@
     box-shadow: 0 6px 16px -7px rgba(252, 211, 77, 0.95);
   }
 
+  /* Hero micro-banner for Generative AI Corporate Training */
+  .corporate-banner {
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(34, 211, 238, 0.55);
+    background:
+      linear-gradient(130deg, rgba(4, 47, 46, 0.98), rgba(8, 51, 68, 0.95), rgba(14, 116, 144, 0.88));
+    box-shadow:
+      0 0 0 1px rgba(255, 255, 255, 0.14) inset,
+      0 14px 30px -14px rgba(6, 182, 212, 0.85),
+      0 0 30px -6px rgba(34, 211, 238, 0.55);
+    transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+  }
+
+  .corporate-banner::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -54%;
+    width: 44%;
+    height: 100%;
+    background: linear-gradient(105deg, transparent, rgba(236, 254, 255, 0.72), transparent);
+    transform: skewX(-18deg);
+    animation: vibe-sweep 2.6s linear infinite;
+  }
+
+  .corporate-banner:hover {
+    transform: translateY(-1px);
+    border-color: rgba(165, 243, 252, 0.88);
+    box-shadow:
+      0 0 0 1px rgba(255, 255, 255, 0.18) inset,
+      0 16px 32px -12px rgba(8, 145, 178, 0.9),
+      0 0 36px -2px rgba(103, 232, 249, 0.75);
+  }
+
+  .corporate-banner__cta {
+    background: linear-gradient(140deg, #a5f3fc, #22d3ee, #06b6d4);
+    box-shadow: 0 6px 16px -7px rgba(34, 211, 238, 0.85);
+  }
+
   /* One-pass visual upgrade across landing sections/cards */
   section.bg-paper,
   section.bg-obsidian {
@@ -520,6 +595,12 @@
 
   .reveal.in {
     animation: section-fade-lift 720ms var(--ease-cinema) both;
+  }
+
+  /* Heavy below-fold blocks only — avoids breaking #anchor scroll targets site-wide */
+  .perf-cv {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 900px;
   }
 }
 
@@ -705,8 +786,7 @@
 /* Mobile hero — fix scroll glitches (blend layers + fade-up transforms); desktop unchanged */
 @media (max-width: 639px) {
   .hero-section {
-    overflow-x: clip;
-    overflow-y: visible;
+    overflow: clip;
   }
 
   .hero-section__bg {
@@ -717,10 +797,20 @@
   .hero-section .hero-scanlines {
     mix-blend-mode: normal;
     opacity: 0.28;
+    animation: none;
   }
 
   .hero-section .hero-aurora {
     filter: none;
+    animation: none;
+  }
+
+  .hero-section .hero-grid {
+    animation: none;
+  }
+
+  .hero-section .hero-orb {
+    animation: none;
   }
 
   .hero-section__content {

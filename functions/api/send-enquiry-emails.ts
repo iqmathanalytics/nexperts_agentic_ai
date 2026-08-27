@@ -289,6 +289,29 @@ function leadNotificationHtmlVibe(name: string, email: string, phone: string, me
 </body></html>`;
 }
 
+function leadNotificationHtmlCorporate(name: string, email: string, phone: string, message: string, source: string): string {
+  const m = message.trim() ? escapeHtml(message).replace(/\n/g, "<br/>") : "<span style=\"color:#888\">(none)</span>";
+  return `<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8" /></head>
+<body style="margin:0;padding:24px;background:#f4f4f5;font-family:Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:#111827;">
+  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width:560px;margin:0 auto;background:#fff;border:1px solid #e5e7eb;border-radius:8px;">
+    <tr><td style="padding:20px 24px;border-bottom:1px solid #e5e7eb;">
+      <div style="font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:#6b7280;">New lead</div>
+      <h1 style="margin:8px 0 0;font-size:20px;">Generative AI Corporate enquiry</h1>
+    </td></tr>
+    <tr><td style="padding:20px 24px;font-size:14px;line-height:1.65;">
+      <p style="margin:0 0 8px;"><strong>Name:</strong> ${escapeHtml(name)}</p>
+      <p style="margin:0 0 8px;"><strong>Email:</strong> <a href="mailto:${escapeHtml(email)}">${escapeHtml(email)}</a></p>
+      <p style="margin:0 0 8px;"><strong>Phone:</strong> ${escapeHtml(phone)}</p>
+      <p style="margin:0 0 8px;"><strong>Programme:</strong> Generative AI for Workplace Productivity &amp; Business Automation</p>
+      <p style="margin:0 0 8px;"><strong>Source:</strong> ${escapeHtml(source)}</p>
+      <p style="margin:16px 0 0;"><strong>Message:</strong></p>
+      <div style="margin-top:8px;padding:12px;background:#f9fafb;border-radius:6px;border:1px solid #e5e7eb;">${m}</div>
+    </td></tr>
+  </table>
+</body></html>`;
+}
+
 type BrevoRecipient = { email: string; name?: string };
 
 async function sendBrevoEmail(
@@ -388,7 +411,12 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
 
   const site = publicSiteUrl(env, request);
   const isVibe = course === "vibe-coding-bootcamp" || channel === "vibe_page";
-  const courseKey = isVibe ? "vibe-coding-bootcamp" : "agentic-ai-founding";
+  const isCorporate = course === "generative-ai-corporate" || channel === "corporate_page";
+  const courseKey = isVibe
+    ? "vibe-coding-bootcamp"
+    : isCorporate
+      ? "generative-ai-corporate"
+      : "agentic-ai-founding";
   const programmePage =
     String(body.programmePage || "").trim().slice(0, 80) || programmePageFromCourse(courseKey);
   const leadTo = normalizeEmail(env.ENQUIRY_LEAD_EMAIL?.trim() || CONTACT_EMAIL);
@@ -424,12 +452,12 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
       name,
       phone: phoneForGsheet(phone),
       email,
-      message: message || (isVibe ? "Vibe Coding page enquiry" : "Agentic AI page enquiry"),
+      message: message || (isVibe ? "Vibe Coding page enquiry" : isCorporate ? "Generative AI Corporate page enquiry" : "Agentic AI page enquiry"),
       submittedAt: new Date().toISOString(),
       source,
       programmePage,
       course: courseKey,
-      channel: channel || (isVibe ? "vibe_page" : "agentic_page"),
+      channel: channel || (isVibe ? "vibe_page" : isCorporate ? "corporate_page" : "agentic_page"),
     }).catch(() => ({ ok: false, status: 0, body: "", json: null }));
     sheetLogged = sheetResult.ok;
     sheetProgrammePage = sheetResult.json?.programmePage;
@@ -453,12 +481,20 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
     );
   }
 
+  const programmeLabel = isVibe
+    ? "Vibe Coding"
+    : isCorporate
+      ? "Generative AI Corporate"
+      : "Agentic AI";
+
   const lead = await sendBrevoEmail(env, {
     to: [{ email: leadTo, name: "Admissions" }],
-    subject: `New enquiry (${isVibe ? "Vibe Coding" : "Agentic AI"}): ${asciiSubjectFragment(name) || "Website"}`,
+    subject: `New enquiry (${programmeLabel}): ${asciiSubjectFragment(name) || "Website"}`,
     html: isVibe
       ? leadNotificationHtmlVibe(name, email, phone, message, source)
-      : leadNotificationHtmlMain(name, email, phone, message, source),
+      : isCorporate
+        ? leadNotificationHtmlCorporate(name, email, phone, message, source)
+        : leadNotificationHtmlMain(name, email, phone, message, source),
     replyTo: { email, name: visitorDisplay },
   });
 
