@@ -1,17 +1,10 @@
-import { useEffect } from "react";
+import { lazy, Suspense, useEffect } from "react";
 import Nav from "@/components/landing/Nav";
 import Hero from "@/components/landing/Hero";
 import Stats from "@/components/landing/Stats";
-import HackathonShowcase from "@/components/landing/HackathonShowcase";
-import LiveDemoSection from "@/components/landing/LiveDemoSection";
-import WhoCanJoin from "@/components/landing/WhoCanJoin";
-import Objectives from "@/components/landing/Objectives";
-import Curriculum from "@/components/landing/Curriculum";
-import Outcomes from "@/components/landing/Outcomes";
-import About from "@/components/landing/About";
-import FAQ from "@/components/landing/FAQ";
 import Enquire from "@/components/landing/Enquire";
 import Footer from "@/components/landing/Footer";
+import { LazyWhenVisible } from "@/components/perf/LazyWhenVisible";
 import { useReveal } from "@/hooks/useReveal";
 import { useLandingAnalytics } from "@/hooks/useLandingAnalytics";
 import {
@@ -20,6 +13,19 @@ import {
   LANDING_PAGE_TITLE,
   LANDING_ROBOTS,
 } from "@/lib/landing-seo";
+
+const HackathonShowcase = lazy(() => import("@/components/landing/HackathonShowcase"));
+const LiveDemoSection = lazy(() => import("@/components/landing/LiveDemoSection"));
+const WhoCanJoin = lazy(() => import("@/components/landing/WhoCanJoin"));
+const Objectives = lazy(() => import("@/components/landing/Objectives"));
+const Curriculum = lazy(() => import("@/components/landing/Curriculum"));
+const Outcomes = lazy(() => import("@/components/landing/Outcomes"));
+const About = lazy(() => import("@/components/landing/About"));
+const FAQ = lazy(() => import("@/components/landing/FAQ"));
+
+const SectionFallback = ({ h = 420 }: { h?: number }) => (
+  <div className="w-full bg-transparent" style={{ minHeight: h }} aria-hidden />
+);
 
 const Index = () => {
   useReveal();
@@ -73,14 +79,56 @@ const Index = () => {
       <main className="min-w-0 overflow-x-hidden">
         <Hero />
         <Stats />
-        <HackathonShowcase />
-        <LiveDemoSection />
-        <WhoCanJoin />
-        <Objectives />
-        <Curriculum />
-        <Outcomes />
-        <About />
-        <FAQ />
+
+        <LazyWhenVisible minHeight={560} rootMargin="280px 0px">
+          <Suspense fallback={<SectionFallback h={560} />}>
+            <HackathonShowcase />
+          </Suspense>
+        </LazyWhenVisible>
+
+        <LazyWhenVisible minHeight={720} rootMargin="280px 0px">
+          <Suspense fallback={<SectionFallback h={720} />}>
+            <LiveDemoSection />
+          </Suspense>
+        </LazyWhenVisible>
+
+        <LazyWhenVisible minHeight={480}>
+          <Suspense fallback={<SectionFallback />}>
+            <WhoCanJoin />
+          </Suspense>
+        </LazyWhenVisible>
+
+        <LazyWhenVisible minHeight={480}>
+          <Suspense fallback={<SectionFallback />}>
+            <Objectives />
+          </Suspense>
+        </LazyWhenVisible>
+
+        <LazyWhenVisible minHeight={520}>
+          <Suspense fallback={<SectionFallback h={520} />}>
+            <Curriculum />
+          </Suspense>
+        </LazyWhenVisible>
+
+        <LazyWhenVisible minHeight={420}>
+          <Suspense fallback={<SectionFallback />}>
+            <Outcomes />
+          </Suspense>
+        </LazyWhenVisible>
+
+        <LazyWhenVisible minHeight={520}>
+          <Suspense fallback={<SectionFallback h={520} />}>
+            <About />
+          </Suspense>
+        </LazyWhenVisible>
+
+        <LazyWhenVisible minHeight={480}>
+          <Suspense fallback={<SectionFallback />}>
+            <FAQ />
+          </Suspense>
+        </LazyWhenVisible>
+
+        {/* Keep enquire in the initial tree so #enquire CTAs always resolve */}
         <Enquire />
       </main>
       <Footer />

@@ -27,20 +27,20 @@ export type CohortSlot = {
 
 /** Most recently filled cohort — shown struck-through in the hero badge. */
 export const FULL_COHORT: CohortSlot = {
-  label: "Cohort 3",
-  startDate: "17 August 2026",
-  dateRange: "17 Aug – 2 Oct 2026",
-  dateRangeShort: "17/8 – 2/10",
+  label: "Cohort 4",
+  startDate: "28 September 2026",
+  dateRange: "28 Sep – 13 Nov 2026",
+  dateRangeShort: "28/9 – 13/11",
   status: "full",
   statusLabel: "Full",
 };
 
 /** Active enrolling cohort — checkout, stats pills, and schedule copy. */
 export const NEXT_COHORT: CohortSlot = {
-  label: "Cohort 4",
-  startDate: "28 September 2026",
-  dateRange: "28 Sep – 13 Nov 2026",
-  dateRangeShort: "28/9 – 13/11",
+  label: "Cohort 5",
+  startDate: "26 October 2026",
+  dateRange: "26 Oct – 11 Dec 2026",
+  dateRangeShort: "26/10 – 11/12",
   status: "open",
   statusLabel: "Enrolling",
 };

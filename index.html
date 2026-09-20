@@ -30,6 +30,22 @@
     />
     <meta name="twitter:image" content="/favicon.svg" />
 
+    <!-- Fonts: minimal weights, non-blocking (critical for hard-refresh FCP) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Poppins:wght@400;600;700&display=swap"
+      media="print"
+      onload="this.media='all'"
+    />
+    <noscript>
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Poppins:wght@400;600;700&display=swap"
+      />
+    </noscript>
+
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -98,14 +114,28 @@
       }
     </script>
 
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-KNCRXRJ85Q"></script>
+    <!-- Google Analytics — deferred until idle so it never blocks first paint -->
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       window.gtag = gtag;
-      gtag('js', new Date());
-      gtag('config', 'G-KNCRXRJ85Q');
+      function loadGa() {
+        if (window.__gaLoaded) return;
+        window.__gaLoaded = true;
+        var s = document.createElement('script');
+        s.async = true;
+        s.src = 'https://www.googletagmanager.com/gtag/js?id=G-KNCRXRJ85Q';
+        s.onload = function () {
+          gtag('js', new Date());
+          gtag('config', 'G-KNCRXRJ85Q', { send_page_view: true });
+        };
+        document.head.appendChild(s);
+      }
+      if ('requestIdleCallback' in window) {
+        requestIdleCallback(loadGa, { timeout: 8000 });
+      } else {
+        window.addEventListener('load', function () { setTimeout(loadGa, 2500); });
+      }
     </script>
   </head>
 

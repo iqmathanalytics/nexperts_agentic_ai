@@ -2,7 +2,7 @@
   X-Content-Type-Options: nosniff
 
 /assets/*
-  Cache-Control: public, max-age=3600, must-revalidate
+  Cache-Control: public, max-age=31536000, immutable
   X-Content-Type-Options: nosniff
 
 /assets/*.css
@@ -10,3 +10,18 @@
 
 /assets/*.js
   Content-Type: application/javascript; charset=utf-8
+
+/hackathon/*
+  Cache-Control: public, max-age=604800, stale-while-revalidate=86400
+
+/hackathon/thumbs/*
+  Cache-Control: public, max-age=2592000, immutable
+
+/*.png
+  Cache-Control: public, max-age=604800
+
+/*.svg
+  Cache-Control: public, max-age=604800
+
+/*.ico
+  Cache-Control: public, max-age=604800

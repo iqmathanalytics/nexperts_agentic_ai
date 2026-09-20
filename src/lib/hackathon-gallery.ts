@@ -25,10 +25,16 @@ export const HACKATHON_EVENT = {
 
 export type HackathonSlide = {
   src: string;
+  thumb: string;
   alt: string;
 };
 
-export const HACKATHON_SLIDES: HackathonSlide[] = HACKATHON_FILES.map((file, index) => ({
-  src: `/hackathon/${encodeURIComponent(file)}`,
-  alt: `${HACKATHON_EVENT.name} — ${HACKATHON_EVENT.chapter}, ${HACKATHON_EVENT.location}. Photo ${index + 1}.`,
-}));
+export const HACKATHON_SLIDES: HackathonSlide[] = HACKATHON_FILES.map((file, index) => {
+  const encoded = encodeURIComponent(file);
+  const thumbFile = file.replace(/\.jpe?g$/i, ".jpg");
+  return {
+    src: `/hackathon/${encoded}`,
+    thumb: `/hackathon/thumbs/${encodeURIComponent(thumbFile)}`,
+    alt: `${HACKATHON_EVENT.name} — ${HACKATHON_EVENT.chapter}, ${HACKATHON_EVENT.location}. Photo ${index + 1}.`,
+  };
+});

@@ -1,41 +1,54 @@
 import { useCallback, useEffect, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
 import { ChevronLeft, ChevronRight, MapPin, Sparkles, Trophy } from "lucide-react";
 import { HACKATHON_EVENT, HACKATHON_SLIDES } from "@/lib/hackathon-gallery";
 
-const AUTO_MS = 3000;
+const AUTO_MS = 5500;
 
 const HackathonShowcase = () => {
   const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
-  const [inView, setInView] = useState(true);
+  const [inView, setInView] = useState(false);
+  const [autoplayReady, setAutoplayReady] = useState(false);
   const total = HACKATHON_SLIDES.length;
 
   const go = useCallback(
     (delta: number) => {
       setIndex((i) => (i + delta + total) % total);
     },
-    [total]
+    [total],
   );
 
   useEffect(() => {
     const section = document.getElementById("hackathon");
-    if (!section || typeof IntersectionObserver === "undefined") return;
+    if (!section || typeof IntersectionObserver === "undefined") {
+      setInView(true);
+      return;
+    }
     const io = new IntersectionObserver(
       ([entry]) => setInView(entry.isIntersecting),
-      { rootMargin: "120px 0px", threshold: 0.05 },
+      { rootMargin: "80px 0px", threshold: 0.12 },
     );
     io.observe(section);
     return () => io.disconnect();
   }, []);
 
+  // Delay autoplay so hard-refresh / PSI don't cycle through every full image.
   useEffect(() => {
-    if (paused || !inView || total <= 1) return;
+    if (!inView) {
+      setAutoplayReady(false);
+      return;
+    }
+    const id = window.setTimeout(() => setAutoplayReady(true), 4000);
+    return () => window.clearTimeout(id);
+  }, [inView]);
+
+  useEffect(() => {
+    if (paused || !inView || !autoplayReady || total <= 1) return;
     const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (prefersReduced) return;
     const id = window.setInterval(() => go(1), AUTO_MS);
     return () => window.clearInterval(id);
-  }, [paused, inView, go, total]);
+  }, [paused, inView, autoplayReady, go, total]);
 
   const slide = HACKATHON_SLIDES[index];
 
@@ -110,20 +123,22 @@ const HackathonShowcase = () => {
         >
           <div className="hackathon-stage relative overflow-hidden rounded-2xl border border-white/10 bg-black/40 shadow-[0_24px_60px_-20px_rgba(0,0,0,0.65)] ring-1 ring-primary-glow/15 md:rounded-3xl">
             <div className="relative aspect-[16/10] w-full sm:aspect-[5/3]">
-              <AnimatePresence mode="wait" initial={false}>
-                <motion.img
+              {inView ? (
+                <img
                   key={slide.src}
                   src={slide.src}
                   alt={slide.alt}
-                  className="absolute inset-0 h-full w-full object-cover"
-                  initial={{ opacity: 0, scale: 1.04 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 1.02 }}
-                  transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+                  width={1100}
+                  height={700}
+                  sizes="(max-width: 768px) 100vw, 560px"
+                  className="absolute inset-0 h-full w-full object-cover transition-opacity duration-500"
                   loading={index === 0 ? "eager" : "lazy"}
                   decoding="async"
+                  fetchPriority="low"
                 />
-              </AnimatePresence>
+              ) : (
+                <div className="absolute inset-0 bg-gradient-to-br from-zinc-900 to-black" aria-hidden />
+              )}
 
               <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-obsidian via-obsidian/25 to-transparent" />
               <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-obsidian/50 via-transparent to-transparent" />
@@ -179,7 +194,20 @@ const HackathonShowcase = () => {
                     aria-label={`Show photo ${i + 1} of ${total}`}
                     aria-current={i === index ? "true" : undefined}
                   >
-                    <img src={s.src} alt="" className="h-full w-full object-cover" loading="lazy" />
+                    {/* Tiny thumbs only — mount after section is visible so hard-refresh stays light */}
+                    {inView ? (
+                      <img
+                        src={s.thumb}
+                        alt=""
+                        width={160}
+                        height={100}
+                        className="h-full w-full object-cover"
+                        loading="lazy"
+                        decoding="async"
+                      />
+                    ) : (
+                      <span className="block h-full w-full bg-white/5" aria-hidden />
+                    )}
                   </button>
                 ))}
               </div>

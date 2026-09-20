@@ -1,24 +1,24 @@
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { lazy, Suspense } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import RouteAnalytics from "@/components/analytics/RouteAnalytics";
+import { RouteFallback } from "@/components/perf/LazyWhenVisible";
 import Index from "./pages/Index.tsx";
-import GenerativeAiCorporate from "./pages/GenerativeAiCorporate.tsx";
-import NotFound from "./pages/NotFound.tsx";
-import PaymentSuccess from "./pages/PaymentSuccess.tsx";
-import PaymentCancel from "./pages/PaymentCancel.tsx";
 
-const queryClient = new QueryClient();
+const GenerativeAiCorporate = lazy(() => import("./pages/GenerativeAiCorporate.tsx"));
+const PaymentSuccess = lazy(() => import("./pages/PaymentSuccess.tsx"));
+const PaymentCancel = lazy(() => import("./pages/PaymentCancel.tsx"));
+const NotFound = lazy(() => import("./pages/NotFound.tsx"));
 
 const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <RouteAnalytics />
+  <TooltipProvider delayDuration={300}>
+    <Toaster />
+    <Sonner />
+    <BrowserRouter>
+      <RouteAnalytics />
+      <Suspense fallback={<RouteFallback />}>
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/generative-ai-corporate" element={<GenerativeAiCorporate />} />
@@ -27,9 +27,9 @@ const App = () => (
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
+      </Suspense>
+    </BrowserRouter>
+  </TooltipProvider>
 );
 
 export default App;

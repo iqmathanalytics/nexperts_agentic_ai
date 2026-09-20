@@ -14,7 +14,7 @@ export default {
       fontFamily: {
         sans: ['Poppins', '"Helvetica Neue"', 'Inter', 'system-ui', 'sans-serif'],
         display: ['"GT Super"', 'Recoleta', '"Cormorant Garamond"', 'Georgia', 'serif'],
-        mono: ['"JetBrains Mono"', 'monospace'],
+        mono: ['ui-monospace', 'Cascadia Code', 'Segoe UI Mono', 'Menlo', 'Consolas', 'monospace'],
       },
       colors: {
         border: "hsl(var(--border))",
