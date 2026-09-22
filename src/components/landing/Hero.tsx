@@ -16,6 +16,7 @@ import {
   AGENTIC_COHORT_SCHEDULE_LINE,
   AGENTIC_COURSE_PRICE,
   COHORT_SCHEDULE,
+  COHORT_SEATS,
   FULL_COHORT,
   NEXT_COHORT,
 } from "@/lib/agentic-cohort";
@@ -178,7 +179,7 @@ const Hero = () => {
         <aside
           className="hero-enrol-panel relative min-w-0 animate-fade-up"
           style={{ animationDelay: ".2s" }}
-          aria-label={`${FULL_COHORT.label} full. ${NEXT_COHORT.label} ${NEXT_COHORT.dateRange}. ${AGENTIC_COHORT_SCHEDULE_LINE}`}
+          aria-label={`${FULL_COHORT.label} full. ${NEXT_COHORT.label} ${NEXT_COHORT.dateRange}. ${COHORT_SEATS.highlight}. ${AGENTIC_COHORT_SCHEDULE_LINE}`}
         >
           <div className="hero-enrol-panel__glow" aria-hidden />
 
@@ -191,7 +192,7 @@ const Hero = () => {
               />
 
               <div className="relative">
-                <div className="mb-4 flex flex-wrap items-center gap-2">
+                <div className="mb-3 flex flex-wrap items-center gap-2">
                   <span className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.04] px-2.5 py-1 font-mono text-[0.65rem] tracking-wide text-white/40">
                     <span className="line-through decoration-white/35">
                       {FULL_COHORT.label} · {FULL_COHORT.dateRangeShort}
@@ -206,6 +207,16 @@ const Hero = () => {
                   <span className="inline-flex items-center gap-1.5 rounded-full border border-amber-400/40 bg-amber-500/15 px-2.5 py-1 font-mono text-[0.65rem] font-semibold uppercase tracking-[0.12em] text-amber-100">
                     <span className="h-1.5 w-1.5 rounded-full bg-amber-300 animate-pulse-dot" />
                     Now enrolling
+                  </span>
+                </div>
+
+                <div
+                  className="seats-bump-tab mb-4 inline-flex max-w-full items-center gap-2 rounded-md border border-success/45 bg-gradient-to-r from-success/25 via-success/15 to-amber-400/20 px-3 py-2 shadow-[0_0_22px_-6px_hsl(var(--success)/0.75)]"
+                  role="status"
+                >
+                  <span className="seats-bump-tab__dot h-2 w-2 shrink-0 rounded-full bg-success" aria-hidden />
+                  <span className="font-mono text-[0.72rem] font-black uppercase tracking-[0.14em] text-success sm:text-[0.78rem]">
+                    {COHORT_SEATS.highlight}
                   </span>
                 </div>
 
