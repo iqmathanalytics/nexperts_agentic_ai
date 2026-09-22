@@ -134,7 +134,7 @@ const HackathonShowcase = () => {
                   className="absolute inset-0 h-full w-full object-cover transition-opacity duration-500"
                   loading={index === 0 ? "eager" : "lazy"}
                   decoding="async"
-                  fetchPriority="low"
+                  {...{ fetchpriority: "low" }}
                 />
               ) : (
                 <div className="absolute inset-0 bg-gradient-to-br from-zinc-900 to-black" aria-hidden />

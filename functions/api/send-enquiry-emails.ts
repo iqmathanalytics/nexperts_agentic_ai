@@ -6,6 +6,7 @@ import {
   resolveGsheetWebhookUrl,
 } from "../lib/gsheet-webhook";
 import { programmePageFromCourse } from "../lib/programme-page";
+import { upsertEnquiryLead, type ZohoEnv } from "../lib/zoho-crm";
 
 /**
  * Cloudflare Pages Function — sends enquiry acknowledgement (Brevo) to the visitor
@@ -19,9 +20,11 @@ import { programmePageFromCourse } from "../lib/programme-page";
  *   ENQUIRY_LEAD_EMAIL   — internal recipient (default: enquiry@nexpertsacademy.com)
  *   SITE_PUBLIC_URL      — canonical site for CTA links (default: https://nexpertsai.com)
  *   ALLOWED_ORIGINS      — same pattern as checkout (CORS)
+ *   ZOHO_CLIENT_ID / ZOHO_CLIENT_SECRET / ZOHO_REFRESH_TOKEN — Zoho CRM Leads upsert
+ *   ZOHO_ACCOUNTS_URL / ZOHO_API_DOMAIN — match your Zoho data centre
  */
 
-type Env = {
+type Env = ZohoEnv & {
   BREVO_API_KEY: string;
   BREVO_SENDER_EMAIL?: string;
   BREVO_SENDER_NAME?: string;
@@ -439,6 +442,15 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
 
   await new Promise((r) => setTimeout(r, 150));
 
+  const enquiryChannel = channel || (isVibe ? "vibe_page" : isCorporate ? "corporate_page" : "agentic_page");
+  const enquiryMessage =
+    message ||
+    (isVibe
+      ? "Vibe Coding page enquiry"
+      : isCorporate
+        ? "Generative AI Corporate page enquiry"
+        : "Agentic AI page enquiry");
+
   const enquirySheetWebhook = resolveGsheetWebhookUrl(env);
   let sheetLogged = false;
   let sheetProgrammePage: string | undefined;
@@ -446,19 +458,40 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
   let sheetWebhookDebug: string | undefined;
   const sheetWebhookDeploymentId = enquirySheetWebhook ? gsheetDeploymentId(enquirySheetWebhook) : undefined;
 
-  if (enquirySheetWebhook) {
-    const sheetResult = await postToGsheetWebhook(enquirySheetWebhook, {
-      sheet: "Leads",
-      name,
-      phone: phoneForGsheet(phone),
-      email,
-      message: message || (isVibe ? "Vibe Coding page enquiry" : isCorporate ? "Generative AI Corporate page enquiry" : "Agentic AI page enquiry"),
-      submittedAt: new Date().toISOString(),
-      source,
-      programmePage,
-      course: courseKey,
-      channel: channel || (isVibe ? "vibe_page" : isCorporate ? "corporate_page" : "agentic_page"),
-    }).catch(() => ({ ok: false, status: 0, body: "", json: null }));
+  const sheetPromise = enquirySheetWebhook
+    ? postToGsheetWebhook(enquirySheetWebhook, {
+        sheet: "Leads",
+        name,
+        phone: phoneForGsheet(phone),
+        email,
+        message: enquiryMessage,
+        submittedAt: new Date().toISOString(),
+        source,
+        programmePage,
+        course: courseKey,
+        channel: enquiryChannel,
+      }).catch(() => ({ ok: false, status: 0, body: "", json: null as null }))
+    : Promise.resolve(null);
+
+  const zohoPromise = upsertEnquiryLead(env, {
+    name,
+    email,
+    phone,
+    message: enquiryMessage,
+    source,
+    programmePage,
+    course: courseKey,
+    channel: enquiryChannel,
+  }).catch((err) => ({
+    ok: false as const,
+    status: 0,
+    body: "",
+    error: err instanceof Error ? err.message : String(err),
+  }));
+
+  const [sheetResult, zohoResult] = await Promise.all([sheetPromise, zohoPromise]);
+
+  if (sheetResult) {
     sheetLogged = sheetResult.ok;
     sheetProgrammePage = sheetResult.json?.programmePage;
     sheetCourse = sheetResult.json?.course;
@@ -466,6 +499,13 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
       sheetWebhookDebug = sheetResult.body.slice(0, 300);
     }
   }
+
+  const zohoLogged = zohoResult.ok === true;
+  const zohoSkipped = zohoResult.skipped === true;
+  const zohoDebug =
+    !zohoLogged && !zohoSkipped
+      ? (zohoResult.error || zohoResult.body || "").slice(0, 300)
+      : undefined;
 
   if (sameAsLeadInbox) {
     return Response.json(
@@ -475,6 +515,9 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
         sheetLogged,
         sheetProgrammePage,
         sheetCourse,
+        zohoLogged,
+        zohoSkipped,
+        ...(zohoDebug ? { zohoDebug } : {}),
         note: "Lead inbox matches visitor email; skipped separate internal notification.",
       },
       { status: 200, headers: { ...cors, "Content-Type": "application/json" } },
@@ -506,6 +549,9 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
         sheetLogged,
         sheetProgrammePage,
         sheetCourse,
+        zohoLogged,
+        zohoSkipped,
+        ...(zohoDebug ? { zohoDebug } : {}),
         warning:
           "Confirmation was sent to the visitor. The separate lead summary email could not be sent — check Brevo logs and recipient allowlists.",
         detail: lead.body,
@@ -521,6 +567,9 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
       sheetLogged,
       sheetProgrammePage,
       sheetCourse,
+      zohoLogged,
+      zohoSkipped,
+      ...(zohoDebug ? { zohoDebug } : {}),
       ...(sheetWebhookDebug
         ? { sheetWebhookDebug, sheetWebhookDeploymentId }
         : {}),

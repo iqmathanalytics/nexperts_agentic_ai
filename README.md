@@ -13,9 +13,9 @@ App runs on `http://localhost:8080`.
 
 The enquiry acknowledgement email links to **`/Agentic_AI_Engineering_Curriculum.pdf`**, which must live in **`public/Agentic_AI_Engineering_Curriculum.pdf`** so it is copied to the site root on build.
 
-## Enquiry form (Brevo email + optional Google Sheets)
+## Enquiry form (Brevo email + optional Google Sheets + optional Zoho CRM)
 
-The enquiry form in `src/components/landing/Enquire.tsx` sends email through your Cloudflare Pages Function `POST /api/send-enquiry-emails` (Brevo). When `ENQUIRY_GSHEET_WEBHOOK_URL` (or `PAYMENTS_GSHEET_WEBHOOK_URL` / `GSHEET_WEBHOOK_URL`) is set on the server, the same handler also appends a **Leads** row (including `programmePage`: Agentic AI vs Vibe Coding).
+The enquiry form in `src/components/landing/Enquire.tsx` sends email through your Cloudflare Pages Function `POST /api/send-enquiry-emails` (Brevo). When `ENQUIRY_GSHEET_WEBHOOK_URL` (or `PAYMENTS_GSHEET_WEBHOOK_URL` / `GSHEET_WEBHOOK_URL`) is set on the server, the same handler also appends a **Leads** row (including `programmePage`: Agentic AI vs Vibe Coding). When Zoho secrets are set, it also **upserts a Zoho CRM Lead** by Email (soft-fail: email/Sheets still succeed if Zoho errors).
 
 **Important:** Use one Apps Script **Web app** deployment URL everywhere (`.env`, `.dev.vars`, Cloudflare secrets). The API only treats a sheet write as successful when the script JSON includes `programmePage` and `course` (latest `scripts/google-apps-script-doPost.gs`). If an old deployment only returns `{ ok: true }`, the browser posts again via `VITE_GSHEET_WEBHOOK_URL`. Delete any stale `GSHEET_WEBHOOK_URL` secret that points at an older `/exec` URL.
 
@@ -59,6 +59,62 @@ Verify:
 ```bash
 npm run test:gsheet
 npm run test:enquiry-api
+```
+
+### Zoho CRM (optional — enquiry Leads)
+
+Same Free/paid Zoho org as other Nexperts sites. Enquiries upsert into **Leads** by **Email** via `functions/lib/zoho-crm.ts` (server-only OAuth refresh + upsert). Brevo and Sheets keep working if Zoho fails.
+
+1. In Zoho API Console (**India:** [api-console.zoho.in](https://api-console.zoho.in/)), create a **Self Client** for nexpertsai (or reuse academy credentials if you accept shared rotation risk).
+2. Generate a refresh token with scopes that allow creating/updating Leads (e.g. `ZohoCRM.modules.leads.CREATE,ZohoCRM.modules.leads.UPDATE` or modules ALL).
+3. In Cloudflare Pages secrets (and `.dev.vars` locally) set:
+
+```bash
+ZOHO_CLIENT_ID=...
+ZOHO_CLIENT_SECRET=...
+ZOHO_REFRESH_TOKEN=...
+# India CRM (crm.zoho.in):
+ZOHO_ACCOUNTS_URL=https://accounts.zoho.in
+ZOHO_API_DOMAIN=https://www.zohoapis.in
+```
+
+Optional: `ZOHO_LEAD_SOURCE` (default `Website`), `ZOHO_WEBSITE_VALUE` (default `nexpertsai.com`), `ZOHO_COMPANY_MODE` (`programme` | `site` | `off`, default `programme` → **Company** = programme label), `ZOHO_PROGRAMME_FIELD` / `ZOHO_LANDING_URL_FIELD` for custom API names.
+
+#### Field map (what to verify on a Lead)
+
+| CRM field | Value from nexpertsai |
+|-----------|------------------------|
+| First / Last Name | Split from form name |
+| Email | Upsert key |
+| Phone / Mobile | Form phone |
+| Lead Source | `Website` (unless overridden) |
+| Website | `nexpertsai.com` |
+| Company | Programme label (`Agentic AI`, `Vibe Coding`, `Generative AI Corporate`) |
+| Description | Site, programme, course, channel, landing URL, message |
+
+#### Separate Nexperts AI leads (Free tier — custom list view)
+
+Free Zoho cannot add a second Leads module. Use a **custom view** instead:
+
+1. Open **Leads** → views menu → **Create Custom View**.
+2. Name: `Nexperts AI`.
+3. Criteria: **Website** → **is** → `nexpertsai.com`.
+4. Add columns: Last Name, Email, Phone, **Company** (programme), Website, Created Time.
+5. Save. Use this view as the “AI tab”; keep **All Leads** (or another view) for academy.
+
+Optional second view: **Company** → **is** → `Agentic AI` (or Vibe / Corporate) for programme-level queues.
+
+#### Production checklist (do not break Brevo / Sheets)
+
+1. Confirm Cloudflare has the same `ZOHO_*` secrets as `.dev.vars` (including `.in` hosts).
+2. Redeploy / wait for Functions to pick up secrets.
+3. Submit one live enquiry → response includes `"zohoLogged": true`.
+4. Confirm Lead in CRM under the **Nexperts AI** view; Brevo ack email and Sheets row still arrive as before.
+
+5. Unit tests (no live Zoho call):
+
+```bash
+npm test
 ```
 
 ## Stripe course checkout
