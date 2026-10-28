@@ -110,8 +110,8 @@ const Hero = () => {
             className="mb-5 max-w-xl text-pretty text-[0.95rem] font-light leading-[1.75] text-white/45 sm:mb-6 md:text-base animate-fade-up"
             style={{ animationDelay: ".18s" }}
           >
-            Live instructor-led training from Python basics to production multi-agent systems — 20 intensive sessions,
-            portfolio-ready builds.
+            Live instructor-led training from Python basics to production multi-agent systems —{" "}
+            {AGENTIC_COHORT.sessionsTotal} intensive sessions, {AGENTIC_COHORT.hoursTotal} hours, portfolio-ready builds.
           </p>
 
           <div className="mb-5 animate-fade-up sm:mb-6" style={{ animationDelay: ".22s" }}>
@@ -130,11 +130,11 @@ const Hero = () => {
           </div>
 
           <div className="mb-6 flex flex-wrap gap-1.5 animate-fade-up sm:mb-7" style={{ animationDelay: ".28s" }}>
-            <span className="pill-hl">20 Live Sessions</span>
-            <span className="pill-hl">80 Hours</span>
+            <span className="pill-hl">{AGENTIC_COHORT.sessionsTotal} Live Sessions</span>
+            <span className="pill-hl">{AGENTIC_COHORT.hoursTotal} Hours</span>
             <span className="pill-hl">{AGENTIC_COHORT.weeksLabel}</span>
             <span className="pill-hl">{AGENTIC_COHORT.daysPill}</span>
-            <span className="pill-hl">{AGENTIC_COHORT.time}</span>
+            <span className="pill-hl">{AGENTIC_COHORT.timeShort}</span>
             <span className="pill">Live Online · Teams</span>
             <span className="pill">Certificate</span>
           </div>

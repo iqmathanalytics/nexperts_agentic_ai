@@ -1,10 +1,10 @@
 import { AGENTIC_COHORT, AGENTIC_COURSE_PRICE } from "@/lib/agentic-cohort";
 
 const stats = [
-  { n: "20", l: "Live instructor-led sessions" },
-  { n: "80h", l: "Total hands-on training" },
+  { n: String(AGENTIC_COHORT.sessionsTotal), l: "Live instructor-led sessions" },
+  { n: `${AGENTIC_COHORT.hoursTotal}h`, l: "Total hands-on training" },
   { n: String(AGENTIC_COHORT.weeks), l: `Weeks · ${AGENTIC_COHORT.daysPill}` },
-  { n: "4h", l: `Per session · ${AGENTIC_COHORT.time}` },
+  { n: `${AGENTIC_COHORT.hoursPerSession}h`, l: `Per session · ${AGENTIC_COHORT.timeShort}` },
   { n: "5+", l: "Frameworks mastered" },
   { n: AGENTIC_COURSE_PRICE.display, l: `Limited offer · Save ${AGENTIC_COURSE_PRICE.savingsDisplay}`, success: true },
 ];

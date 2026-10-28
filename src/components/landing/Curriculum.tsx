@@ -30,12 +30,12 @@ const Curriculum = () => (
     <div className="reveal">
       <div className="eyebrow mb-3.5">The Curriculum</div>
       <h2 className="display text-foreground text-balance">
-        20 sessions. 80 hours.<br />
+        {AGENTIC_COHORT.sessionsTotal} sessions. {AGENTIC_COHORT.hoursTotal} hours.<br />
         <em>From Python to production.</em>
       </h2>
       <p className="body-prose mt-3 max-w-xl">
-        {AGENTIC_COHORT_SUMMARY}. Each session is 4 hours of live, hands-on training on {AGENTIC_COHORT.delivery} — you
-        build alongside the instructor, no passive watching.
+        {AGENTIC_COHORT_SUMMARY}. Each session is {AGENTIC_COHORT.hoursPerSession} hours of live, hands-on training on{" "}
+        {AGENTIC_COHORT.delivery} — you build alongside the instructor, no passive watching.
       </p>
     </div>
 

@@ -5,7 +5,7 @@ export const LANDING_CANONICAL_URL = "https://nexpertsai.com/";
 export const LANDING_PAGE_TITLE = "Agentic AI Engineering Course Malaysia - Nexperts AI";
 
 export const LANDING_META_DESCRIPTION =
-  "Join Malaysia's live Agentic AI Engineering course. Learn LangChain, LangGraph, RAG & AI agents in 80 hours. Become an AI Engineer in Malaysia";
+  "Join Malaysia's live Agentic AI Engineering course. Learn LangChain, LangGraph, RAG & AI agents in 96 hours. Become an AI Engineer in Malaysia";
 
 export const LANDING_H1 = "Professional Agentic AI Engineering Course in Malaysia";
 

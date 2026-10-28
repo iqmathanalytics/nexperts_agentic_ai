@@ -12,13 +12,19 @@ export const AGENTIC_COURSE_PRICE = {
 export const COHORT_SCHEDULE = {
   days: "Mon, Wed, Fri",
   daysPill: "Mon · Wed · Fri",
-  time: "6pm–10pm",
+  time: "6:00 PM – 10:00 PM",
+  timeShort: "6pm–10pm",
   delivery: "Microsoft Teams",
+  hoursTotal: 96,
+  hoursPerSession: 4,
+  sessionsTotal: 24,
+  daysPerWeek: 3,
 } as const;
 
 export type CohortSlot = {
   label: string;
   startDate: string;
+  endDate: string;
   dateRange: string;
   dateRangeShort: string;
   status: "full" | "open";
@@ -29,6 +35,7 @@ export type CohortSlot = {
 export const FULL_COHORT: CohortSlot = {
   label: "Cohort 5",
   startDate: "26 October 2026",
+  endDate: "11 December 2026",
   dateRange: "26 Oct – 11 Dec 2026",
   dateRangeShort: "26/10 – 11/12",
   status: "full",
@@ -39,14 +46,15 @@ export const FULL_COHORT: CohortSlot = {
 export const NEXT_COHORT: CohortSlot = {
   label: "Cohort 6",
   startDate: "16 November 2026",
-  dateRange: "16 Nov 2026 – 2 Jan 2027",
-  dateRangeShort: "16/11 – 2/1",
+  endDate: "8 January 2027",
+  dateRange: "16 Nov 2026 – 8 Jan 2027",
+  dateRangeShort: "16/11 – 8/1",
   status: "open",
   statusLabel: "Enrolling",
 };
 
-export const NEXT_COHORT_WEEKS = 7;
-export const NEXT_COHORT_WEEKS_LABEL = "7 weeks";
+export const NEXT_COHORT_WEEKS = 8;
+export const NEXT_COHORT_WEEKS_LABEL = "8 weeks";
 
 /** Limited intake callout — highlighted with bump animation in the hero. */
 export const COHORT_SEATS = {
@@ -63,7 +71,7 @@ export const AGENTIC_COHORT = {
   seats: COHORT_SEATS.count,
 };
 
-export const AGENTIC_COHORT_SCHEDULE_LINE = `${COHORT_SCHEDULE.days} · ${COHORT_SCHEDULE.time} · ${NEXT_COHORT_WEEKS_LABEL}`;
+export const AGENTIC_COHORT_SCHEDULE_LINE = `${COHORT_SCHEDULE.days} · ${COHORT_SCHEDULE.timeShort} · ${NEXT_COHORT_WEEKS_LABEL}`;
 
 export const AGENTIC_COHORT_SUMMARY = `${FULL_COHORT.label} (${FULL_COHORT.dateRange}) is full. ${NEXT_COHORT.label} ${NEXT_COHORT.dateRange} (${AGENTIC_COHORT_SCHEDULE_LINE}). ${COHORT_SEATS.highlight}.`;
 
