@@ -6,7 +6,7 @@ const stats = [
   { n: String(AGENTIC_COHORT.weeks), l: `Weeks · ${AGENTIC_COHORT.daysPill}` },
   { n: `${AGENTIC_COHORT.hoursPerSession}h`, l: `Per session · ${AGENTIC_COHORT.timeShort}` },
   { n: "5+", l: "Frameworks mastered" },
-  { n: AGENTIC_COURSE_PRICE.display, l: `Limited offer · Save ${AGENTIC_COURSE_PRICE.savingsDisplay}`, success: true },
+  { n: AGENTIC_COURSE_PRICE.display, l: `${AGENTIC_COURSE_PRICE.sstNote} · Save ${AGENTIC_COURSE_PRICE.savingsDisplay}`, success: true },
 ];
 
 const Stats = () => (

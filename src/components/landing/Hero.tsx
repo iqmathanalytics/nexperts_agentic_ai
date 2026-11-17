@@ -111,7 +111,8 @@ const Hero = () => {
             style={{ animationDelay: ".18s" }}
           >
             Live instructor-led training from Python basics to production multi-agent systems —{" "}
-            {AGENTIC_COHORT.sessionsTotal} intensive sessions, {AGENTIC_COHORT.hoursTotal} hours, portfolio-ready builds.
+            {AGENTIC_COHORT.sessionsTotal} intensive sessions, {AGENTIC_COHORT.hoursTotal} hours,{" "}
+            {AGENTIC_COHORT.weeksLabel}, including a full week of Python programming.
           </p>
 
           <div className="mb-5 animate-fade-up sm:mb-6" style={{ animationDelay: ".22s" }}>
@@ -133,6 +134,7 @@ const Hero = () => {
             <span className="pill-hl">{AGENTIC_COHORT.sessionsTotal} Live Sessions</span>
             <span className="pill-hl">{AGENTIC_COHORT.hoursTotal} Hours</span>
             <span className="pill-hl">{AGENTIC_COHORT.weeksLabel}</span>
+            <span className="pill-hl">Full week Python</span>
             <span className="pill-hl">{AGENTIC_COHORT.daysPill}</span>
             <span className="pill-hl">{AGENTIC_COHORT.timeShort}</span>
             <span className="pill">Live Online · Teams</span>
@@ -237,6 +239,12 @@ const Hero = () => {
                     <p className="mt-1.5 font-mono text-[0.72rem] font-medium uppercase tracking-[0.08em] text-amber-100/65">
                       {AGENTIC_COHORT_SCHEDULE_LINE} · {COHORT_SCHEDULE.delivery}
                     </p>
+                    <p className="mt-2 text-[0.8rem] font-light leading-relaxed text-amber-50/70">
+                      {COHORT_SCHEDULE.pythonWeekNote}
+                    </p>
+                    <p className="mt-1.5 text-[0.75rem] font-light leading-relaxed text-amber-100/50">
+                      {COHORT_SCHEDULE.ramadanNote}
+                    </p>
                   </div>
                 </div>
               </div>
@@ -255,7 +263,7 @@ const Hero = () => {
                   {AGENTIC_COURSE_PRICE.display}
                 </span>
                 <span className="pb-1 font-mono text-[0.7rem] leading-[1.3] text-white/55">
-                  excl. 8% SST
+                  {AGENTIC_COURSE_PRICE.sstNote}
                 </span>
               </div>
               <div

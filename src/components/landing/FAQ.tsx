@@ -1,14 +1,23 @@
 import { useState } from "react";
 import { ChevronDown } from "lucide-react";
-import { AGENTIC_COHORT, AGENTIC_COHORT_SUMMARY, AGENTIC_COURSE_PRICE } from "@/lib/agentic-cohort";
+import {
+  AGENTIC_COHORT,
+  AGENTIC_COHORT_SUMMARY,
+  AGENTIC_COURSE_PRICE,
+  COHORT_SCHEDULE,
+} from "@/lib/agentic-cohort";
 import { WHATSAPP_HREF } from "@/lib/whatsapp";
 
 const faqs = [
   {
     q: "When is the next cohort and what is the schedule?",
-    a: `${AGENTIC_COHORT_SUMMARY}. All sessions are live on ${AGENTIC_COHORT.delivery}. Recordings are shared within 24 hours if you miss a session.`,
+    a: `${AGENTIC_COHORT_SUMMARY} All sessions are live on ${AGENTIC_COHORT.delivery}. Recordings are shared within 24 hours if you miss a session.`,
   },
-  { q: "I have zero Python experience. Can I still join?", a: "Yes — sessions 1–3 cover Python from scratch, focused specifically on what you need for AI engineering. You don't need prior Python, but you do need basic programming knowledge in any language." },
+  { q: "I have zero Python experience. Can I still join?", a: `Yes — the programme includes a full week of Python programming training from scratch, focused on what you need for AI engineering. You don't need prior Python, but you do need basic programming knowledge in any language.` },
+  {
+    q: "Will class timings change during Ramadhan?",
+    a: COHORT_SCHEDULE.ramadanNote,
+  },
   { q: "Will I get a recording if I miss a session?", a: "Yes, all sessions are recorded and shared within 24 hours. However, this is a live, intensive programme — we strongly recommend attending live to do the exercises in real-time alongside the instructor." },
   { q: "What happens after I complete the programme?", a: "You receive a Professional Certificate, lifetime access to materials, and entry into our private alumni community. We also help connect strong graduates with hiring partners." },
   { q: `Why is the limited offer ${AGENTIC_COURSE_PRICE.display} (${AGENTIC_COURSE_PRICE.sstNote}) when the international rate is ${AGENTIC_COURSE_PRICE.marketValueDisplay}?`, a: "We're building our first community of AI engineers in Malaysia. In exchange for your commitment, attendance and feedback, you get the international curriculum at a significantly reduced fee. Future cohorts will be priced higher." },

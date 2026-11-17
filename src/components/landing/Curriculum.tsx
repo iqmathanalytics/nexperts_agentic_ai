@@ -34,7 +34,7 @@ const Curriculum = () => (
         <em>From Python to production.</em>
       </h2>
       <p className="body-prose mt-3 max-w-xl">
-        {AGENTIC_COHORT_SUMMARY}. Each session is {AGENTIC_COHORT.hoursPerSession} hours of live, hands-on training on{" "}
+        {AGENTIC_COHORT_SUMMARY} Each session is {AGENTIC_COHORT.hoursPerSession} hours of live, hands-on training on{" "}
         {AGENTIC_COHORT.delivery} — you build alongside the instructor, no passive watching.
       </p>
     </div>

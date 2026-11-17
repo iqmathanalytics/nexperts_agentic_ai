@@ -1,12 +1,12 @@
 /** Agentic AI Engineering — cohort schedule (single source of truth for the landing page). */
 
 export const AGENTIC_COURSE_PRICE = {
-  amount: 799,
-  display: "RM\u00A0799",
+  amount: 1500,
+  display: "RM\u00A01,500",
   marketValueDisplay: "RM 12,000+",
-  savingsAmount: 11201,
-  savingsDisplay: "RM 11,200",
-  sstNote: "excluding 8% SST",
+  savingsAmount: 10500,
+  savingsDisplay: "RM 10,500",
+  sstNote: "+ 8% SST",
 } as const;
 
 export const COHORT_SCHEDULE = {
@@ -19,6 +19,9 @@ export const COHORT_SCHEDULE = {
   hoursPerSession: 4,
   sessionsTotal: 24,
   daysPerWeek: 3,
+  pythonWeekNote: "Includes a full week of Python programming training",
+  ramadanNote:
+    "Timings during Ramadhan can be affected. Final dates will be shared upon confirmation.",
 } as const;
 
 export type CohortSlot = {
@@ -33,22 +36,22 @@ export type CohortSlot = {
 
 /** Most recently filled cohort — shown struck-through in the hero badge. */
 export const FULL_COHORT: CohortSlot = {
-  label: "Cohort 5",
-  startDate: "26 October 2026",
-  endDate: "11 December 2026",
-  dateRange: "26 Oct – 11 Dec 2026",
-  dateRangeShort: "26/10 – 11/12",
+  label: "Cohort 6",
+  startDate: "16 November 2026",
+  endDate: "8 January 2027",
+  dateRange: "16 Nov 2026 – 8 Jan 2027",
+  dateRangeShort: "16/11 – 8/1",
   status: "full",
   statusLabel: "Full",
 };
 
 /** Active enrolling cohort — checkout, stats pills, and schedule copy. */
 export const NEXT_COHORT: CohortSlot = {
-  label: "Cohort 6",
-  startDate: "16 November 2026",
-  endDate: "8 January 2027",
-  dateRange: "16 Nov 2026 – 8 Jan 2027",
-  dateRangeShort: "16/11 – 8/1",
+  label: "Cohort 7",
+  startDate: "25 January 2027",
+  endDate: "19 March 2027",
+  dateRange: "25 Jan 2027 – 19 Mar 2027",
+  dateRangeShort: "25/1 – 19/3",
   status: "open",
   statusLabel: "Enrolling",
 };
@@ -73,10 +76,12 @@ export const AGENTIC_COHORT = {
 
 export const AGENTIC_COHORT_SCHEDULE_LINE = `${COHORT_SCHEDULE.days} · ${COHORT_SCHEDULE.timeShort} · ${NEXT_COHORT_WEEKS_LABEL}`;
 
-export const AGENTIC_COHORT_SUMMARY = `${FULL_COHORT.label} (${FULL_COHORT.dateRange}) is full. ${NEXT_COHORT.label} ${NEXT_COHORT.dateRange} (${AGENTIC_COHORT_SCHEDULE_LINE}). ${COHORT_SEATS.highlight}.`;
+export const AGENTIC_COHORT_SUMMARY = `${FULL_COHORT.label} (${FULL_COHORT.dateRange}) is full. ${NEXT_COHORT.label} ${NEXT_COHORT.dateRange} (${AGENTIC_COHORT_SCHEDULE_LINE}). ${COHORT_SEATS.highlight}. ${COHORT_SCHEDULE.pythonWeekNote}. ${COHORT_SCHEDULE.ramadanNote}`;
 
 export const COHORT_BULLETS = [
   `${FULL_COHORT.label} · ${FULL_COHORT.dateRange} — ${FULL_COHORT.statusLabel}`,
   `${NEXT_COHORT.label} · ${NEXT_COHORT.dateRange} — ${NEXT_COHORT.statusLabel}`,
   COHORT_SEATS.highlight,
+  COHORT_SCHEDULE.pythonWeekNote,
+  COHORT_SCHEDULE.ramadanNote,
 ] as const;
