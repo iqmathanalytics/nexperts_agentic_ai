@@ -1,11 +1,11 @@
 /** Agentic AI Engineering — cohort schedule (single source of truth for the landing page). */
 
 export const AGENTIC_COURSE_PRICE = {
-  amount: 1500,
-  display: "RM\u00A01,500",
+  amount: 8000,
+  display: "RM\u00A08,000",
   marketValueDisplay: "RM 12,000+",
-  savingsAmount: 10500,
-  savingsDisplay: "RM 10,500",
+  savingsAmount: 4000,
+  savingsDisplay: "RM 4,000",
   sstNote: "+ 8% SST",
 } as const;
 
